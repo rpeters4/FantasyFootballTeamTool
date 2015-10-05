@@ -18,10 +18,10 @@ private:
         the relevant stats will be assigned values on the fly
     */
 
-public
+public:
     Player();                           //ctor
     Player(const Player& cpyply);       //cctor
-    ~Player;                            //dtor
+    ~Player();                            //dtor
     void update();                      //public update fnc
     vector<float> getStats();           //public get fnc
     

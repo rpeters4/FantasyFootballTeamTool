@@ -1,4 +1,3 @@
-#include "main.cpp"
 #include "player.h"
 
 using std::vector;
@@ -20,6 +19,6 @@ public:
     void removePlayer(string playerName);
     void removePlayer(unsigned int playerID);
     void trade();
-    void trade(string TeamToTrade, vector<string> toPlayers, vector<string> fromPlayers)
+    void trade(string TeamToTrade, vector<string> toPlayers, vector<string> fromPlayers);
 
 };
