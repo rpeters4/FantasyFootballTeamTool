@@ -11,3 +11,12 @@ We need to :
 Ryan Peters Edit: Hello Guys, I emailed karl and he should be trying to contact you, if not email me. ktnxbai
 
 Glen Noworyta edit: Just seeing if I can push this to GitHub successfully. 10/6/15.
+
+Ryan Peters: Glen and I were working on design, and using JSON and NFL stuff that Karl recommended to Glen, 
+when Glen spoke to him at the Career Fair. We are also on the move towards using python. Python is a better 
+language to use for this project according to Karl Newell. We are looking to get an initial program finished by thursday, which will just 
+pull from this nflgame database. We were able to make a pull from the data base! We will go over this in class on wednesday. 
+
+pdoc.burntsushi.net/nflgame : This is the api we are looking at for python. 
+We just need to tinker around with this, and make our own python program that uses it. 
+
