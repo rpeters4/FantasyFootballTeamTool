@@ -20,3 +20,5 @@ pull from this nflgame database. We were able to make a pull from the data base!
 pdoc.burntsushi.net/nflgame : This is the api we are looking at for python. 
 We just need to tinker around with this, and make our own python program that uses it. 
 
+this commit
+
