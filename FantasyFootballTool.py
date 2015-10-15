@@ -39,4 +39,9 @@ def addPlayer(leagueName,rosterName, playerName):
         if l.leagueName is leagueName:
             for r in l.rosters:
                 if r.teamName is rosterName:
-                    print "hi"
+                    plIDs=find(playerName,team=None)
+					if not plIDs
+						print "couldn't find player"
+					else
+						player.player_id = plID[0]
+						
