@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <math>
+#include <cmath>
 
 using std::cout;
 using std::exit;
