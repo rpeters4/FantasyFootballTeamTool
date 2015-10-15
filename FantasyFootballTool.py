@@ -6,9 +6,9 @@ class league:
         self.leagueName = leagueName
 
 class roster:
-    def __init__(self, leagueName, teamName, players):
+    def __init__(self, leagueName, rosterName, players):
             self.leagueName = leagueName
-            self.teamName = teamName
+            self.rosterName = rosterName
             self.players = players
 
 class player:
@@ -22,45 +22,121 @@ class player:
 leagueLists = []
 
 def addLeague(leagueName):
-    l = league(leagueName, [])
-    leagueLists.append(l)
+    if leagueLists:
+        for i in leagueLists:
+            if i.leagueName is leagueName:
+                print 'ERROR: League already exists\n'
+                break
+            if i.leagueName is not leagueName and i is leagueLists[-1]:
+                l = league(leagueName, [])
+                leagueLists.append(l)
+                break
+    else:
+        l=league(leagueName,[])
+        leagueLists.append(l)
 
-def addRoster(leagueName, teamName):
-    for l in leagueLists:
-        if l.leagueName is leagueName:
-            r = roster(leagueName, teamName, [])
-            l.rosters.append(r)
-        else:
-            print "League does not exist"
-            #want to add league?  
+def addRoster(leagueName, rosterName):
+    if leagueLists:
+        for l in leagueLists:
+            if l.leagueName is leagueName and not l.rosters:
+                r = roster(leagueName, rosterName, [])
+                l.rosters.append(r)
+                break
+            if l.leagueName is leagueName:
+                for r in l.rosters:
+                    if r.rosterName is rosterName:
+                        print 'ERROR: Team already exists\n'
+                        break
+                    if r.rosterName is not rosterName and r is l.rosters[-1]:
+                        r = roster(leagueName, rosterName, [])
+                        l.rosters.append(r)
+                        break
+            elif l is leagueLists[-1]:
+                print 'ERROR: League does not exist\n'
+                answer = input('Would you like to add a league? (y/n) ')
+                while True is True:
+                    if answer in ['y', 'Y', 'Yes', 'yes']:
+                        addLeague(leagueName)
+                        addRoster(leagueName, rosterName)
+                        break
+                    elif answer in ['n', 'N', 'No', 'no']:
+                        break
+                    else:
+                        answer = input('Invalid response please try again (y/n)')
+    else:
+        print 'ERROR: League does not exist\n'
+        answer = input('Would you like to add a league? (y/n) ')
+        while True is True:
+            if answer in ['y', 'Y', 'Yes', 'yes']:
+                addLeague(leagueName)
+                addRoster(leagueName, rosterName)
+                break
+            elif answer in ['n', 'N', 'No', 'no']:
+                break
+            else:
+                answer = input('Invalid response please try again (y/n)')
             
 def addPlayer(leagueName, rosterName, playerName, playerTeam):
-    leagueFound = False
-    teamFound = False
-    for l in leagueLists:
-        if l.leagueName is leagueName:
-            leagueFound = True
-            for r in l.rosters:
-                if r.teamName is rosterName:
-                    teamFound
-                    teamName = nflgame.standard_team(playerTeam)
-                    playerFound = nflgame.find(playerName, team=teamName)
-                    if playerFound:
-                        p = playerFound[0]
-                        playerToAdd = player(p.player_id, p.first_name, p.last_name, p.team, p.position)
-                        r.players.append(playerToAdd)
+    if leagueLists:
+        for l in leagueLists:
+            if l.leagueName is leagueName:
+                for r in l.rosters:
+                    if r.rosterName is rosterName:
+                        teamName = nflgame.standard_team(playerTeam)
+                        playerFound = nflgame.find(playerName, team=teamName)
+                        if playerFound:
+                            p = playerFound[0]
+                            playerToAdd = player(p.player_id, p.first_name, p.last_name, p.team, p.position)
+                            #check for empty case, all rosters are empty is only case
+                            playerFound = False
+                            for k in l.rosters:
+                                for j in k.players:
+                                    if playerToAdd.firstName is j.firstName and playerToAdd.lastName is j.lastName and playerToAdd.team is j.team and playerFound is False:
+                                        print 'ERROR: Player already rostered\n'
+                                        playerFound = True
+                                        break
+                            if not playerFound:
+                                print 'adding'
+                                r.players.append(playerToAdd)
+                                break
+                        else:   
+                            print 'ERROR: Player does not exist\n'
+                    elif r is l.rosters[-1]:
+                        print 'ERROR: Roster does not exist\n'
+                        answer = input('Would you like to add a team? (y/n) ')
+                        while True is True:
+                            if answer in ['y', 'Y', 'Yes', 'yes']:
+                                addRoster(leagueName, rosterName)
+                                addPlayer(leagueName, rosterName, playerName, playerTeam)
+                                break
+                            elif answer in ['n', 'N', 'No', 'no']:
+                                break
+                            else:
+                                answer = input('Invalid response please try again (y/n)')
+                    break                        
+            elif l is leagueLists[-1]:
+                print 'ERROR: League does not exist\n'
+                answer = input('Would you like to add a league? (y/n) ')
+                while True is True:
+                    if answer in ['y', 'Y', 'Yes', 'yes']:
+                        addLeague(leagueName)
+                        addRoster(leagueName, rosterName)
+                        addPlayer(leagueName, rosterName, playerName, playerTeam)
+                        break
+                    elif answer in ['n', 'N', 'No', 'no']:
+                        break
                     else:
-                        'ERROR: Player %s not found\n' % playerName
-    if not leagueFound:
-        print 'ERROR: League %s not found\n' % leagueName
-    if not teamFound:
-        print 'ERROR: Team %s not found\n' % rosterName
-
-          
-addLeague('t')
-addRoster('t', 'test')
-addPlayer('t', 'test', 'tom brady', 'NE')
-addPlayer('NOTREAL','test','tom brady', 'NE')
-addPlayer('t','tiffingtonbanderbotter','tom brady','NE')
-addPlayer('t','test','Fakel McFakington','NE')
-
+                        answer = input('Invalid response please try again (y/n)')
+    else:
+        print 'ERROR: League does not exist\n'
+        answer = input('Would you like to add a league? (y/n) ')
+        while True is True:
+            if answer in ['y', 'Y', 'Yes', 'yes']:
+                addLeague(leagueName)
+                addRoster(leagueName, rosterName)
+                addPlayer(leagueName, rosterName, playerName, playerTeam)
+                break
+            elif answer in ['n', 'N', 'No', 'no']:
+                break
+            else:
+                answer = input('Invalid response please try again (y/n)')
