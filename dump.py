@@ -28,9 +28,9 @@ print l.uniform_number
 print l.weight
 print l.years_pro
 
-k=l.plays(2015,1)
+k=l.plays(2015,2)		#just picked week 3 to test things out
 
-m=l.stats(2015,[1])
+m=l.stats(2015,2)		#
 
 print m.guess_position
 print m.home
