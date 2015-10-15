@@ -149,3 +149,8 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                 answer = raw_input('Invalid response please try again (y/n)')
 
 
+def kickerScore(player):
+	for i in player.kicking_fgm:
+		if kicking_fgm_yds >= 50:
+			p = p + kicking_fgm_yds
+	print p
