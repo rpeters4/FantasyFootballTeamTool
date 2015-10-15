@@ -19,13 +19,13 @@ class player:
         self.team = team
         self.position = position
 
-def findFL(firstName,lastName,team):
-    n=firstName + ' ' + lastName
+def findFL(firstName,lastName,team):        ##finds nflgame.player object
+    n=firstName + ' ' + lastName            ##by first/last name and team
     return nflgame.find(n,team)
 
 leagueLists = []
 
-def addLeague(leagueName):
+def addLeague(leagueName):                  ##adds new fantasyfootbal league
     if leagueLists:
         for i in leagueLists:
             if i.leagueName is leagueName:
@@ -40,7 +40,7 @@ def addLeague(leagueName):
         l=league(leagueName,[])
         leagueLists.append(l)
 
-def addRoster(leagueName, rosterName):
+def addRoster(leagueName, rosterName):     ##
     if leagueLists:
         for l in leagueLists:
             if l.leagueName is leagueName and not l.rosters:
@@ -104,7 +104,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                                         break
                             if not playerFound:
                                 print 'adding player...'
-                                r.players.append(playerToAdd)
+                                r.players.append(plr2Ad)
                                 break
                         else:   
                             print 'ERROR: Player does not exist\n'
