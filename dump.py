@@ -3,9 +3,6 @@
 # stats are held, just a matter of figuring out how to use them!
 # (cue people who know things about fantasy football scoring...)
 #
-#
-#
-#
 
 import nflgame
 
@@ -28,9 +25,11 @@ print l.uniform_number
 print l.weight
 print l.years_pro
 
-k=l.plays(2015,2)		#just picked week 3 to test things out
+year,week=nflgame.live.current_year_and_week()
 
-m=l.stats(2015,2)		#
+k=l.plays(year,week)		#just picked week 3 to test things out
+
+m=l.stats(2015,3)		#
 
 print m.guess_position
 print m.home
@@ -47,6 +46,8 @@ print m.twoptmissed
 print m.stats['passing_att']
 
 
+
+
 #
 # This lists all of the players in the player dictionary:
 # May be useful for adding players by a menu system? 
@@ -61,5 +62,3 @@ print m.stats['passing_att']
 
 
 #print dump()
-
-
