@@ -1,5 +1,5 @@
 import nflgame
-      
+         
 class league:
     def __init__(self, leagueName, rosters):
         self.rosters = rosters
@@ -30,6 +30,7 @@ def addLeague(leagueName):
             if i.leagueName is not leagueName and i is leagueLists[-1]:
                 l = league(leagueName, [])
                 leagueLists.append(l)
+                print 'league added\n'
                 break
     else:
         l=league(leagueName,[])
@@ -50,6 +51,7 @@ def addRoster(leagueName, rosterName):
                     if r.rosterName is not rosterName and r is l.rosters[-1]:
                         r = roster(leagueName, rosterName, [])
                         l.rosters.append(r)
+                        print 'roster added\n'
                         break
             elif l is leagueLists[-1]:
                 print 'ERROR: League does not exist\n'
@@ -80,28 +82,29 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
     if leagueLists:
         for l in leagueLists:
             if l.leagueName is leagueName:
+                print 'matched leagueName...\n'
                 for r in l.rosters:
                     if r.rosterName is rosterName:
                         teamName = nflgame.standard_team(playerTeam)
                         playerFound = nflgame.find(playerName, team=teamName)
                         if playerFound:
                             p = playerFound[0]
-                            playerToAdd = player(p.player_id, p.first_name, p.last_name, p.team, p.position)
+                            plr2Ad = player(p.player_id, p.first_name, p.last_name, p.team, p.position)
                             #check for empty case, all rosters are empty is only case
                             playerFound = False
                             for k in l.rosters:
                                 for j in k.players:
-                                    if playerToAdd.firstName is j.firstName and playerToAdd.lastName is j.lastName and playerToAdd.team is j.team and playerFound is False:
+                                    if plr2Ad.firstName is j.firstName and plr2Ad.lastName is j.lastName and plr2Ad.team is j.team:
                                         print 'ERROR: Player already rostered\n'
                                         playerFound = True
                                         break
                             if not playerFound:
-                                print 'adding'
+                                print 'adding player...'
                                 r.players.append(playerToAdd)
                                 break
                         else:   
                             print 'ERROR: Player does not exist\n'
-                    elif r is l.rosters[-1]:
+                    elif r is l.rosters[-1] and not playerFound:
                         print 'ERROR: Roster does not exist\n'
                         answer = input('Would you like to add a team? (y/n) ')
                         while True is True:
@@ -113,7 +116,6 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                                 break
                             else:
                                 answer = input('Invalid response please try again (y/n)')
-                    break                        
             elif l is leagueLists[-1]:
                 print 'ERROR: League does not exist\n'
                 answer = input('Would you like to add a league? (y/n) ')
