@@ -87,8 +87,18 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                         if playerFound:
                             p = playerFound[0]
                             playerToAdd = player(p.player_id, p.first_name, p.last_name, p.team, p.position)
-                            r.players.append(playerToAdd)
-                            break
+                            #check for empty case, all rosters are empty is only case
+                            playerFound = False
+                            for k in l.rosters:
+                                for j in k.players:
+                                    if playerToAdd.firstName is j.firstName and playerToAdd.lastName is j.lastName and playerToAdd.team is j.team and playerFound is False:
+                                        print 'ERROR: Player already rostered\n'
+                                        playerFound = True
+                                        break
+                            if not playerFound:
+                                print 'adding'
+                                r.players.append(playerToAdd)
+                                break
                         else:   
                             print 'ERROR: Player does not exist\n'
                     elif r is l.rosters[-1]:
