@@ -94,12 +94,9 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                         if playerFound:
                             p = playerFound[0]
                             plr2Ad = player(p.player_id, p.first_name, p.last_name, p.team, p.position)
-<<<<<<< HEAD
                             playerFound = False
-=======
                             #check for empty case, all rosters are empty is only case
                             playerFoundFlag = False
->>>>>>> origin/master
                             for k in l.rosters:
                                 for j in k.players:
                                     if plr2Ad.firstName is j.firstName and plr2Ad.lastName is j.lastName and plr2Ad.team is j.team:
