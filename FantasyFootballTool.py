@@ -6,9 +6,9 @@ class league:
         self.leagueName = leagueName
 
 class roster:
-    def __init__(self, leagueName, teamName, players):
+    def __init__(self, leagueName, rosterName, players):
             self.leagueName = leagueName
-            self.teamName = teamName
+            self.rosterName = rosterName
             self.players = players
 
 class player:
@@ -22,23 +22,42 @@ class player:
 leagueLists = []
 
 def addLeague(leagueName):
-    l = league(leagueName, [])
-    leagueLists.append(l)
+    if leagueLists:
+        for i in leagueLists:
+            if i.leagueName is leagueName:
+                print 'ERROR: League already exists\n'
+                break
+            if i.leagueName is not leagueName and i is leagueLists[-1]:
+                l = league(leagueName, [])
+                leagueLists.append(l)
+                break
+    else:
+        l=league(leagueName,[])
+        leagueLists.append(l)
 
-def addRoster(leagueName, teamName):
+def addRoster(leagueName, rosterName):
     if leagueLists:
         for l in leagueLists:
-            if l.leagueName is leagueName:
-                r = roster(leagueName, teamName, [])
+            if l.leagueName is leagueName and not l.rosters:
+                r = roster(leagueName, rosterName, [])
                 l.rosters.append(r)
                 break
+            if l.leagueName is leagueName:
+                for r in l.rosters:
+                    if r.rosterName is rosterName:
+                        print 'ERROR: Team already exists\n'
+                        break
+                    if r.rosterName is not rosterName and r is l.rosters[-1]:
+                        r = roster(leagueName, rosterName, [])
+                        l.rosters.append(r)
+                        break
             elif l is leagueLists[-1]:
                 print 'ERROR: League does not exist\n'
                 answer = input('Would you like to add a league? (y/n) ')
                 while True is True:
                     if answer in ['y', 'Y', 'Yes', 'yes']:
                         addLeague(leagueName)
-                        addRoster(leagueName, teamName)
+                        addRoster(leagueName, rosterName)
                         break
                     elif answer in ['n', 'N', 'No', 'no']:
                         break
@@ -50,7 +69,7 @@ def addRoster(leagueName, teamName):
         while True is True:
             if answer in ['y', 'Y', 'Yes', 'yes']:
                 addLeague(leagueName)
-                addRoster(leagueName, teamName)
+                addRoster(leagueName, rosterName)
                 break
             elif answer in ['n', 'N', 'No', 'no']:
                 break
@@ -62,7 +81,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
         for l in leagueLists:
             if l.leagueName is leagueName:
                 for r in l.rosters:
-                    if r.teamName is rosterName:
+                    if r.rosterName is rosterName:
                         teamName = nflgame.standard_team(playerTeam)
                         playerFound = nflgame.find(playerName, team=teamName)
                         if playerFound:
