@@ -2,36 +2,14 @@
 import nflgame
 
 p=raw_input("Enter player: \n")
-#li=nflgame.find(p, team=None)
-#li=nflgame.find('tom brady',team=None)
 y=int(raw_input("Enter year: \n"))
-print y
+#print y
 w=raw_input("Enter week(s): \n")
 #w = raw_input()
 weeks = map(int, w.split())
 #weeks=[int(w)]
-print weeks
-#l=li[0]
+#print weeks
 
-#print l.first_name
-#print l.last_name
-#print l.team
-#print l.playerid
-#print l.name
-#print l.birthdate
-#print l.college
-#print l.height
-#print l.number
-#print l.position
-#print l.status
-#print l.uniform_number
-#print l.weight
-#print l.years_pro
-#k=l.plays(y,weeks)		#just picked week 3 to test things out
-
-#m=l.stats(y,weeks)		
-
-#print m.stats['passing_att']
 def fantasypoints(p1, y1, w1):
     ppy=0
     pp2=0
@@ -70,7 +48,6 @@ def fantasypoints(p1, y1, w1):
             pr2 = 2*m.stats['rushing_twoptm']
         points = ppy+pp2+pint+pptd+prutd+pruy+prey+pretd+pfl+pr2
         print points
-    else:
-        print 'wtf mate, player not found!'
+        return points
 
 fantasypoints(p,y,weeks)
