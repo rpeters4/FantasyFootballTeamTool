@@ -1,7 +1,5 @@
-#
 import nflgame
 
-<<<<<<< HEAD
 p=raw_input("Enter player: \n")
 y=int(raw_input("Enter year: \n"))
 print y
@@ -50,7 +48,7 @@ def fantasypoints(p1, y1, w1):
         points = ppy+pp2+pint+pptd+prutd+pruy+prey+pretd+pfl+pr2
         print points
         return points
-=======
+
 def kickerScore(playerName, year, week):
     if nflgame.find(playerName, team=None):
         playa = nflgame.find(playerName, team=None)[0]
@@ -69,7 +67,7 @@ def kickerScore(playerName, year, week):
 ##            print "hi"
 ##            points = 1*m.stats['kicking_fgm_yds']
 ##            print points
->>>>>>> 95c2b8d1c48c70a96dd632b2d393fd7d1a06db6a
+
     else:
         print "Player not found."
 
