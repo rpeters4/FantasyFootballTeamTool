@@ -142,7 +142,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                                 break
                             else:
                                 answer = input('Invalid response please try again (y/n)')
-            elif l is leagueLists[-1] and not playerAdded:
+            elif l is leagueLists[-1] and not playerAdded and not playerFoundflag:
                 print 'ERROR: League %s does not exist\n' % leagueName
                 answer = raw_input('Would you like to add league and team? (y/n) ')
                 while True is True:
