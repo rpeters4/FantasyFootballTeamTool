@@ -16,14 +16,14 @@ def getLeagueName():
 
 def printTeams(leagueName):
     it=1
-    print 'Teams in league %s:'%leagueName
     for i in fbTool.leagueLists:
         if i.leagueName==leagueName:
+            print 'Teams in league %s:'%leagueName
             print 'Team# | Team Name'
             for j in i.rosters:
                 print '%d   |%s'%(it,j.rosterName)
                 it=it+1
-        else:
+        elif i==fbTool.leagueLists[-1]:
             print 'error: league not registered'
     raw_input('Press return to continue...')
 
@@ -32,8 +32,6 @@ def getTeamName():
 
 def printPlayers(leagueName,teamName):
     it=1
-    print 'Players on team %s:'%teamName
-    print 'PlayerID  |First Name    |Last Name    |NFLTeam    |Position'
     lfound=False
     tfound=True
     for i in fbTool.leagueLists:
@@ -42,9 +40,14 @@ def printPlayers(leagueName,teamName):
             for j in i.rosters:
                 if j.rosterName == teamName:
                     tfound=True
+                    print 'Players on team %s:'%teamName
+                    if j.players:
+                        print 'PlayerID  |First Name    |Last Name    |NFLTeam    |Position'
+                    else:
+                        print 'Team is empty'
                     for k in j.players:
                         print '%s   %s   %s   %s   %s'%(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
-                elif j==i.rosters[-1] and not tfound:
+                elif j==i.rosters[-1]: 
                     print 'Team %s not found'%teamName
 
         elif i==fbTool.leagueLists[-1] and not lfound:
