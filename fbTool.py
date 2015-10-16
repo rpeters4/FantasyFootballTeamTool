@@ -54,7 +54,7 @@ def addRoster(leagueName, rosterName):
             if l.leagueName == leagueName and not l.rosters:
                 r = roster(leagueName, rosterName, [])
                 l.rosters.append(r)
-                lFlag=true
+                lFlag=True
                 break
             if l.leagueName == leagueName:
                 for r in l.rosters:
