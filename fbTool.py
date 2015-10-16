@@ -33,16 +33,15 @@ def addLeague(leagueName):                  ##adds new fantasyfootbal league
         for i in leagueLists:
             if i.leagueName is leagueName:
                 print 'ERROR: League already exists\n'
+                raw_input('Press return to continue...')
                 break
             if i.leagueName is not leagueName and i is leagueLists[-1]:
                 l = league(leagueName, [])
                 leagueLists.append(l)
-                print 'added league %s\n' % leagueName
                 break
     else:
         l=league(leagueName,[])
         leagueLists.append(l)
-        print 'added league %s\n'%leagueName
 #
 #   addRoster - adds a new team to an existing league.  If league doesn't
 #               exist, it adds that too.
@@ -51,23 +50,20 @@ def addRoster(leagueName, rosterName):
     rosteradded = False
     if leagueLists:
         for l in leagueLists:
-            print 'DEBUG: l.leagueName = %s' %l.leagueName
             if l.leagueName == leagueName and not l.rosters:
-                print 'DEBUG: l.leagueName = %s' %l.leagueName
                 r = roster(leagueName, rosterName, [])
                 l.rosters.append(r)
-                print 'added team %s to league %s' %(rosterName,leagueName)
                 break
             if l.leagueName == leagueName:
                 for r in l.rosters:
                     if r.rosterName == rosterName:
                         print 'ERROR: Team already exists'
+                        print 'ERROR: League already exists\n'
                         break
                     if r.rosterName != rosterName and r == l.rosters[-1]:
                         r = roster(leagueName, rosterName, [])
                         l.rosters.append(r)
                         rosteradded = True
-                        print 'added team %s to league %s\n'%(rosterName,leagueName)
                         break
                     
             elif l == leagueLists[-1] and l.leagueName != leagueName and not rosteradded:
@@ -119,15 +115,16 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                                 for j in k.players:
                                     if plr2Ad.firstName == j.firstName and plr2Ad.lastName == j.lastName and plr2Ad.team == j.team:
                                         print 'ERROR: Player already rostered\n'
+                                        raw_input('Press return to continue')
                                         playerFoundFlag = True
                                         break
                             if not playerFoundFlag:
-                                print 'adding player %s to %s in %s' %(playerName,rosterName,leagueName)
                                 playerAdded=True
                                 r.players.append(plr2Ad)
                                 break
                         else:   
                             print 'ERROR: Player does not exist\n'
+                            raw_input('Press return to continue')
                     elif r is l.rosters[-1] and not playerAdded:
                         print 'ERROR: Roster for team %s does not exist\n' % rosterName
                         answer = raw_input('Would you like to add a team? (y/n) ')
@@ -178,6 +175,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
 def writeClassToFile(fileName):
     if not leagueLists:
         print 'nothing to output to file %s\n' %fileName
+        raw_input('Press return to continue...')
     else:
         wFile = open(fileName,'w')	
         if wFile.closed:
@@ -193,20 +191,20 @@ def writeClassToFile(fileName):
                         wFile.write('NEWPLAYER\n')
                         wFile.write(k.firstName+' '+k.lastName+' '+k.team+'\n')
             print 'successfully output to file %s\n' % fileName
+            raw_input('Press return to continue...')
             wFile.close()
 
 def readClassFromFile(fileName):
     rFile = open(fileName,'r')
     if rFile.closed:
         print 'ERROR: Could not open file %s\n' %fileName
+        raw_input('Press return to continue...')
     else:
         fileText=rFile.read()
         splitText=fileText.splitlines()
         #splitText=fileText.split()
-        print splitText
         for i in range(0,len(splitText)):
             if splitText[i] == 'NEWLEAGUE':
-                print 'in if statment 1\n'
                 i=i+1
                 leagueName = splitText[i]
                 addLeague(leagueName)
@@ -228,4 +226,5 @@ def readClassFromFile(fileName):
                                 addPlayer(leagueName,rosterName,pname,pteam)
 
         print 'successfully imported data from %s'%fileName
+        raw_input('Press return to continue...')
         rFile.close()
