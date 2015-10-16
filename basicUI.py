@@ -5,9 +5,9 @@ from sys import platform as _platform
 def printLeagues():
     if fbTool.leagueLists:
         it=1
-        print 'League# |LeagueName'
+        print 'League# LeagueName'
         for i in fbTool.leagueLists:
-            print '%d      | %s' %(it,i.leagueName)
+            print '%d       %s' %(it,i.leagueName)
             it=it+1
     raw_input('Press return to continue...')
 
@@ -19,9 +19,9 @@ def printTeams(leagueName):
     for i in fbTool.leagueLists:
         if i.leagueName==leagueName:
             print 'Teams in league %s:'%leagueName
-            print 'Team# | Team Name'
+            print '{:4s} {:11s} '.format('Team#','Team Name')
             for j in i.rosters:
-                print '%d   |%s'%(it,j.rosterName)
+                print '{:2d}    {:15s}'.format(it,j.rosterName)
                 it=it+1
         elif i==fbTool.leagueLists[-1]:
             print 'error: league not registered'
@@ -42,12 +42,12 @@ def printPlayers(leagueName,teamName):
                     tfound=True
                     print 'Players on team %s:'%teamName
                     if j.players:
-                        print 'PlayerID  |First Name    |Last Name    |NFLTeam    |Position'
+                        print 'PlayerID       First Name       Last Name           NFLTeam    Position'
                     else:
                         print 'Team is empty'
                     for k in j.players:
-                        print '%s   %s   %s   %s   %s'%(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
-                elif j==i.rosters[-1]: 
+                        print '{:14s} {:16s} {:19s} {:10s} {:9s} '.format(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
+                elif j==i.rosters[-1] and not tfound: 
                     print 'Team %s not found'%teamName
 
         elif i==fbTool.leagueLists[-1] and not lfound:
