@@ -61,7 +61,7 @@ def addRoster(leagueName, rosterName):
                     if r.rosterName == rosterName:
                         print 'ERROR: Team already exists'
                         print 'ERROR: League already exists\n'
-                        raw_input()
+                        raw_input('Press return to continue...')
                         break
                     if r.rosterName != rosterName and r == l.rosters[-1]:
                         r = roster(leagueName, rosterName, [])
