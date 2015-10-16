@@ -1,14 +1,9 @@
-#
 import nflgame
 
 p=raw_input("Enter player: \n")
 y=int(raw_input("Enter year: \n"))
-#print y
 w=raw_input("Enter week(s): \n")
-#w = raw_input()
 weeks = map(int, w.split())
-#weeks=[int(w)]
-#print weeks
 
 def fantasypoints(p1, y1, w1):
     ppy=0
@@ -23,9 +18,8 @@ def fantasypoints(p1, y1, w1):
     pr2=0
     if nflgame.find(p1,team=None):
         lf=nflgame.find(p1, team=None)[0]
-        k=lf.plays(y,w1)
-        m=lf.stats(y,w1)
-        print m
+        k=lf.plays(y1,w1)
+        m=lf.stats(y1,w1)
         if 'passing_yds' in m.stats:  
             ppy = .04*m.stats['passing_yds']
         if 'passing_twoptm' in m.stats:
@@ -47,7 +41,6 @@ def fantasypoints(p1, y1, w1):
         if 'rushing_twoptm' in m.stats:
             pr2 = 2*m.stats['rushing_twoptm']
         points = ppy+pp2+pint+pptd+prutd+pruy+prey+pretd+pfl+pr2
-        print points
         return points
 
 fantasypoints(p,y,weeks)
