@@ -55,6 +55,7 @@ def addRoster(leagueName, rosterName):
                 r = roster(leagueName, rosterName, [])
                 l.rosters.append(r)
                 lFlag=True
+                return 0
                 break
             if l.leagueName == leagueName:
                 for r in l.rosters:
@@ -62,11 +63,13 @@ def addRoster(leagueName, rosterName):
                         print 'ERROR: Team already exists'
                         print 'ERROR: League already exists\n'
                         raw_input('Press return to continue...')
+                        return 0
                         break
                     if r.rosterName != rosterName and r == l.rosters[-1]:
                         r = roster(leagueName, rosterName, [])
                         l.rosters.append(r)
                         rosteradded = True
+                        return 0
                         break
                     
             elif l == leagueLists[-1] and l.leagueName != leagueName and not rosteradded:
@@ -77,6 +80,7 @@ def addRoster(leagueName, rosterName):
                         addLeague(leagueName)
                         addRoster(leagueName, rosterName)
                         rosteradded=True
+                        return 0
                         break
                     elif answer.lower() in ['n', 'no']:
                         break
@@ -89,6 +93,7 @@ def addRoster(leagueName, rosterName):
             if answer.lower() in ['y', 'yes']:
                 addLeague(leagueName)
                 addRoster(leagueName, rosterName)
+                return 0
                 break
             elif answer.lower() in ['n', 'no']:
                 break
@@ -131,6 +136,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                             if not playerFoundFlag:
                                 playerAdded=True
                                 r.players.append(plr2Ad)
+                                return 0
                                 break
                         else:   
                             print 'ERROR: Player does not exist\n'
@@ -142,6 +148,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                             if answer.lower() in ['y', 'yes']:
                                 addRoster(leagueName, rosterName)
                                 addPlayer(leagueName, rosterName, playerName, playerTeam)
+                                return 0
                                 break
                             elif answer.lower() in ['n', 'no']:
                                 break
@@ -168,6 +175,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                 addLeague(leagueName)
                 addRoster(leagueName, rosterName)
                 addPlayer(leagueName, rosterName, playerName, playerTeam)
+                return 0
                 break
             elif answer.lower() in ['n', 'no']:
                 break
