@@ -53,7 +53,7 @@ def addRoster(leagueName, rosterName):     ##
             if l.leagueName is leagueName and not l.rosters:
                 r = roster(leagueName, rosterName, [])
                 l.rosters.append(r)
-                'added team %s to league %s\n' %(rosterName,leagueName)
+                print 'added team %s to league %s\n' %(rosterName,leagueName)
                 break
             if l.leagueName is leagueName:
                 for r in l.rosters:
@@ -96,7 +96,7 @@ def addRoster(leagueName, rosterName):     ##
 #
 
 def addPlayer(leagueName, rosterName, playerName, playerTeam):
-    playerfoundFlag = False
+    playerFoundFlag = False
     if leagueLists:
         for l in leagueLists:
             if l.leagueName is leagueName:
