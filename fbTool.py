@@ -48,11 +48,13 @@ def addLeague(leagueName):                  ##adds new fantasyfootbal league
 #
 def addRoster(leagueName, rosterName): 
     rosteradded = False
+    lflag=False
     if leagueLists:
         for l in leagueLists:
             if l.leagueName == leagueName and not l.rosters:
                 r = roster(leagueName, rosterName, [])
                 l.rosters.append(r)
+                lFlag=true
                 break
             if l.leagueName == leagueName:
                 for r in l.rosters:
@@ -100,6 +102,7 @@ def addRoster(leagueName, rosterName):
 def addPlayer(leagueName, rosterName, playerName, playerTeam):
     playerFoundFlag = False
     playerAdded = False
+    rosterFond=False
     if leagueLists:
         for l in leagueLists:
             if playerAdded:
@@ -109,6 +112,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                     if playerAdded:
                         break
                     if r.rosterName == rosterName:
+                        rosterFond=True
                         teamName = nflgame.standard_team(playerTeam)
                         playerFound = nflgame.find(playerName, team=teamName)
                         if playerFound:
@@ -130,7 +134,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                         else:   
                             print 'ERROR: Player does not exist\n'
                             raw_input('Press return to continue')
-                    elif r == l.rosters[-1] and not playerAdded:
+                    elif r == l.rosters[-1] and not playerAdded and not rosterFond:
                         print 'ERROR: Roster for team %s does not exist\n' % rosterName
                         answer = raw_input('Would you like to add a team? (y/n) ')
                         while True is True:
