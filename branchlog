@@ -1,5 +1,0 @@
-10/15:  -robBranch created
-        -renamed file from fantasyfootballtool to fbtool because it's a hastle typing "fantasyfootballtool" everytime I want to reference a function from it
-        -wrote file I/O functions for the classes:
-            output: writes classes to a file for later importing
-            input : reads from the specified file in the same formatting that the output has.  It basically rebuilds the leagues/rosters as it encounters the speicific flags in it, and it works for what we have so far.  Any other data I'd recommend writing/reading from separate files if that will even be necessary
