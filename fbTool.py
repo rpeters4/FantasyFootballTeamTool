@@ -102,8 +102,12 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
     playerAdded = False
     if leagueLists:
         for l in leagueLists:
+            if playerAdded:
+                break
             if l.leagueName == leagueName:
                 for r in l.rosters:
+                    if playerAdded:
+                        break
                     if r.rosterName == rosterName:
                         teamName = nflgame.standard_team(playerTeam)
                         playerFound = nflgame.find(playerName, team=teamName)
@@ -120,10 +124,6 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                                             playerFoundFlag = True
                                             break
                             if not playerFoundFlag:
-                                playerAdded=True
-                                r.players.append(plr2Ad)
-                                break
-                            else:
                                 playerAdded=True
                                 r.players.append(plr2Ad)
                                 break
