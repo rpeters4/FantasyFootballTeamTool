@@ -3,14 +3,14 @@ import fptest
 import byeWeekLists
 
 def playerCompare():
-    player1 = raw_input("Enter player: \n").rstrip()
+    player1 = raw_input("Enter player: \n").strip()
     year1 = int(raw_input("Enter year: \n"))
-    w1 = raw_input("Enter week(s): \n").rstrip()
+    w1 = raw_input("Enter week(s): \n").strip()
     weeks1 = map(int, w1.split())
     weeksPlayed1 = 0
-    player2 = raw_input("Enter player: \n").rstrip()
+    player2 = raw_input("Enter player: \n").strip()
     year2 = int(raw_input("Enter year: \n"))
-    w2 = raw_input("Enter week(s): \n").rstrip()
+    w2 = raw_input("Enter week(s): \n").strip()
     weeks2 = map(int, w2.split())
     points1 = fptest.fantasypoints(player1, year1, weeks1)
     points2 = fptest.fantasypoints(player2, year2, weeks2)
