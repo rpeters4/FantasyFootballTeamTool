@@ -1,10 +1,5 @@
 import nflgame
 
-p=raw_input("Enter player: \n")
-y=int(raw_input("Enter year: \n"))
-w=raw_input("Enter week(s): \n")
-weeks = map(int, w.split())
-
 def fantasypoints(p1, y1, w1):
     ppy=0
     pp2=0
@@ -42,5 +37,3 @@ def fantasypoints(p1, y1, w1):
             pr2 = 2*m.stats['rushing_twoptm']
         points = ppy+pp2+pint+pptd+prutd+pruy+prey+pretd+pfl+pr2
         return points
-
-fantasypoints(p,y,weeks)
