@@ -1,5 +1,6 @@
 import fbTool
 import os
+import fptest
 from sys import platform as _platform
 
 def printLeagues():
@@ -31,7 +32,6 @@ def getTeamName():
     return raw_input('Please enter team name: ').rstrip()
 
 def printPlayers(leagueName,teamName):
-    it=1
     lfound=False
     tfound=True
     for i in fbTool.leagueLists:
@@ -62,7 +62,36 @@ def getFileName(isOut):
         return raw_input('please input input filename: ').rstrip()
 
 def printPts(leagueName,teamName,weekNum):
-    print 'this will do things(eventually...)!  wowie zowie!\n'
+    points=[]
+    it=0
+    plfound=False
+    tfound=True
+    year=int(raw_input('Enter a year (2009-2015):').rstrip())
+    for i in fbTool.leagueLists:
+        if i.leagueName == leagueName:
+            lfound=True
+            for j in i.rosters:
+                if j.rosterName == teamName:
+                    tfound=True
+                    for k in j.players:
+                        playersName=k.firstName+' '+k.lastName
+                        points.append(fptest.fantasypoints(playersName,year,weekNum))
+                        print 'points for %s: %f:' % (playersName,fptest.fantasypoints(playersName,year,weekNum))
+                    if j.players:
+                        print 'PlayerID       First Name       Last Name           NFLTeam    Points'
+                    else:
+                        print 'Team is empty'
+                    for k in j.players:
+                        print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
+                        it = it+1
+                elif j==i.rosters[-1] and not tfound: 
+                    print 'Team %s not found'%teamName
+
+        elif i==fbTool.leagueLists[-1] and not lfound:
+            print 'League %s not found' %leagueName
+    raw_input('Press return to continue...').rstrip()
+
+#print 'this will do things(eventually...)!  wowie zowie!\n'
 
 def main():
     choice = 0
@@ -116,7 +145,7 @@ def main():
             if choice=='7':
                 ln=getLeagueName()
                 tn=getTeamName()
-                wn=raw_input('Please enter a week number: ')
+                wn=int(raw_input('Please enter a week number: '))
                 printPts(ln,tn,wn)
             if choice=='8':
                 fn=getFileName(1)
