@@ -73,10 +73,10 @@ def printPts(leagueName,teamName,weekNum):
             for j in i.rosters:
                 if j.rosterName == teamName:
                     tfound=True
+                    print 'Calculating points for %s on week %d...'%(teamName,weekNum)
                     for k in j.players:
                         playersName=k.firstName+' '+k.lastName
                         points.append(fptest.fantasypoints(playersName,year,weekNum))
-                        print 'points for %s: %f:' % (playersName,fptest.fantasypoints(playersName,year,weekNum))
                     if j.players:
                         print 'PlayerID       First Name       Last Name           NFLTeam    Points'
                     else:
@@ -84,8 +84,10 @@ def printPts(leagueName,teamName,weekNum):
                     for k in j.players:
                         print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
                         it = it+1
+                    print 'total points: %f'%sum(points)
                 elif j==i.rosters[-1] and not tfound: 
                     print 'Team %s not found'%teamName
+                    
 
         elif i==fbTool.leagueLists[-1] and not lfound:
             print 'League %s not found' %leagueName
