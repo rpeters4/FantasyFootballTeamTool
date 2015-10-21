@@ -127,7 +127,7 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                                 return 1
                             else:
                                 answer = input('Invalid response please try again (y/n)')
-            elif l is leagueLists[-1] and not playerAdded and not playerFoundFlag:
+            elif l is leagueLists[-1]:
                 print 'ERROR: League %s does not exist\n' % leagueName
                 answer = raw_input('Would you like to add league and team? (y/n) ')
                 while True is True:
@@ -180,8 +180,6 @@ def writeClassToFile(fileName):
                     for k in j.players:
                         wFile.write('NEWPLAYER\n')
                         wFile.write(k.firstName+' '+k.lastName+' '+k.team+'\n')
-            print 'successfully output to file %s\n' % fileName
-            return 0
             wFile.close()
 
 def readClassFromFile(fileName):
@@ -219,7 +217,5 @@ def readClassFromFile(fileName):
                                 pteam=p[2]
                                 addPlayer(leagueName,rosterName,pname,pteam)
 
-        print 'successfully imported data from %s'%fileName
-        raw_input('Press return to continue...')
         rFile.close()
         return 0
