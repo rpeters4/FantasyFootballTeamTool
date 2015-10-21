@@ -21,7 +21,7 @@ def playerCompare():
     for w in byeWeekLists.byeWeeks:
         for t in w:
             curWeek = nflgame.live.current_year_and_week()[1]
-            if w[-1] < curWeek and nflgame.find(player1, team=None)[0].team == t:
+            if w[-1] < curWeek and nflgame.find(player1, team=None)[0].team == t and w[-1] in weeks1:
                 weeksPlayed1 = weeksPlayed1 - 1
                 break
     for i in weeks2:
@@ -30,7 +30,7 @@ def playerCompare():
     for w in byeWeekLists.byeWeeks:
         for t in w:
             curWeek = nflgame.live.current_year_and_week()[1]
-            if w[-1] < curWeek and nflgame.find(player2, team=None)[0].team == t:
+            if w[-1] < curWeek and nflgame.find(player2, team=None)[0].team == t and w[-1] in weeks2:
                 weeksPlayed2 = weeksPlayed2 - 1
                 break
     average1 = points1 / weeksPlayed1
