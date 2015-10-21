@@ -123,22 +123,29 @@ def main():
                 if not fbTool.writeClassToFile(fn):
                     print 'Successfully output to file %s' % fn
                     raw_input('Press return to continue...').rstrip()
+                else:
+                    raw_input('Press return to continue...').rstrip()
             if choice=='9':
                 fn=getFileName(0)
                 if not fbTool.readClassFromFile(fn):
                     print 'Successfully read from file %s' % fn
                     raw_input('Press return to continue...').rstrip()
+                else:
+                    raw_input('Press return to continue...').rstrip()
             if choice=='10':
                 print 'exiting...\n'
  
-            if _platform =="linux" or _platform=="linux2":
-                os.system('clear')
-            elif _platform == "win32":
-                os.system('cls')               
-            print 'Please choose one of the following options:\n1 - Add league to be tracked\n2 - Add team to an existing league\n3 - Add a player to an existing team\'s roster\n4 - Print a list of registered leagues\n5 - Print a list of teams registered to a given league\n6 - Print a list of a team\'s current roster\n7 - Print fantasy points for teams in a league for given week\n8 - Write current league structures to a file\n9 - Read league structures from a file\n10 - Exit the program\n'
-            choice=raw_input('Please enter an option: ')
-            if choice == '\n':
-                choice = '0'
         else:
             print 'ERROR: Invalid input\n'
+            raw_input('Press return to continue...').rstrip()
+
+        if _platform =="linux" or _platform=="linux2":
+            os.system('clear')
+        elif _platform == "win32":
+            os.system('cls')               
+        print 'Please choose one of the following options:\n1 - Add league to be tracked\n2 - Add team to an existing league\n3 - Add a player to an existing team\'s roster\n4 - Print a list of registered leagues\n5 - Print a list of teams registered to a given league\n6 - Print a list of a team\'s current roster\n7 - Print fantasy points for teams in a league for given week\n8 - Write current league structures to a file\n9 - Read league structures from a file\n10 - Exit the program\n'
+        choice=raw_input('Please enter an option: ')
+        if choice == '\n':
+            choice = '0'
+ 
 main()
