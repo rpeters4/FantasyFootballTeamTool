@@ -11,8 +11,9 @@ def fantasypoints(p1, y1, w1):
     pretd=0
     pfl=0
     pr2=0
-    if nflgame.find(p1,team=None):
-        lf=nflgame.find(p1, team=None)[0]
+    l=nflgame.find(p1,team=None)
+    if l:
+        lf=l[0]
         k=lf.plays(y1,w1)
         m=lf.stats(y1,w1)
         if 'passing_yds' in m.stats:  
@@ -37,3 +38,6 @@ def fantasypoints(p1, y1, w1):
             pr2 = 2*m.stats['rushing_twoptm']
         points = ppy+pp2+pint+pptd+prutd+pruy+prey+pretd+pfl+pr2
         return points
+    else:
+        print 'player not found...'
+        return []
