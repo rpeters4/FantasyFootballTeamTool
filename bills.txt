@@ -1,0 +1,100 @@
+NEWLEAGUE
+nfl
+NEWROSTER
+bills
+NEWPLAYER
+Nigel Bradham BUF
+NEWPLAYER
+Ron Brooks BUF
+NEWPLAYER
+Preston Brown BUF
+NEWPLAYER
+Corbin Bryant BUF
+NEWPLAYER
+Mario Butler BUF
+NEWPLAYER
+Dan Carpenter BUF
+NEWPLAYER
+Alex Carrington BUF
+NEWPLAYER
+Stefan Charles BUF
+NEWPLAYER
+Charles Clay BUF
+NEWPLAYER
+Ronald Darby BUF
+NEWPLAYER
+Marcell Dareus BUF
+NEWPLAYER
+Anthony Dixon BUF
+NEWPLAYER
+Marcus Easley BUF
+NEWPLAYER
+Jerome Felton BUF
+NEWPLAYER
+Stephon Gilmore BUF
+NEWPLAYER
+Cordy Glenn BUF
+NEWPLAYER
+Corey Graham BUF
+NEWPLAYER
+Percy Harvin BUF
+NEWPLAYER
+Seantrel Henderson BUF
+NEWPLAYER
+Chris Hogan BUF
+NEWPLAYER
+Jerry Hughes BUF
+NEWPLAYER
+Gabe Ikard BUF
+NEWPLAYER
+Richie Incognito BUF
+NEWPLAYER
+Randell Johnson BUF
+NEWPLAYER
+Cyrus Kouandjio BUF
+NEWPLAYER
+Manny Lawson BUF
+NEWPLAYER
+EJ Manuel BUF
+NEWPLAYER
+LeSean McCoy BUF
+NEWPLAYER
+Jonathan Meeks BUF
+NEWPLAYER
+John Miller BUF
+NEWPLAYER
+Matthew Mulligan BUF
+NEWPLAYER
+Bacarri Rambo BUF
+NEWPLAYER
+Nickell Robey BUF
+NEWPLAYER
+Garrison Sanborn BUF
+NEWPLAYER
+Colton Schmidt BUF
+NEWPLAYER
+Tony Steward BUF
+NEWPLAYER
+A.J. Tarpley BUF
+NEWPLAYER
+Tyrod Taylor BUF
+NEWPLAYER
+Cam Thomas BUF
+NEWPLAYER
+Kraig Urbik BUF
+NEWPLAYER
+Sammy Watkins BUF
+NEWPLAYER
+Aaron Williams BUF
+NEWPLAYER
+Mario Williams BUF
+NEWPLAYER
+Kyle Williams BUF
+NEWPLAYER
+Duke Williams BUF
+NEWPLAYER
+Karlos Williams BUF
+NEWPLAYER
+Eric Wood BUF
+NEWPLAYER
+Robert Woods BUF
