@@ -1,3 +1,4 @@
+import nflgame
 import fbTool
 import os
 import fpPlayer
@@ -77,10 +78,11 @@ def printPts(leagueName,teamName,weekNum):
                     print 'Calculating points for %s on week %d...'%(teamName,weekNum)
                     for k in j.players:
                         playersName=k.firstName+' '+k.lastName
+                        plyToApp = nflgame.find(playersName,k.team)[0]
                         if k.position == 'K':
-                            points.append(fpKicker.kickerScore(playersName,year,weekNum))
+                            points.append(fpKicker.kickerScore(plyToApp,year,weekNum))
                         else:
-                            points.append(fpPlayer.fantasypoints(playersName,year,weekNum))
+                            points.append(fpPlayer.fantasyPoints(plyToApp,year,weekNum))
                     if j.players:
                         print 'PlayerID       First Name       Last Name           NFLTeam    Points'
                     else:
