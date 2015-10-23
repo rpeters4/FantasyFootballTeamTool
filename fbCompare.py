@@ -1,5 +1,5 @@
 import nflgame
-import fptest
+import fpPlayer
 import byeWeekLists
 
 def playerCompare():
@@ -12,8 +12,8 @@ def playerCompare():
     year2 = int(raw_input("Enter year: \n"))
     w2 = raw_input("Enter week(s): \n").strip()
     weeks2 = map(int, w2.split())
-    points1 = fptest.fantasypoints(player1, year1, weeks1)
-    points2 = fptest.fantasypoints(player2, year2, weeks2)
+    points1 = fpPlayer.fantasypoints(player1, year1, weeks1)
+    points2 = fpPlayer.fantasypoints(player2, year2, weeks2)
     weeksPlayed2 = 0
     for i in weeks1:
         if str(i).isdigit():
