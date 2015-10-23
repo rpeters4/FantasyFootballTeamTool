@@ -194,7 +194,6 @@ def readClassFromFile(fileName):
     else:
         fileText=rFile.read()
         splitText=fileText.splitlines()
-        #splitText=fileText.split()
         for i in range(0,len(splitText)):
             if splitText[i] == 'NEWLEAGUE':
                 i=i+1
