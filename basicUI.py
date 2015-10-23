@@ -1,6 +1,7 @@
 import fbTool
 import os
-import fptest
+import fpPlayer
+import fpKicker
 from sys import platform as _platform
 
 def printLeagues():
@@ -65,7 +66,7 @@ def printPts(leagueName,teamName,weekNum):
     points=[]
     it=0
     plfound=False
-    tfound=True
+    tfound=False
     year=int(raw_input('Enter a year (2009-2015):').rstrip())
     for i in fbTool.leagueLists:
         if i.leagueName == leagueName:
@@ -76,7 +77,10 @@ def printPts(leagueName,teamName,weekNum):
                     print 'Calculating points for %s on week %d...'%(teamName,weekNum)
                     for k in j.players:
                         playersName=k.firstName+' '+k.lastName
-                        points.append(fptest.fantasypoints(playersName,year,weekNum))
+                        if k.position == 'K':
+                            points.append(fpKicker.kickerScore(playersName,year,weekNum))
+                        else:
+                            points.append(fpPlayer.fantasypoints(playersName,year,weekNum))
                     if j.players:
                         print 'PlayerID       First Name       Last Name           NFLTeam    Points'
                     else:
