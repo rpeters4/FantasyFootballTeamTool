@@ -23,7 +23,6 @@ def playerCompare():
             points1 = fpPlayer.fantasypoints(player1Found[0], year1, weeks1)
     else:
         print "First player entered was not found\n"
-        return 0
     if player2Found != []:
         if player2Found[0].position == "K":
             points2 = fpKicker.kickerScore(player2Found[0], year1, weeks1)
@@ -31,7 +30,6 @@ def playerCompare():
             points2 = fpPlayer.fantasypoints(player2Found[0], year2, weeks2)
     else:
         print "Second player entered was not found\n"
-        return 0
     for i in weeks1:
         if str(i).isdigit():
             weeksPlayed1 = weeksPlayed1 + 1
@@ -54,5 +52,4 @@ def playerCompare():
     average2 = points2 / weeksPlayed2
     print '%s\'s average is %.2f' % (player1, average1)
     print '%s\'s average is %.2f' % (player2, average2)
-    return 0
     

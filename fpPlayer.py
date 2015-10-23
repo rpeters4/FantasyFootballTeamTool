@@ -13,7 +13,6 @@ def fantasypoints(p1, y1, w1):
     pr2=0
     prec2=0
     lf=p1
-    k=lf.plays(y1,w1)
     m=lf.stats(y1,w1)
     if 'passing_yds' in m.stats:  
         ppy = .04*m.stats['passing_yds']
