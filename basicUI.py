@@ -120,6 +120,7 @@ def main():
                     raw_input('Press return to continue...').rstrip()
                 else:
                     print 'Failed to add league...'
+                    raw_input('Press return to continue...').rstrip()
             if choice=='2':
                 ln=getLeagueName()
                 tn=getTeamName()
@@ -128,6 +129,7 @@ def main():
                     raw_input('Press return to continue...').rstrip()
                 else:
                     print 'Failed to add team...'
+                    raw_input('Press return to continue...').rstrip()
             if choice=='3':
                 ln=getLeagueName()
                 tn=getTeamName()
@@ -159,6 +161,7 @@ def main():
                     print 'Successfully output to file %s' % fn
                     raw_input('Press return to continue...').rstrip()
                 else:
+                    print 'File output failed.'
                     raw_input('Press return to continue...').rstrip()
             if choice=='9':
                 fn=getFileName(0)
@@ -166,6 +169,7 @@ def main():
                     print 'Successfully read from file %s' % fn
                     raw_input('Press return to continue...').rstrip()
                 else:
+                    print 'File input failed.'
                     raw_input('Press return to continue...').rstrip()
             if choice=='10':
                 print 'exiting...\n'
