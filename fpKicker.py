@@ -1,6 +1,8 @@
 import nflgame
+import fpPlayer
 #calculates stats of kicker but does not add bonus for kickers at distances 40+ or 50+
 def kickerScore(player, year, week):
+    points = fpPlayer.fantasyPoints(player,year,week)
     lf = player
     statistics = lf.stats(year, week)
     if 'kicking_xpmissed' in statistics.stats:
@@ -15,5 +17,5 @@ def kickerScore(player, year, week):
     if 'kicking_fgm' in statistics.stats and 'kicking_fga' in statistics.stats:
         fgMissed = statistics.stats['kicking_fga'] - statistics.stats['kicking_fgm']
     #print statistics.stats['kicking_fga'] - statistics.stats['kicking_fgm']
-    points = xpMade*1 - xpMissed*1 + fgMade*3 - fgMissed*3
+    points = points + xpMade*1 - xpMissed*1 + fgMade*3 - fgMissed*3
     return points
