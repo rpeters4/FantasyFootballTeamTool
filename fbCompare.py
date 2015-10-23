@@ -1,5 +1,6 @@
 import nflgame
 import fpPlayer
+import fpKicker
 import byeWeekLists
 
 def playerCompare():
@@ -13,8 +14,22 @@ def playerCompare():
     w2 = raw_input("Enter week(s): \n").strip()
     weeks2 = map(int, w2.split())
     weeksPlayed2 = 0
-    points1 = fpPlayer.fantasypoints(player1, year1, weeks1)
-    points2 = fpPlayer.fantasypoints(player2, year2, weeks2)
+    player1Found = nflgame.find(player1, team = None)
+    player2Found = nflgame.find(player2, team = None)
+    if player1Found != []:
+        if player1Found[0].position == "K":
+            points1 = fpKicker.kickerScore(player1Found[0], year1, weeks1)
+        else:
+            points1 = fpPlayer.fantasypoints(player1Found[0], year1, weeks1)
+    else:
+        print "First player entered was not found\n"
+    if player2Found != []:
+        if player2Found[0].position == "K":
+            points2 = fpKicker.kickerScore(player2Found[0], year1, weeks1)
+        else:
+            points2 = fpPlayer.fantasypoints(player2Found[0], year2, weeks2)
+    else:
+        print "Second player entered was not found\n"
     for i in weeks1:
         if str(i).isdigit():
             weeksPlayed1 = weeksPlayed1 + 1
