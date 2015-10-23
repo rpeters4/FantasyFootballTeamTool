@@ -17,6 +17,9 @@ def fantasypoints(p1, y1, w1):
         lf=player[0]
         k=lf.plays(y1,w1)
         m=lf.stats(y1,w1)
+        #Need to decide if its better to import kicker points
+        #Or have fbCompare do the finding and then I just import
+        #the stats data to the correct function
         if 'passing_yds' in m.stats:  
             ppy = .04*m.stats['passing_yds']
         if 'passing_twoptm' in m.stats:
