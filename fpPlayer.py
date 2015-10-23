@@ -36,6 +36,6 @@ def fantasypoints(p1, y1, w1):
         pfl = -2*m.stats['fumbles_lost']
     if 'rushing_twoptm' in m.stats:
         pr2 = 2*m.stats['rushing_twoptm']
-        points = ppy+pp2+pint+pptd+prutd+pruy+prey+pretd+pfl+pr2+prec2
+    points = ppy+pp2+pint+pptd+prutd+pruy+prey+pretd+pfl+pr2+prec2
     return points
     
