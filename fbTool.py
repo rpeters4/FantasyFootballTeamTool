@@ -240,18 +240,18 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
             if pl1.player_id == p1.playerid:
                 playerOnRoster = True
                 break
-    if playerOnRoster == False:
-        print "Player not on roster"
-        return 1
+            if not playerOnRoster:
+                print "Player not on roster"
+                return 1
     for p2 in players2:
         playerOnRoster = False
         for pl2 in roster2Trade.players:
             if pl2.player_id == p2.playerid:
                 playerOnRoster = True
                 break
-    if playerOnRoster == False:
-        print "Player not on roster"
-        return 1
+            if not playerOnRoster:
+                print "Player not on roster"
+                return 1
     for p1 in players1:
         for pl1 in roster1Trade.players:
             if p1.playerid == pl1.player_id:
