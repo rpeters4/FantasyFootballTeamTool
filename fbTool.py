@@ -282,3 +282,10 @@ def removePlayer(playersToRemove, leagueToRemoveFrom, rosterToRemoveFrom):
         for player in rosterOfRemoval.players:
             if p.playerid == player.player_id:
                 rosterOfRemoval.players.remove(player)
+
+def removeRoster(leagueFrom,rosterName):
+	return 0
+
+def removeLeague(leagueName):
+	return 0
+

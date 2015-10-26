@@ -108,8 +108,20 @@ def main():
         os.system('clear')
     elif _platform == "win32":
         os.system('cls')
+    else:
+        print 'This program doesn\'t run on mac...'
     print 'Fantasy Football Team Tool - CLI interface\n'
-    print 'Please choose one of the following options:\n1 - Add league to be tracked\n2 - Add team to an existing league\n3 - Add a player to an existing team\'s roster\n4 - Print a list of registered leagues\n5 - Print a list of teams registered to a given league\n6 - Print a list of a team\'s current roster\n7 - Print fantasy points for teams in a league for given week\n8 - Write current league structures to a file\n9 - Read league structures from a file\n10 - Exit the program\n'
+    print 'Please choose one of the following options:\n'
+    print '1 - Add league to be tracked\n'
+    print '2 - Add team to an existing league\n'
+    print '3 - Add a player to an existing team\'s roster\n'
+    print '4 - Print a list of registered leagues\n'
+    print '5 - Print a list of teams registered to a given league\n'
+    print '6 - Print a list of a team\'s current roster\n'
+    print '7 - Print fantasy points for teams in a league for given week\n'
+    print '8 - Write current league structures to a file\n'
+    print '9 - Read league structures from a file\n'
+    print '10 - Exit the program\n'
     choice=raw_input('Please enter an option: ').rstrip()
     if choice == '\n':
         choice = '0'
@@ -185,8 +197,18 @@ def main():
             os.system('clear')
         elif _platform == "win32":
             os.system('cls')               
-        print 'Please choose one of the following options:\n1 - Add league to be tracked\n2 - Add team to an existing league\n3 - Add a player to an existing team\'s roster\n4 - Print a list of registered leagues\n5 - Print a list of teams registered to a given league\n6 - Print a list of a team\'s current roster\n7 - Print fantasy points for teams in a league for given week\n8 - Write current league structures to a file\n9 - Read league structures from a file\n10 - Exit the program\n'
-        choice=raw_input('Please enter an option: ')
+        print 'Please choose one of the following options:\n'
+        print '1 - Add league to be tracked\n'
+        print '2 - Add team to an existing league\n'
+        print '3 - Add a player to an existing team\'s roster\n'
+        print '4 - Print a list of registered leagues\n'
+        print '5 - Print a list of teams registered to a given league\n'
+        print '6 - Print a list of a team\'s current roster\n'
+        print '7 - Print fantasy points for teams in a league for given week\n'
+        print '8 - Write current league structures to a file\n'
+        print '9 - Read league structures from a file\n'
+        print '10 - Exit the program\n'
+    
         if choice == '\n':
             choice = '0'
  
