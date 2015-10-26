@@ -1,6 +1,6 @@
 import nflgame
 
-def fantasypoints(p1, y1, w1):
+def fantasyPoints(p1, y1, w1):
     ppy=0
     pp2=0
     pint=0
