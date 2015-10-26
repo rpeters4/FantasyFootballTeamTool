@@ -218,6 +218,7 @@ def readClassFromFile(fileName):
 
         rFile.close()
         return 0
+    
 def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
     for l in leagueLists:
         if l.leagueName == leagueNameToTrade:
@@ -263,3 +264,21 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
         addPlayer(leagueNameToTrade, roster1, p2.full_name, p2.team)
     print "Trade succesful"
     return 0
+
+def removePlayer(playersToRemove, leagueToRemoveFrom, rosterToRemoveFrom):
+    for l in leagueLists:
+        if l.leagueName == leagueToRemoveFrom:
+            leagueOfRemoval = l
+    if l == None:
+        print "League does not exist"
+        return 1
+    for r in leagueOfRemoval.rosters:
+        if r.rosterName == rosterToRemoveFrom:
+            rosterOfRemoval = r
+    if rosterOfRemoval == None:
+        print "Roster does not exist"
+        return 1
+    for p in playersToRemove:
+        for player in rosterOfRemoval.players:
+            if p.playerid == player.player_id:
+                rosterOfRemoval.players.remove(player)
