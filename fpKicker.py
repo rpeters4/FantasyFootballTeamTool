@@ -18,4 +18,14 @@ def kickerScore(player, year, week):
         fgMissed = statistics.stats['kicking_fga'] - statistics.stats['kicking_fgm']
     #print statistics.stats['kicking_fga'] - statistics.stats['kicking_fgm']
     points = points + xpMade*1 - xpMissed*1 + fgMade*3 - fgMissed*3
+    games = nflgame.games(year, week)
+    plays = nflgame.combine_plays(games)
+    allMadeFGs = plays.filter(kicking_fgm = True)
+    for p in allMadeFGs:
+        if p.players.playerid(lf.playerid):
+            yards = p.kicking_fgm_yds
+            if yards >= 40:
+                points = points + 1
+            if yards >= 50:
+                points = points + 1
     return points
