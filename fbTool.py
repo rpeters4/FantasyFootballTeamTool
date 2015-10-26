@@ -218,6 +218,7 @@ def readClassFromFile(fileName):
 
         rFile.close()
         return 0
+
 def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
     for l in leagueLists:
         if l.leagueName == leagueNameToTrade:
