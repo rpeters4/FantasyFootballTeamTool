@@ -75,31 +75,32 @@ def printPts(leagueName,teamName,weekNum):
             for j in i.rosters:
                 if j.rosterName == teamName:
                     tfound=True
-                    print 'Calculating points for %s on week %d...'%(teamName,weekNum)
-                    for k in j.players:
-                        playersName=k.firstName+' '+k.lastName
-                        plyToApp = nflgame.find(playersName,k.team)[0]
-                        if k.position == 'K':
-                            points.append(fpKicker.kickerScore(plyToApp,year,weekNum))
-                        else:
-                            points.append(fpPlayer.fantasyPoints(plyToApp,year,weekNum))
                     if j.players:
+                        print 'Calculating points for %s on week %d...'%(teamName,weekNum)
+                        for k in j.players:
+                            if k.position != 'LE' and k.position != 'RE' and k.position != 'OLB' and k.position != 'CB' and k.position != 'MLB' and k.position != 'DT' and k.position != 'DB' and k.position != 'DE' and k.position != 'FS' and k.position != 'SS':
+                                playersName=k.firstName+' '+k.lastName
+                                plyToApp = nflgame.find(playersName,k.team)[0]
+                                if k.position == 'K':
+                                    points.append(fpKicker.kickerScore(plyToApp,year,weekNum))
+                                else:
+                                    points.append(fpPlayer.fantasyPoints(plyToApp,year,weekNum))
+                        #############################################################################
                         print 'PlayerID       First Name       Last Name           NFLTeam    Points'
+                        for k in j.players:
+                            if k.position != 'LE' and k.position != 'RE' and k.position != 'OLB' and k.position != 'CB' and k.position != 'MLB' and k.position != 'DT' and k.position != 'DB' and k.position != 'DE' and k.position != 'FS' and k.position != 'SS':
+                                print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
+                                it = it+1
+                        print 'total points: %f'%sum(points)
+
                     else:
                         print 'Team is empty'
-                    for k in j.players:
-                        print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
-                        it = it+1
-                    print 'total points: %f'%sum(points)
                 elif j==i.rosters[-1] and not tfound: 
                     print 'Team %s not found'%teamName
-                    
-
         elif i==fbTool.leagueLists[-1] and not lfound:
             print 'League %s not found' %leagueName
     raw_input('Press return to continue...').rstrip()
 
-#print 'this will do things(eventually...)!  wowie zowie!\n'
 
 def main():
     choice = 0
