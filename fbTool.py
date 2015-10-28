@@ -282,3 +282,24 @@ def removePlayer(playersToRemove, leagueToRemoveFrom, rosterToRemoveFrom):
         for player in rosterOfRemoval.players:
             if p.playerid == player.player_id:
                 rosterOfRemoval.players.remove(player)
+
+def removeRoster(leagueFrom,rosterName):
+    for i in leagueLists:
+        if i.leagueName == leagueFrom:
+            for j in i.rosters:
+                if j.rosterName == rosterName:
+                    i.rosters.remove(j)
+                    return 0
+            print 'Roster %s not found in %s' %(rosterName,leagueFrom)
+            return 1
+    print 'league %s does not exist' % leagueName
+    return 1
+
+def removeLeague(leagueName):
+    for i in leagueLists:
+        if i.leagueName == leagueName:
+            leagueLists.remove(i)
+            return 0
+    print 'league %s not found...'%leagueName
+    return 1
+
