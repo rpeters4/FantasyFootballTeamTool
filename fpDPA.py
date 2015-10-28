@@ -51,12 +51,12 @@ def defensePA(s,w,t):
             if g.score_home >45.0:
                 pa = -5.0
             #endif
-        print pa
+        return pa
         #endif
     #endfor  
 #endDef
 
 
-defensePA(2015,7,'NE')
+print defensePA(2015,7,'NE')
 
 
