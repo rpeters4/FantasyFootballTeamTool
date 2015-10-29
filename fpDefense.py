@@ -28,13 +28,12 @@ def defensePoints(s, w, t):
             punttd += 1
         if p.kickret_tds > 0:
             kicktd += 1
+        #endif
     #endfor
-
     return dsk + 2*dffum + 2*dint + 6*dinttd + 6*dfrectd + 2*dsafe + 6*punttd + 6*kicktd
+#enddef
 
 def defensePA(s,w,t):
-# We want the games Buffalo played in 2013
-# Get the games Buffalo played in the 2013 Regular Season
     games = nflgame.games_gen(s, w , home=t, away=t, kind= 'REG')
     pa = 0.0;
 
@@ -43,7 +42,7 @@ def defensePA(s,w,t):
         # If Buffalo was home, add the score_home to the points for list and the score_away to the points against list
         if g.home == t:
             print g.score_home
-            print g.stats_home[1]
+            print g.stats_home[1] #this will print the total yards for home team
             print g.score_away
             if g.score_away == 0.0:
                 pa = 5.0
@@ -64,7 +63,7 @@ def defensePA(s,w,t):
             # If Buffalo was away, add the score_away to the points for list and the score_home to the points against list
         else:
             print g.score_away
-            print g.stats_away[1]
+            print g.stats_away[1] #this will print the total yards for the away team, from TeamStats tuple
             print g.score_home
             if g.score_home == 0.0:
                 pa = 5.0
@@ -87,13 +86,3 @@ def defensePA(s,w,t):
         #endif
     #endfor  
 #endDef
-
-
-#TESTING XDXD
-print defensePoints(2015, None, "NE")             #Get all sacks earned by Baltimore defense in all of 2015
-print defensePoints(2015, 1, "NE")                #Calc all the fantasy points for week 1
-print defensePoints(2015, 2, "NE")                #Calc all the fantasy points for week 2
-print defensePoints(2015, [1,2], "NE")            #calc total points for week 1 and week 2
-
-
-print defensePA(2015,7,'NE')
