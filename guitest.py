@@ -2,6 +2,10 @@ import sys
 import fbTool
 from PyQt4.QtGui import *
 
+
+#def quitiNoSave:
+#    result = QMessageBox.question()
+
 a = QApplication(sys.argv) #app window
 
 w=QWidget() #base class for all UI objects in pyqt
