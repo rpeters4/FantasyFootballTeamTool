@@ -75,31 +75,32 @@ def printPts(leagueName,teamName,weekNum):
             for j in i.rosters:
                 if j.rosterName == teamName:
                     tfound=True
-                    print 'Calculating points for %s on week %d...'%(teamName,weekNum)
-                    for k in j.players:
-                        playersName=k.firstName+' '+k.lastName
-                        plyToApp = nflgame.find(playersName,k.team)[0]
-                        if k.position == 'K':
-                            points.append(fpKicker.kickerScore(plyToApp,year,weekNum))
-                        else:
-                            points.append(fpPlayer.fantasyPoints(plyToApp,year,weekNum))
                     if j.players:
+                        print 'Calculating points for %s on week %d...'%(teamName,weekNum)
+                        for k in j.players:
+                            if k.position != 'LE' and k.position != 'RE' and k.position != 'OLB' and k.position != 'CB' and k.position != 'MLB' and k.position != 'DT' and k.position != 'DB' and k.position != 'DE' and k.position != 'FS' and k.position != 'SS':
+                                playersName=k.firstName+' '+k.lastName
+                                plyToApp = nflgame.find(playersName,k.team)[0]
+                                if k.position == 'K':
+                                    points.append(fpKicker.kickerScore(plyToApp,year,weekNum))
+                                else:
+                                    points.append(fpPlayer.fantasyPoints(plyToApp,year,weekNum))
+                        #############################################################################
                         print 'PlayerID       First Name       Last Name           NFLTeam    Points'
+                        for k in j.players:
+                            if k.position != 'LE' and k.position != 'RE' and k.position != 'OLB' and k.position != 'CB' and k.position != 'MLB' and k.position != 'DT' and k.position != 'DB' and k.position != 'DE' and k.position != 'FS' and k.position != 'SS':
+                                print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
+                                it = it+1
+                        print 'total points: %f'%sum(points)
+
                     else:
                         print 'Team is empty'
-                    for k in j.players:
-                        print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
-                        it = it+1
-                    print 'total points: %f'%sum(points)
                 elif j==i.rosters[-1] and not tfound: 
                     print 'Team %s not found'%teamName
-                    
-
         elif i==fbTool.leagueLists[-1] and not lfound:
             print 'League %s not found' %leagueName
     raw_input('Press return to continue...').rstrip()
 
-#print 'this will do things(eventually...)!  wowie zowie!\n'
 
 def main():
     choice = 0
@@ -107,8 +108,20 @@ def main():
         os.system('clear')
     elif _platform == "win32":
         os.system('cls')
+    else:
+        print 'This program doesn\'t run on mac...'
     print 'Fantasy Football Team Tool - CLI interface\n'
-    print 'Please choose one of the following options:\n1 - Add league to be tracked\n2 - Add team to an existing league\n3 - Add a player to an existing team\'s roster\n4 - Print a list of registered leagues\n5 - Print a list of teams registered to a given league\n6 - Print a list of a team\'s current roster\n7 - Print fantasy points for teams in a league for given week\n8 - Write current league structures to a file\n9 - Read league structures from a file\n10 - Exit the program\n'
+    print 'Please choose one of the following options:\n'
+    print '1 - Add league to be tracked\n'
+    print '2 - Add team to an existing league\n'
+    print '3 - Add a player to an existing team\'s roster\n'
+    print '4 - Print a list of registered leagues\n'
+    print '5 - Print a list of teams registered to a given league\n'
+    print '6 - Print a list of a team\'s current roster\n'
+    print '7 - Print fantasy points for teams in a league for given week\n'
+    print '8 - Write current league structures to a file\n'
+    print '9 - Read league structures from a file\n'
+    print '10 - Exit the program\n'
     choice=raw_input('Please enter an option: ').rstrip()
     if choice == '\n':
         choice = '0'
@@ -184,8 +197,18 @@ def main():
             os.system('clear')
         elif _platform == "win32":
             os.system('cls')               
-        print 'Please choose one of the following options:\n1 - Add league to be tracked\n2 - Add team to an existing league\n3 - Add a player to an existing team\'s roster\n4 - Print a list of registered leagues\n5 - Print a list of teams registered to a given league\n6 - Print a list of a team\'s current roster\n7 - Print fantasy points for teams in a league for given week\n8 - Write current league structures to a file\n9 - Read league structures from a file\n10 - Exit the program\n'
-        choice=raw_input('Please enter an option: ')
+        print 'Please choose one of the following options:\n'
+        print '1 - Add league to be tracked\n'
+        print '2 - Add team to an existing league\n'
+        print '3 - Add a player to an existing team\'s roster\n'
+        print '4 - Print a list of registered leagues\n'
+        print '5 - Print a list of teams registered to a given league\n'
+        print '6 - Print a list of a team\'s current roster\n'
+        print '7 - Print fantasy points for teams in a league for given week\n'
+        print '8 - Write current league structures to a file\n'
+        print '9 - Read league structures from a file\n'
+        print '10 - Exit the program\n'
+    
         if choice == '\n':
             choice = '0'
  
