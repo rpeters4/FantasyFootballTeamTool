@@ -27,15 +27,13 @@ leagueLists = []
 
 #
 #   addLeague - adds a new league to the leagueList, and checks for dups
-#
+#   returns: 0 = success, 1 = league already exists, 2 = error
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
     if leagueLists:
         for i in leagueLists:
             if i.leagueName is leagueName:
-                print 'ERROR: League already exists\n'
-                raw_input('Press return to continue...')
                 return 1
-            if i.leagueName is not leagueName and i is leagueLists[-1]:
+            if i.leagueName != leagueName and i is leagueLists[-1]:
                 l = league(leagueName, [])
                 leagueLists.append(l)
                 return 0
@@ -44,11 +42,11 @@ def addLeague(leagueName):                  ##adds new fantasyfootbal league
         leagueLists.append(l)
         return 0
 
-    return 1        #if the if statment doens't trigger, something's wrong.
+    return 2        #if the if statment doens't trigger, something's wrong.
 #
 #   addRoster - adds a new team to an existing league.  If league doesn't
 #               exist, it adds that too.
-#
+#   returns: 0 = success, 1 = team already exists, 2 = league doesn't exist
 def addRoster(leagueName, rosterName): 
     if leagueLists:
         for l in leagueLists:
@@ -59,7 +57,6 @@ def addRoster(leagueName, rosterName):
             if l.leagueName == leagueName:
                 for r in l.rosters:
                     if r.rosterName == rosterName:
-                        print 'ERROR: Team already exists'
                         return 1
                     if r.rosterName != rosterName and r == l.rosters[-1]:
                         r = roster(leagueName, rosterName, [])
@@ -67,32 +64,15 @@ def addRoster(leagueName, rosterName):
                         return 0
                     
             elif l == leagueLists[-1] and l.leagueName != leagueName:
-                print 'ERROR: League %s does not exist' % leagueName
-                answer = raw_input('Would you like to add a league? (y/n) ')
-                while True is True:
-                    if answer.lower() in ['y', 'yes']:
-                        addLeague(leagueName)
-                        return addRoster(leagueName, rosterName)
-                    elif answer.lower() in ['n', 'no']:
-                        return 1
-                    else:
-                        answer = raw_input('Invalid response please try again (y/n)')
+                return 2
     else:
-        print 'ERROR: League list is empty'
-        answer = raw_input('Would you like to add a league? (y/n) ')
-        while True is True:
-            if answer.lower() in ['y', 'yes']:
-                addLeague(leagueName)
-                return addRoster(leagueName, rosterName)
-            elif answer.lower() in ['n', 'no']:
-                return 1
-            else:
-                answer = raw_input('Invalid response please try again (y/n)')
+        return 2
 
 #   addPlayer - adds a player to a specified team in a specified league,
 #               if said team or league don't exist, it adds those too
 #               also checks for double rostering to prevent any boo boos
-#
+#   returns: 0 = success, 1 = player already rostered, 2 = player doesn't exist
+#   3 = team doesn't exist, 4 = league doesn't exist
 
 def addPlayer(leagueName, rosterName, playerName, playerTeam):
     if leagueLists:
@@ -109,49 +89,17 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
                                 if k.players:
                                     for j in k.players:
                                         if plr2Ad.firstName == j.firstName and plr2Ad.lastName == j.lastName and plr2Ad.team == j.team:
-                                            print 'ERROR: Player already rostered\n'
                                             return 1
                             r.players.append(plr2Ad)
                             return 0
                         else:   
-                            print 'ERROR: Player does not exist\n'
-                            return 1
+                            return 2
                     elif r == l.rosters[-1]:
-                        print 'ERROR: Roster for team %s does not exist\n' % rosterName
-                        answer = raw_input('Would you like to add a team? (y/n) ')
-                        while True is True:
-                            if answer.lower() in ['y', 'yes']:
-                                addRoster(leagueName, rosterName)
-                                return addPlayer(leagueName, rosterName, playerName, playerTeam)
-                            elif answer.lower() in ['n', 'no']:
-                                return 1
-                            else:
-                                answer = input('Invalid response please try again (y/n)')
+                        return 3
             elif l is leagueLists[-1]:
-                print 'ERROR: League %s does not exist\n' % leagueName
-                answer = raw_input('Would you like to add league and team? (y/n) ')
-                while True is True:
-                    if answer.lower() in ['y', 'yes']:
-                        addLeague(leagueName)
-                        addRoster(leagueName, rosterName)
-                        return addPlayer(leagueName, rosterName, playerName, playerTeam)
-                    elif answer.lower() in ['n', 'no']:
-                        return 1
-                    else:
-                        answer = raw_input('Invalid response please try again (y/n)')
+                return 4
     else:
-        print 'ERROR: League does not exist\n'
-        answer = raw_input('Would you like to add a league? (y/n) ')
-        while True is True:
-            if answer.lower() in ['y', 'yes']:
-                addLeague(leagueName)
-                addRoster(leagueName, rosterName)
-                return addPlayer(leagueName, rosterName, playerName, playerTeam)
-            elif answer.lower() in ['n', 'no']:
-                return 1
-            else:
-                answer = raw_input('Invalid response please try again (y/n)')
-
+        return 4
 
 #   FILE I/O: push in attributes of leagues, rosters, and players
 #             and read them back to save hastle of having to enter
@@ -163,12 +111,10 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
 
 def writeClassToFile(fileName):
     if not leagueLists:
-        print 'nothing to output to file %s\n' %fileName
         return 1
     else:
         wFile = open(fileName,'w')	
         if wFile.closed:
-            print 'ERROR: Could not open file %s\n' % fileName
             return 2
         else:
             for i in leagueLists:
@@ -186,10 +132,8 @@ def readClassFromFile(fileName):
     try:
         rFile = open(fileName,'r')
     except IOError:
-        print 'ERROR: Could not open file %s' % fileName
         return 2
     if rFile.closed:
-        print 'ERROR: Could not open file %s' % fileName
         return 2
     else:
         fileText=rFile.read()
@@ -218,13 +162,14 @@ def readClassFromFile(fileName):
 
         rFile.close()
         return 0
-    
+   
+#returns: 0 = success, 1 = league doesn't exist, 2 = roster doesn't exist
+#   3 = player not on roster 
 def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
     for l in leagueLists:
         if l.leagueName == leagueNameToTrade:
             leagueOfTrade = l
     if l == None:
-        print "Player not on roster"
         return 1
     for r1 in leagueOfTrade.rosters:
         if r1.rosterName == roster1:
@@ -232,7 +177,6 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
         if r1.rosterName == roster2:
             roster2Trade = r1
     if roster1Trade == None or roster2Trade == None:
-        print "Roster does not exist"
         return 1
     for p1 in players1:
         playerOnRoster = False
@@ -241,8 +185,7 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
                 playerOnRoster = True
                 break
             if not playerOnRoster:
-                print "Player not on roster"
-                return 1
+                return 3
     for p2 in players2:
         playerOnRoster = False
         for pl2 in roster2Trade.players:
@@ -250,8 +193,7 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
                 playerOnRoster = True
                 break
             if not playerOnRoster:
-                print "Player not on roster"
-                return 1
+                return 3
     for p1 in players1:
         for pl1 in roster1Trade.players:
             if p1.playerid == pl1.player_id:
@@ -262,27 +204,29 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
             if p2.playerid == pl2.player_id:
                 roster2Trade.players.remove(pl2)
         addPlayer(leagueNameToTrade, roster1, p2.full_name, p2.team)
-    print "Trade succesful"
     return 0
 
+#returns: 0 = success, 1 = league doesn't exist, 2 = roster doesn't exist
+#   3 = player not on roster 
 def removePlayer(playersToRemove, leagueToRemoveFrom, rosterToRemoveFrom):
     for l in leagueLists:
         if l.leagueName == leagueToRemoveFrom:
             leagueOfRemoval = l
     if l == None:
-        print "League does not exist"
         return 1
     for r in leagueOfRemoval.rosters:
         if r.rosterName == rosterToRemoveFrom:
             rosterOfRemoval = r
     if rosterOfRemoval == None:
-        print "Roster does not exist"
-        return 1
+        return 2
     for p in playersToRemove:
         for player in rosterOfRemoval.players:
             if p.playerid == player.player_id:
                 rosterOfRemoval.players.remove(player)
+                return 0
+    return 3
 
+#returns: 0 = success, 1 = league doesn't exist, 2 = roster doesn't exist
 def removeRoster(leagueFrom,rosterName):
     for i in leagueLists:
         if i.leagueName == leagueFrom:
@@ -290,16 +234,14 @@ def removeRoster(leagueFrom,rosterName):
                 if j.rosterName == rosterName:
                     i.rosters.remove(j)
                     return 0
-            print 'Roster %s not found in %s' %(rosterName,leagueFrom)
-            return 1
-    print 'league %s does not exist' % leagueName
+            return 2
     return 1
 
+#returns: 0 = success, 1 = league doesn't exist
 def removeLeague(leagueName):
     for i in leagueLists:
         if i.leagueName == leagueName:
             leagueLists.remove(i)
             return 0
-    print 'league %s not found...'%leagueName
     return 1
 
