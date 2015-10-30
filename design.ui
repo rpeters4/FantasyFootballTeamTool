@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>523</width>
+    <height>543</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="addLeague">
+      <property name="text">
+       <string>Add a league to be tracked</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="addTeam">
+      <property name="text">
+       <string>Add team to an existing league</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="addPlayer">
+      <property name="text">
+       <string>Add a player to an existing team's roster</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="leagueList">
+      <property name="text">
+       <string>Print a list of registered leagues</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="teamList">
+      <property name="text">
+       <string>Print a list of teams registered to a given league</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="teamRoster">
+      <property name="text">
+       <string>Print a list of a team's current roster</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="teamPoints">
+      <property name="text">
+       <string>Print fantasy points for teams in a league for given week</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="readFile">
+      <property name="text">
+       <string>Read league structures from a file</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="writeFile">
+      <property name="text">
+       <string>Write current league structures to a file</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="exit">
+      <property name="text">
+       <string>Exit the program</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

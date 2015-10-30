@@ -3,7 +3,11 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
+import design
 from sys import platform as _platform
+from PyQt4 import QtGui
+import sys
+
 
 def getLeagueName():
     return raw_input('Please enter league name: ').rstrip()
@@ -225,6 +229,46 @@ def loadFileUI():
         print 'File input failed.'
         raw_input('Press return to continue...').rstrip()
 
+class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(ExampleApp, self).__init__(parent)
+        self.setupUi(self)
+##        self.addLeague.clicked.connect(self.handleButton())
+##        self.window2 = None
+##    def handleButton(self):
+##        if self.window2 is None:
+##            self.window2 = createLeague(self)
+##        self.window2.show()
+##        
+##class createLeague(QtGui.QWidget, addLeague.Ui_Form):
+##    def __init__(self, parent=None):
+##        super(createLeague, self).__init__(parent)
+##        self.setupUi(self)
+##        self.initUI()
+##        
+##    def initUI(self):      
+##
+##        #self.btn = QtGui.QPushButton('Create', self)
+##        self.btn.move(20, 20)
+##        self.btn.clicked.connect(self.showDialog)
+##        
+##        #self.le = QtGui.QLineEdit(self)
+##        self.le.move(130, 22)
+##        
+##        self.setGeometry(300, 300, 290, 150)
+##        self.setWindowTitle('Create A League')
+##        self.show()
+##        
+##    def showDialog(self):
+##        
+##        text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
+##            'Enter your league name:')
+##        
+##        if ok:
+##            self.le.setText("League created!")
+##        else:
+##            self.le.setText("League already exists.")
+
 def main():
     choice = 0
     if _platform =="linux" or _platform=="linux2":
@@ -234,67 +278,71 @@ def main():
     else:
         print 'This program doesn\'t run on mac...'
         exit()
-    print 'Fantasy Football Team Tool - CLI interface'
-    print 'Please choose one of the following options:'
-    print '1 - Add league to be tracked'
-    print '2 - Add team to an existing league'
-    print '3 - Add a player to an existing team\'s roster'
-    print '4 - Print a list of registered leagues'
-    print '5 - Print a list of teams registered to a given league'
-    print '6 - Print a list of a team\'s current roster'
-    print '7 - Print fantasy points for teams in a league for given week'
-    print '8 - Write current league structures to a file'
-    print '9 - Read league structures from a file'
-    print '10 - Exit the program'
-    choice=raw_input('Please enter an option: ').rstrip()
-    if choice == '\n':
-        choice = '0'
-    
-    while choice != '10':
-        if choice in ['1','2','3','4','5','6','7','8','9','10']:
-            if choice=='1':
-                addLeagueUI()
-            if choice=='2':
-                addRosterUI()
-            if choice=='3':
-                addPlayerUI()
-            if choice=='4':
-                printLeagues()
-            if choice=='5':
-                printTeams()
-            if choice=='6':
-                printPlayers()
-            if choice=='7':
-                printPts()
-            if choice=='8':
-                saveFileUI()
-            if choice=='9':
-                loadfileUI()
-            if choice=='10':
-                print 'exiting...\n'
- 
-        else:
-            print 'ERROR: Invalid input\n'
-            raw_input('Press return to continue...').rstrip()
+    app = QtGui.QApplication(sys.argv)
+    form = ExampleApp()
+    form.show()
+    app.exec_()
+##    print 'Fantasy Football Team Tool - CLI interface'
+##    print 'Please choose one of the following options:'
+##    print '1 - Add league to be tracked'
+##    print '2 - Add team to an existing league'
+##    print '3 - Add a player to an existing team\'s roster'
+##    print '4 - Print a list of registered leagues'
+##    print '5 - Print a list of teams registered to a given league'
+##    print '6 - Print a list of a team\'s current roster'
+##    print '7 - Print fantasy points for teams in a league for given week'
+##    print '8 - Write current league structures to a file'
+##    print '9 - Read league structures from a file'
+##    print '10 - Exit the program'
+##    choice=raw_input('Please enter an option: ').rstrip()
+##    if choice == '\n':
+##        choice = '0'
+##    
+##    while choice != '10':
+##        if choice in ['1','2','3','4','5','6','7','8','9','10']:
+##            if choice=='1':
+##                addLeagueUI()
+##            if choice=='2':
+##                addRosterUI()
+##            if choice=='3':
+##                addPlayerUI()
+##            if choice=='4':
+##                printLeagues()
+##            if choice=='5':
+##                printTeams()
+##            if choice=='6':
+##                printPlayers()
+##            if choice=='7':
+##                printPts()
+##            if choice=='8':
+##                saveFileUI()
+##            if choice=='9':
+##                loadfileUI()
+##            if choice=='10':
+##                print 'exiting...\n'
+## 
+##        else:
+##            print 'ERROR: Invalid input\n'
+##            raw_input('Press return to continue...').rstrip()
 
-        if _platform =="linux" or _platform=="linux2":
-            os.system('clear')
-        elif _platform == "win32":
-            os.system('cls')               
-        print 'Please choose one of the following options:'
-        print '1 - Add league to be tracked'
-        print '2 - Add team to an existing league'
-        print '3 - Add a player to an existing team\'s roster'
-        print '4 - Print a list of registered leagues'
-        print '5 - Print a list of teams registered to a given league'
-        print '6 - Print a list of a team\'s current roster'
-        print '7 - Print fantasy points for teams in a league for given week'
-        print '8 - Write current league structures to a file'
-        print '9 - Read league structures from a file'
-        print '10 - Exit the program'
-        choice = raw_input('Please enter an option: ').rstrip()
-    
-        if choice == '\n':
-            choice = '0'
+##        if _platform =="linux" or _platform=="linux2":
+##            os.system('clear')
+##        elif _platform == "win32":
+##            os.system('cls')               
+##        print 'Please choose one of the following options:'
+##        print '1 - Add league to be tracked'
+##        print '2 - Add team to an existing league'
+##        print '3 - Add a player to an existing team\'s roster'
+##        print '4 - Print a list of registered leagues'
+##        print '5 - Print a list of teams registered to a given league'
+##        print '6 - Print a list of a team\'s current roster'
+##        print '7 - Print fantasy points for teams in a league for given week'
+##        print '8 - Write current league structures to a file'
+##        print '9 - Read league structures from a file'
+##        print '10 - Exit the program'
+##        choice = raw_input('Please enter an option: ').rstrip()
+##    
+##        if choice == '\n':
+##            choice = '0'
  
 main()
