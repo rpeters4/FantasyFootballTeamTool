@@ -32,7 +32,7 @@ def defensePlays(team, year, week, games):
 
 def defensePA(team, year, week, games):
     pa = 0
-    for g in games:  
+    for g in games:
         if g.home == team:
             if g.score_away == 0:
                 pa = 5
@@ -116,6 +116,8 @@ def fpDefense(team, year, week):
     games = nflgame.games_gen(year, week, team, team)
     points = 0
     points = points + defensePlays(team, year, week, games)
+    games = nflgame.games_gen(year, week, team, team)
     points = points + defensePA(team, year, week, games)
+    games = nflgame.games_gen(year, week, team, team)
     points = points + defenseYA(team, year, week, games)
     return points
