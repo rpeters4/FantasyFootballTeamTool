@@ -15,10 +15,10 @@ def playerPoints(playerInfo):
         for i in playerInfo[2]:
             if str(i).isdigit():
                 weeksPlayed = weeksPlayed + 1
-        for w in WeekLists.byeWeeks:
+        for w in byeWeekLists.byeWeeks:
             for t in w:
                 curWeek = nflgame.live.current_year_and_week()[1]
-                if w[-1] < curWeek and nflgame.find(playerInfo[0], team=None)[0].team == t and w[-1] in playerInfo[2]:
+                if w[-1] <= curWeek and nflgame.find(playerInfo[0], team=None)[0].team == t and w[-1] in playerInfo[2]:
                     weeksPlayed1 = weeksPlayed1 - 1
                     break
         average = points / weeksPlayed
@@ -30,8 +30,12 @@ def playerPoints(playerInfo):
         playerInfo[0] = team
         points = fpDefense.fpDefense(playerInfo[0], playerInfo[1], playerInfo[2])
         weeksPlayed = nflgame.live.current_year_and_week()[1]
-        #factor in bye week
-        return points
+        curWeek = nflgame.live.current_year_and_week()[1]
+        for w in byeWeekLists.byeWeeks:
+            for t in w:
+                if w[-1] <= curWeek and t == playerInfo[0] and w[-1] in playerInfo[2]:
+                    weeksPlayed = weeksPlayed - 1
+        return points / weeksPlayed
     else:
         return float('inf')
     
