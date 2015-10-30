@@ -121,4 +121,3 @@ def fpDefense(team, year, week):
     points = points + defensePA(team, year, week, games)
     points = points + defenseYA(team, year, week, games)
     return points
-    
