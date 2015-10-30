@@ -4,6 +4,7 @@ import os
 import fpPlayer
 import fpKicker
 import design
+import createLeague
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
@@ -233,17 +234,17 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
     def __init__(self, parent=None):
         super(ExampleApp, self).__init__(parent)
         self.setupUi(self)
-##        self.addLeague.clicked.connect(self.handleButton())
-##        self.window2 = None
-##    def handleButton(self):
-##        if self.window2 is None:
-##            self.window2 = createLeague(self)
-##        self.window2.show()
-##        
-##class createLeague(QtGui.QWidget, addLeague.Ui_Form):
-##    def __init__(self, parent=None):
-##        super(createLeague, self).__init__(parent)
-##        self.setupUi(self)
+        self.addLeague.clicked.connect(self.handleButton)
+        self.window2 = None
+    def handleButton(self):
+        if self.window2 is None:
+            self.window2 = createLeague(self)
+        self.window2.show()
+        
+class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(createLeague, self).__init__(parent)
+        self.setupUi(self)
 ##        self.initUI()
 ##        
 ##    def initUI(self):      
