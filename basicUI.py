@@ -3,6 +3,7 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
+import fbPlayerPoints
 from sys import platform as _platform
 
 def getLeagueName():
@@ -117,6 +118,20 @@ def addPlayerUI():
                 print 'something went horribly wrong.'
 
     raw_input('Press return to continue...').rstrip()
+
+def playerPointsUI():
+    playerInfo = []
+    points = 0
+    playerInfo.append(raw_input("Enter player: \n").strip())
+    playerInfo.append(int(raw_input("Enter year: \n")))
+    w1 = raw_input("Enter week(s): \n").strip()
+    playerInfo.append(map(int, w1.split()))
+    points = fbPlayerPoints.playerPoints(playerInfo)
+    if points == float('inf'):
+        print 'Player does not exist'
+    print points
+    return points
+    
 
 def printLeagues():
     if fbTool.leagueLists:
@@ -250,8 +265,8 @@ def main():
     if choice == '\n':
         choice = '0'
     
-    while choice != '10':
-        if choice in ['1','2','3','4','5','6','7','8','9','10']:
+    while choice != '12':
+        if choice in ['1','2','3','4','5','6','7','8','9','10', '11']:
             if choice=='1':
                 addLeagueUI()
             if choice=='2':
@@ -272,6 +287,8 @@ def main():
                 loadfileUI()
             if choice=='10':
                 print 'exiting...\n'
+            if choice=='11':
+                playerPointsUI()
  
         else:
             print 'ERROR: Invalid input\n'
@@ -292,6 +309,7 @@ def main():
         print '8 - Write current league structures to a file'
         print '9 - Read league structures from a file'
         print '10 - Exit the program'
+        print '11 - Print a specific player\'s points'
         choice = raw_input('Please enter an option: ').rstrip()
     
         if choice == '\n':
