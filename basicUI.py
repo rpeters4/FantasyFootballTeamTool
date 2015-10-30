@@ -3,6 +3,7 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
+import fpDefense
 from sys import platform as _platform
 
 def getLeagueName():
@@ -33,7 +34,11 @@ def addLeagueUI():
 def addRosterUI():
     ln=getLeagueName()
     tn=getTeamName()
-    testVar=fbTool.addRoster(ln,tn)
+    defense=raw_input('Please enter team name for defense').rstrip()
+    while nflgame.standard_team(defense) is None:
+        defense=raw_input('Invalid team name, please try again: ').rstrip()
+    defense=nflgame.standard_team(defense)
+    testVar=fbTool.addRoster(ln,tn,defense)
     if not testVar:
         print 'Succesfully added roster %s!' % tn
     else:
@@ -49,7 +54,7 @@ def addRosterUI():
                     print 'invalid input.  please try again.'
             if userInVar.lower() == 'y' or userInVar.lower()=='yes':
                 if not fbTool.addLeague(ln):
-                    testVar = fbTool.addRoster(ln,tn)
+                    testVar = fbTool.addRoster(ln,tn,roster)
                     if not testVar:
                         print 'Successfully added roster %s!' % tn
                     else:
@@ -159,6 +164,7 @@ def printPlayers():
                         print 'Team is empty'
                     for k in j.players:
                         print '{:14s} {:16s} {:19s} {:10s} {:9s} '.format(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
+                    print '%s uses %s\'s defense' %(teamName,j.defense)
                 elif j==i.rosters[-1] and not tfound: 
                     print 'Team %s not found'%teamName
 
@@ -197,7 +203,11 @@ def printPts():
                             if k.position != 'LE' and k.position != 'RE' and k.position != 'OLB' and k.position != 'CB' and k.position != 'MLB' and k.position != 'DT' and k.position != 'DB' and k.position != 'DE' and k.position != 'FS' and k.position != 'SS':
                                 print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
                                 it = it+1
-                        print 'total points: %f'%sum(points)
+                        dpoints = fpDefense.fpDefense(j.defense,year,weekNum)
+                        p=sum(points)
+                        print 'total offensive points: %f'%p
+                        print 'total defensive points: %f'%dpoints
+                        print 'total points: %f'%(p+dpoints)
 
                     else:
                         print 'Team is empty'
@@ -269,7 +279,7 @@ def main():
             if choice=='8':
                 saveFileUI()
             if choice=='9':
-                loadfileUI()
+                loadFileUI()
             if choice=='10':
                 print 'exiting...\n'
  

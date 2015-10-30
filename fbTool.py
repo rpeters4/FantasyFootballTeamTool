@@ -6,10 +6,11 @@ class league:
         self.leagueName = leagueName
 
 class roster:
-    def __init__(self, leagueName, rosterName, players):
+    def __init__(self, leagueName, rosterName, players, defense):
             self.leagueName = leagueName
             self.rosterName = rosterName
             self.players = players
+            self.defense = defense
 
 class player:
     def __init__(self, player_id, firstName, lastName, team, position):
@@ -47,19 +48,20 @@ def addLeague(leagueName):                  ##adds new fantasyfootbal league
 #   addRoster - adds a new team to an existing league.  If league doesn't
 #               exist, it adds that too.
 #   returns: 0 = success, 1 = team already exists, 2 = league doesn't exist
-def addRoster(leagueName, rosterName): 
+def addRoster(leagueName, rosterName,defTeam): 
     if leagueLists:
         for l in leagueLists:
             if l.leagueName == leagueName and not l.rosters:
-                r = roster(leagueName, rosterName, [])
+                r = roster(leagueName, rosterName, [],defTeam)
                 l.rosters.append(r)
+                defense = defTeam
                 return 0
             if l.leagueName == leagueName:
                 for r in l.rosters:
                     if r.rosterName == rosterName:
                         return 1
                     if r.rosterName != rosterName and r == l.rosters[-1]:
-                        r = roster(leagueName, rosterName, [])
+                        r = roster(leagueName, rosterName, [],defTeam)
                         l.rosters.append(r)
                         return 0
                     
@@ -123,6 +125,7 @@ def writeClassToFile(fileName):
                 for j in i.rosters:
                     wFile.write('NEWROSTER\n')
                     wFile.write(j.rosterName+'\n')
+                    wFile.write(j.defense+'\n')
                     for k in j.players:
                         wFile.write('NEWPLAYER\n')
                         wFile.write(k.firstName+' '+k.lastName+' '+k.team+'\n')
@@ -149,7 +152,9 @@ def readClassFromFile(fileName):
                     if splitText[j] == 'NEWROSTER':
                         j=j+1
                         rosterName=splitText[j]
-                        addRoster(leagueName,rosterName)
+                        j=j+1
+                        defName = splitText[j]
+                        addRoster(leagueName,rosterName,defName)
                         for k in range(j,len(splitText)):
                             if splitText[k] == 'NEWROSTER' or splitText[k] == 'NEWLEAGUE':
                                 break
