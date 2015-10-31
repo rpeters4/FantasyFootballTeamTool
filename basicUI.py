@@ -154,6 +154,45 @@ def addPlayerUI():
 
     raw_input('Press return to continue...').strip()
 
+def remLeagueUI():
+    ln = raw_input('Please enter the name of the league you wish to remove: ').strip()
+    invar = ' '
+    while invar.lower() not in ['y','yes','n','no']:
+        invar=raw_input('Are you sure you want to do this?  \nYou will lose not only the league, but all of it\'s teams and their rosters! (y/n): ').strip()
+        if invar.lower() in ['y','yes']:
+            invar = raw_input('Would you like to save before doing so?(y/n): ')
+            if invar.lower() in ['y','yes']:
+                saveFileUI()
+            if invar.lower() in ['n','no']:
+                print 'IF YOU SAY SO.....'
+                invar = 'y'
+            if invar.lower() not in ['y','yes','n','no']:
+                print 'Invalid input. Please try again...'
+            else:
+                if fbTool.removeLeague(ln):
+                    print 'LEAGUE DOESN\'T EXIST!'
+                else:
+                    print 'League %s was deleted.' %ln
+        if invar.lower() in ['n','no']:
+            print 'I DIDN\'T THINK SO!'
+        if invar.lower() not in ['y','yes','n','no']:
+            print 'Invalid input.  Please try again...'
+    raw_input ('Press return to continue...').strip()
+
+def remRosterUI():
+#    ln = raw_input('Please enter the name of the league the team is in: ').strip()
+#    rn = raw_input('Please enter the name of the team to remove: ').strip()
+#    while invar.lower() not in ['y','yes','n','no']:
+    
+    i=0
+
+def remPlayerUI():
+    i=0
+
+def tradePlayersUI():
+    i=0
+
+
 def playerPointsUI():
     playerInfo = []
     points = 0
@@ -297,20 +336,24 @@ def main():
     print '1 - Add league to be tracked'
     print '2 - Add team to an existing league'
     print '3 - Add a player to an existing team\'s roster'
-    print '4 - Print a list of registered leagues'
-    print '5 - Print a list of teams registered to a given league'
-    print '6 - Print a list of a team\'s current roster'
-    print '7 - Print fantasy points for teams in a league for given week'
-    print '8 - Write current league structures to a file'
-    print '9 - Read league structures from a file'
-    print '10 - Print a specific player\'s points'
-    print '11 - Exit the program'
+    print '4 - Delete an existing League'
+    print '5 - Delete an existing Roster'
+    print '6 - Delete an existing Player off of a Roster'
+    print '7 - Trade players between Rosters'
+    print '8 - Print a list of registered leagues'
+    print '9 - Print a list of teams registered to a given league'
+    print '10 - Print a list of a team\'s current roster'
+    print '11 - Print fantasy points for teams in a league for given week'
+    print '12 - Print a specific player\'s points'
+    print '13 - Write current league structures to a file'
+    print '14 - Read league structures from a file'
+    print '15 - Exit the program'
     choice=raw_input('Please enter an option: ').strip()
     if choice == '\n':
         choice = '0'
     
-    while choice != '11':
-        if choice in ['1','2','3','4','5','6','7','8','9','10','11']:
+    while choice != '15':
+        if choice in ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']:
             if choice=='1':
                 addLeagueUI()
             if choice=='2':
@@ -321,20 +364,28 @@ def main():
             if choice=='3':
                 addPlayerUI()
             if choice=='4':
-                printLeagues()
+                remLeagueUI()
             if choice=='5':
-                printTeams()
+                remRosterUI()
             if choice=='6':
-                printPlayers()
+                remPlayersUI()
             if choice=='7':
-                printPts()
+                tradePlayersUI()
             if choice=='8':
-                saveFileUI()
+                printLeagues()
             if choice=='9':
-                loadFileUI()
+                printTeams()
             if choice=='10':
-                playerPointsUI()
+                printPlayers()
             if choice=='11':
+                printPts()
+            if choice=='12':
+                playerPointsUI();
+            if choice=='13':
+                saveFileUI()
+            if choice=='14':
+                loadFileUI()
+            if choice=='15':
                 print 'exiting...\n'
  
         else:
@@ -353,14 +404,18 @@ def main():
         print '1 - Add league to be tracked'
         print '2 - Add team to an existing league'
         print '3 - Add a player to an existing team\'s roster'
-        print '4 - Print a list of registered leagues'
-        print '5 - Print a list of teams registered to a given league'
-        print '6 - Print a list of a team\'s current roster'
-        print '7 - Print fantasy points for teams in a league for given week'
-        print '8 - Write current league structures to a file'
-        print '9 - Read league structures from a file'
-        print '10 - Print a specific player\'s points'
-        print '11 - Exit the program'
+        print '4 - Delete an existing League'
+        print '5 - Delete an existing Roster'
+        print '6 - Delete an existing Player off of a Roster'
+        print '7 - Trade players between Rosters'
+        print '8 - Print a list of registered leagues'
+        print '9 - Print a list of teams registered to a given league'
+        print '10 - Print a list of a team\'s current roster'
+        print '11 - Print fantasy points for teams in a league for given week'
+        print '12 - Print a specific player\'s points'
+        print '13 - Write current league structures to a file'
+        print '14 - Read league structures from a file'
+        print '15 - Exit the program'
         choice = raw_input('Please enter an option: ').strip()
     
         if choice == '\n':
