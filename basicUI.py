@@ -141,6 +141,7 @@ def playerPointsUI():
     if points == float('inf'):
         print 'Player does not exist'
     print points
+    raw_input('Press return to continue...').strip()
     return points
 
 def printLeagues():
