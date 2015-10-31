@@ -12,6 +12,7 @@ class roster:
             self.players = players
             self.defense = defense
 
+
 class player:
     def __init__(self, player_id, firstName, lastName, team, position):
         self.player_id = player_id
@@ -49,12 +50,14 @@ def addLeague(leagueName):                  ##adds new fantasyfootbal league
 #		team names that will be used for defense.
 #   returns: 0 = success, 1 = team already exists, 2 = league doesn't exist
 #   3+n = defense team #{0,1,2,....n} already taken by other team in league
-def addRoster(leagueName, rosterName,defTeam): 
+def addRoster(leagueName, rosterName, defTeam): 
     if not leagueLists:
         return 2
     for l in leagueLists:
         if l.leagueName == leagueName and not l.rosters:
-            r = roster(leagueName, rosterName, [], defTeam)
+            r = roster(leagueName, rosterName, [], [])
+            for de in defTeam:
+                r.defense.append(de)
             l.rosters.append(r)
             return 0
         if l.leagueName == leagueName:
@@ -62,11 +65,13 @@ def addRoster(leagueName, rosterName,defTeam):
                 if r.rosterName == rosterName:
                     return 1
                 count =0
-                for x in r.defense:
-                    if x in defTeam:
-                        return (3+count)
-                    count = count +1
-            r = roster(leagueName, rosterName, [], defTeam)
+                for x in defTeam:
+                    if x in r.defense:
+                        return 3+count
+                    count = count + 1
+            r = roster(leagueName, rosterName, [], [])
+            for de in defTeam:
+                r.defense.append(de)
             l.rosters.append(r)
             return 0
                 
