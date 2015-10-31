@@ -52,16 +52,15 @@ def addRoster(leagueName, rosterName,defTeam):
     if leagueLists:
         for l in leagueLists:
             if l.leagueName == leagueName and not l.rosters:
-                r = roster(leagueName, rosterName, [],defTeam)
+                r = roster(leagueName, rosterName, [], defTeam)
                 l.rosters.append(r)
-                defense = defTeam
                 return 0
             if l.leagueName == leagueName:
                 for r in l.rosters:
                     if r.rosterName == rosterName:
                         return 1
                     if r.rosterName != rosterName and r == l.rosters[-1]:
-                        r = roster(leagueName, rosterName, [],defTeam)
+                        r = roster(leagueName, rosterName, [], defTeam)
                         l.rosters.append(r)
                         return 0
                     
@@ -125,7 +124,9 @@ def writeClassToFile(fileName):
                 for j in i.rosters:
                     wFile.write('NEWROSTER\n')
                     wFile.write(j.rosterName+'\n')
-                    wFile.write(j.defense+'\n')
+                    for l in j.defense:
+                        wFile.write(l+'\n')
+                    wFile.write('ENDDEF\n')
                     for k in j.players:
                         wFile.write('NEWPLAYER\n')
                         wFile.write(k.firstName+' '+k.lastName+' '+k.team+'\n')
@@ -152,9 +153,14 @@ def readClassFromFile(fileName):
                     if splitText[j] == 'NEWROSTER':
                         j=j+1
                         rosterName=splitText[j]
+                        defen = []
                         j=j+1
-                        defName = splitText[j]
-                        addRoster(leagueName,rosterName,defName)
+                        while splitText[j]!='ENDDEF':
+                            defName = splitText[j]
+                            defen.append(defName)
+                            j=j+1
+                        j=j+1
+                        addRoster(leagueName,rosterName,defen)
                         for k in range(j,len(splitText)):
                             if splitText[k] == 'NEWROSTER' or splitText[k] == 'NEWLEAGUE':
                                 break
