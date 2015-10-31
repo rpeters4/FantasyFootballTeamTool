@@ -329,7 +329,6 @@ def tradePlayersUI():
         print 'Roster does not exist.'
     if testVar == 3:
         print 'Player not on roster.'
-    print 'THIS WILL DO THINGS (when it\'s not 6:30AM in the morning and I haven\'t been up all night working on random code...) \n:D \n:D \n:D :D\n:D :D :D\n:D :D :D :D :D\n:D :D :D :D :D :D :D :D\n:D :D :D :D :D :D :D :D :D :D :D :D :D\n\n'
 
 def playerPointsUI():
     playerInfo = []
