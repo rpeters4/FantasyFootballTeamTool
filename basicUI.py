@@ -3,20 +3,21 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
+import fpDefense
 import fbPlayerPoints
 from sys import platform as _platform
 
 def getLeagueName():
-    return raw_input('Please enter league name: ').rstrip()
+    return raw_input('Please enter league name: ').strip()
 
 def getTeamName():
-    return raw_input('Please enter team name: ').rstrip()
+    return raw_input('Please enter team name: ').strip()
 
 def getFileName(isOut):
     if isOut:
-        return raw_input('please input output filename: ').rstrip()
+        return raw_input('please input output filename: ').strip()
     else:
-        return raw_input('please input input filename: ').rstrip()
+        return raw_input('please input input filename: ').strip()
 
 def addLeagueUI():
     ln=getLeagueName()
@@ -29,12 +30,24 @@ def addLeagueUI():
             print 'League %s already exists.'%ln
         else:
             print 'something is horribly broken.'
-    raw_input('Press return to continue...').rstrip()
+    raw_input('Press return to continue...').strip()
 
 def addRosterUI():
     ln=getLeagueName()
     tn=getTeamName()
-    testVar=fbTool.addRoster(ln,tn)
+    inp='y'
+    defense = []
+    while inp.lower() not in ['n' or 'no']:
+        if inp.lower()=='y' or inp.lower()=='yes':
+            defen=raw_input('Please enter team name for defense: ').strip()
+            while nflgame.standard_team(defen) is None:
+                defen=raw_input('Invalid team name, please try again: ').strip()
+            defen=nflgame.standard_team(defen)
+            defense.append(defen)
+        else:
+            print 'invalid input, try again.'
+        inp = raw_input('Would you like to add another team for defense? (y/n): ' ).strip()
+    testVar=fbTool.addRoster(ln,tn,defense)
     if not testVar:
         print 'Succesfully added roster %s!' % tn
     else:
@@ -45,19 +58,17 @@ def addRosterUI():
             print 'League %s does not exist.'
             userInVar = ' '
             while userInVar.lower() not in ['y','yes','n''no']:
-                userInVar = raw_input('Would you like to add it? (y/n): ').rstrip()
+                userInVar = raw_input('Would you like to add it? (y/n): ').strip()
                 if userInVar.lower() not in ['y','yes','n','no']:
                     print 'invalid input.  please try again.'
             if userInVar.lower() == 'y' or userInVar.lower()=='yes':
                 if not fbTool.addLeague(ln):
-                    testVar = fbTool.addRoster(ln,tn)
+                    testVar = fbTool.addRoster(ln,tn,roster)
                     if not testVar:
                         print 'Successfully added roster %s!' % tn
                     else:
                         print 'Failed to add roster...'
-                else:
-                    print 'something is very broken'
-    raw_input('Press return to continue...').rstrip()
+    raw_input('Press return to continue...').strip()
                     
 def addPlayerUI():
     ln=getLeagueName()
@@ -77,7 +88,7 @@ def addPlayerUI():
         print 'Team does not exist.'
         userInVar = ' '
         while userInVar.lower() not in ['y','yes','n','no']:
-            userInVar = raw_input('Would you like to add it? (y/n): ').rstrip()
+            userInVar = raw_input('Would you like to add it? (y/n): ').strip()
             if userInVar.lower() not in ['y','yes','n','no']:
                 print 'Invalid input.  Please try again.'
         if userInVar.lower()=='y' or userInVar.lower()=='yes':
@@ -97,7 +108,7 @@ def addPlayerUI():
         print 'League does not exist.'
         userInVar=' '
         while userInVar.lower() not in ['y','yes','n','no']:
-            userInVar = raw_input('Would you like to add the league and team? (y/n): ').rstrip()
+            userInVar = raw_input('Would you like to add the league and team? (y/n): ').strip()
             if userInVar.lower() not in ['y','yes','no','n']:
                 print 'Invalid input.  Please try again.'
         if userInVar.lower()=='y' or userInVar.lower()=='yes':
@@ -117,21 +128,20 @@ def addPlayerUI():
             else:
                 print 'something went horribly wrong.'
 
-    raw_input('Press return to continue...').rstrip()
+    raw_input('Press return to continue...').strip()
 
 def playerPointsUI():
     playerInfo = []
     points = 0
-    playerInfo.append(raw_input("Enter player: \n").strip())
-    playerInfo.append(int(raw_input("Enter year: \n")))
-    w1 = raw_input("Enter week(s): \n").strip()
+    playerInfo.append(raw_input("Enter player: ").strip())
+    playerInfo.append(int(raw_input("Enter year: ")))
+    w1 = raw_input("Enter week(s): ").strip()
     playerInfo.append(map(int, w1.split()))
     points = fbPlayerPoints.playerPoints(playerInfo)
     if points == float('inf'):
         print 'Player does not exist'
     print points
     return points
-    
 
 def printLeagues():
     if fbTool.leagueLists:
@@ -140,7 +150,7 @@ def printLeagues():
         for i in fbTool.leagueLists:
             print '%d       %s' %(it,i.leagueName)
             it=it+1
-    raw_input('Press return to continue...').rstrip()
+    raw_input('Press return to continue...').strip()
 
 def printTeams():
     leagueName=getLeagueName()
@@ -174,12 +184,13 @@ def printPlayers():
                         print 'Team is empty'
                     for k in j.players:
                         print '{:14s} {:16s} {:19s} {:10s} {:9s} '.format(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
+                    print '%s uses %s\'s defense' %(teamName,j.defense)
                 elif j==i.rosters[-1] and not tfound: 
                     print 'Team %s not found'%teamName
 
         elif i==fbTool.leagueLists[-1] and not lfound:
             print 'League %s not found' %leagueName
-    raw_input('Press return to continue...').rstrip()
+    raw_input('Press return to continue...').strip()
 
 
 def printPts():
@@ -212,33 +223,38 @@ def printPts():
                             if k.position != 'LE' and k.position != 'RE' and k.position != 'OLB' and k.position != 'CB' and k.position != 'MLB' and k.position != 'DT' and k.position != 'DB' and k.position != 'DE' and k.position != 'FS' and k.position != 'SS':
                                 print '{:14s} {:16s} {:19s} {:10s} {:9f} '.format(str(k.player_id),k.firstName,k.lastName,k.team,points[it])
                                 it = it+1
-                        print 'total points: %f'%sum(points)
-
+                        dpoints=0
+                        for l in j.defense:
+                            dpoints = dpoints+fpDefense.fpDefense(l,year,weekNum)
+                        p=sum(points)
+                        print 'total offensive points: %f'%p
+                        print 'total defensive points: %f'%dpoints
+                        print 'total points: %f'%(p+dpoints)
                     else:
                         print 'Team is empty'
                 elif j==i.rosters[-1] and not tfound: 
                     print 'Team %s not found'%teamName
         elif i==fbTool.leagueLists[-1] and not lfound:
             print 'League %s not found' %leagueName
-    raw_input('Press return to continue...').rstrip()
+    raw_input('Press return to continue...').strip()
 
 def saveFileUI():
     fn=getFileName(1)
     if not fbTool.writeClassToFile(fn):
         print 'Successfully output to file %s' % fn
-        raw_input('Press return to continue...').rstrip()
+        raw_input('Press return to continue...').strip()
     else:
         print 'File output failed.'
-        raw_input('Press return to continue...').rstrip()
+        raw_input('Press return to continue...').strip()
 
 def loadFileUI():
     fn=getFileName(0)
     if not fbTool.readClassFromFile(fn):
         print 'Successfully read from file %s' % fn
-        raw_input('Press return to continue...').rstrip()
+        raw_input('Press return to continue...').strip()
     else:
         print 'File input failed.'
-        raw_input('Press return to continue...').rstrip()
+        raw_input('Press return to continue...').strip()
 
 def main():
     choice = 0
@@ -249,7 +265,9 @@ def main():
     else:
         print 'This program doesn\'t run on mac...'
         exit()
+    print '==================================================================='
     print 'Fantasy Football Team Tool - CLI interface'
+    print '==================================================================='
     print 'Please choose one of the following options:'
     print '1 - Add league to be tracked'
     print '2 - Add team to an existing league'
@@ -260,13 +278,14 @@ def main():
     print '7 - Print fantasy points for teams in a league for given week'
     print '8 - Write current league structures to a file'
     print '9 - Read league structures from a file'
-    print '10 - Exit the program'
-    choice=raw_input('Please enter an option: ').rstrip()
+    print '10 - Print a specific player\'s points'
+    print '11 - Exit the program'
+    choice=raw_input('Please enter an option: ').strip()
     if choice == '\n':
         choice = '0'
     
-    while choice != '12':
-        if choice in ['1','2','3','4','5','6','7','8','9','10', '11']:
+    while choice != '11':
+        if choice in ['1','2','3','4','5','6','7','8','9','10','11']:
             if choice=='1':
                 addLeagueUI()
             if choice=='2':
@@ -284,20 +303,24 @@ def main():
             if choice=='8':
                 saveFileUI()
             if choice=='9':
-                loadfileUI()
+                loadFileUI()
             if choice=='10':
-                print 'exiting...\n'
-            if choice=='11':
                 playerPointsUI()
+            if choice=='11':
+                print 'exiting...\n'
  
         else:
             print 'ERROR: Invalid input\n'
-            raw_input('Press return to continue...').rstrip()
+            raw_input('Press return to continue...').strip()
 
         if _platform =="linux" or _platform=="linux2":
             os.system('clear')
         elif _platform == "win32":
-            os.system('cls')               
+            os.system('cls')
+
+        print '==================================================================='
+        print 'Fantasy Football Team Tool - CLI interface'
+        print '==================================================================='
         print 'Please choose one of the following options:'
         print '1 - Add league to be tracked'
         print '2 - Add team to an existing league'
@@ -308,9 +331,9 @@ def main():
         print '7 - Print fantasy points for teams in a league for given week'
         print '8 - Write current league structures to a file'
         print '9 - Read league structures from a file'
-        print '10 - Exit the program'
-        print '11 - Print a specific player\'s points'
-        choice = raw_input('Please enter an option: ').rstrip()
+        print '10 - Print a specific player\'s points'
+        print '11 - Exit the program'
+        choice = raw_input('Please enter an option: ').strip()
     
         if choice == '\n':
             choice = '0'
