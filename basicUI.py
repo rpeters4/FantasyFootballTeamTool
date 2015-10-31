@@ -283,6 +283,8 @@ def tradePlayersUI():
         return 1
     pls1=[]
     pls2=[]
+    plo1=[]
+    plo2=[]
     if not printPlayers(le,t2):
         promptInp = ' '
         while promptInp.lower() not in ['n','no']:
@@ -298,10 +300,35 @@ def tradePlayersUI():
                 promptInp = raw_input('Invalid input.  Please try again: ').strip()
         pls1=list(set(pls1))            #cast as set, then as list to rid of 
         pls2=list(set(pls2))            #potential dups
-        
-        
     else:
-        print 'do stuff!'
+        promptInp = ' '
+        while promptInp.lower() not in ['n','no']:
+            pls1.append(raw_input('Enter player from %s to trade: '%t1).strip())
+            promptInp = raw_input('Would you like to trade another player? (y/n): ' ).strip()
+            while promptInp.lower() not in ['y','yes','n','no']:
+                promptInp = raw_input('Invalid input.  Please try again: ').strip()
+    
+    for i in pls1:
+        j=nflgame.find(i,team=None)
+        if j:
+            plo1.append(j[0])
+    for i in pls2:
+        j=nflgame.find(i,team=None)
+        if j:
+            plo2.append(j[0])
+
+    testVar = fbTool.tradePlayers(plo1,plo2,le,t1,t2)
+    if not testVar:
+        print 'successfully traded'
+        print pls1
+        print 'from %s to %s for'%(t1,t2)
+        print pls2
+    if testVar == 1:
+        print 'League does not exist.'
+    if testVar == 2:
+        print 'Roster does not exist.'
+    if testVar == 3:
+        print 'Player not on roster.'
     print 'THIS WILL DO THINGS (when it\'s not 6:30AM in the morning and I haven\'t been up all night working on random code...) \n:D \n:D \n:D :D\n:D :D :D\n:D :D :D :D :D\n:D :D :D :D :D :D :D :D\n:D :D :D :D :D :D :D :D :D :D :D :D :D\n\n'
 
 def playerPointsUI():
