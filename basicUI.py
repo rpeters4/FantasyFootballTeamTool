@@ -7,10 +7,14 @@ import fpDefense
 import fbPlayerPoints
 from sys import platform as _platform
 
-def getLeagueName():
+def getLeagueName(b):
+    if not b:
+        printLeagues()
     return raw_input('Please enter league name: ').strip()
 
-def getTeamName():
+def getTeamName(ln):
+    if ln is not None:
+        printTeams(ln)
     return raw_input('Please enter team name: ').strip()
 
 def getFileName(isOut):
@@ -20,7 +24,10 @@ def getFileName(isOut):
         return raw_input('please input input filename: ').strip()
 
 def addLeagueUI():
-    ln=getLeagueName()
+    k=1
+    if fbTool.leagueLists:
+       k=0 
+    ln=getLeagueName(k)
     testVar=fbTool.addLeague(ln)
     if not testVar:
         print 'Successfully added league %s!' % ln
@@ -30,7 +37,6 @@ def addLeagueUI():
             print 'League %s already exists.'%ln
         else:
             print 'something is horribly broken.'
-    raw_input('Press return to continue...').strip()
 
 def addRosterUI(ln,tn,defense):
     inp='y'
@@ -57,7 +63,7 @@ def addRosterUI(ln,tn,defense):
             while anotherVar not in ['y','yes','n','no']:
                 anotherVar =raw_input('Try again?(y/n)').strip()
                 if anotherVar.lower() in ['y','yes']:
-                    tn=getTeamName()
+                    tn=getTeamName(ln)
                     return addRosterUI(ln,tn,defense)
                 if anotherVar.lower() in ['n','no']:
                     print 'Team not added...'
@@ -93,8 +99,9 @@ def addRosterUI(ln,tn,defense):
     return 0
                     
 def addPlayerUI():
-    ln=getLeagueName()
-    tn=getTeamName()
+    ln=getLeagueName(0)
+    tn=getTeamName(ln)
+    printPlayers(ln,tn)
     plName=raw_input('Please input the desired player to add\'s name: ')
     plTeam=raw_input('Please input the desired player\'s NFL team: ')
     testVar=fbTool.addPlayer(ln,tn,plName,plTeam)
@@ -152,9 +159,9 @@ def addPlayerUI():
             else:
                 print 'something went horribly wrong.'
 
-    raw_input('Press return to continue...').strip()
-
 def remLeagueUI():
+    if printLeagues():
+        return 1
     ln = raw_input('Please enter the name of the league you wish to remove: ').strip()
     invar=' '
     while invar.lower() not in ['y','yes','n','no']:
@@ -177,10 +184,13 @@ def remLeagueUI():
             print 'I DIDN\'T THINK SO!'
         if invar.lower() not in ['y','yes','n','no']:
             print 'Invalid input.  Please try again...'
-    raw_input ('Press return to continue...').strip()
 
 def remRosterUI():
+    if printLeagues():
+        return 1
     ln = raw_input('Please enter the name of the league the team is in: ').strip()
+    if printTeams(ln):
+        return 1
     rn = raw_input('Please enter the name of the team to remove: ').strip()
     invar=' '
     while invar.lower() not in ['y','yes','n','no']:
@@ -206,7 +216,6 @@ def remRosterUI():
             print 'I DIDN\'T THINK SO!'
         if invar.lower() not in ['y','yes','n','no']:
             print 'Invalid input.  Please try again...'
-    raw_input ('Press return to continue...').strip()
 
 def iSWEARImNotGoingInsane():
     print '                 (__) '
@@ -216,7 +225,7 @@ def iSWEARImNotGoingInsane():
     print '         *  /\---/\ '
     print '            ~~   ~~   '
     v = raw_input('...\"Have you mooed today?\"...\n').strip()
-    if v.lower() in ['y','yes']:
+    if v.lower() in ['y','ye','es','yes']:
         print 'HOORAY! :D'
     if v.lower() in ['n','no']:
         print 'BOOOO!  D:<'
@@ -225,8 +234,14 @@ def iSWEARImNotGoingInsane():
     raw_input('Welp!  That was a complete waste of time, wasn\'t it?\nPress return to go back to doing something actually productive...')
 
 def remPlayerUI():
+    if printLeagues():
+        return 1
     ln = raw_input('Please enter the name of the league the team to remove from is in: ').strip()
+    if printTeams(ln):
+        return 1
     rn = raw_input('Please enter the name of the team to remove from: ').strip()
+    if printPlayers(ln,rn):
+        return 1
     pn = raw_input('Please enter the name of the player to remove: ').strip()
     invar=' '
     while invar.lower() not in ['y','yes','n','no']:
@@ -254,11 +269,40 @@ def remPlayerUI():
             print 'I DIDN\'T THINK SO!'
         if invar.lower() not in ['y','yes','n','no']:
             print 'Invalid input.  Please try again...'
-    raw_input ('Press return to continue...').strip()
 
 def tradePlayersUI():
+    if printLeagues():
+        return 1
+    le = raw_input('Enter the name of the league the teams are in: ').strip()
+    if printTeams(le):
+        return 1
+    t1 = raw_input('Enter the name of the team to trade from: ').strip()
+    t2 = raw_input('Enter the name of the team to trade to: ').strip()
+    if printPlayers(le,t1):
+        print 'Cannot trade from empty roster %s.' % t1
+        return 1
+    pls1=[]
+    pls2=[]
+    if not printPlayers(le,t2):
+        promptInp = ' '
+        while promptInp.lower() not in ['n','no']:
+            pls1.append(raw_input('Enter player from %s to trade: '%t1).strip())
+            promptInp = raw_input('Would you like to trade another player? (y/n): ' ).strip()
+            while promptInp.lower() not in ['y','yes','n','no']:
+                promptInp = raw_input('Invalid input.  Please try again: ').strip()
+        promptInp = ' '
+        while promptInp.lower() not in ['n','no']:
+            pls2.append(raw_input('Enter player from %s to trade: '%t2).strip())
+            promptInp = raw_input('Would you like to trade another player? (y/n): ' ).strip()
+            while promptInp.lower() not in ['y','yes','n','no']:
+                promptInp = raw_input('Invalid input.  Please try again: ').strip()
+        pls1=list(set(pls1))            #cast as set, then as list to rid of 
+        pls2=list(set(pls2))            #potential dups
+        
+        
+    else:
+        print 'do stuff!'
     print 'THIS WILL DO THINGS (when it\'s not 6:30AM in the morning and I haven\'t been up all night working on random code...) \n:D \n:D \n:D :D\n:D :D :D\n:D :D :D :D :D\n:D :D :D :D :D :D :D :D\n:D :D :D :D :D :D :D :D :D :D :D :D :D\n\n'
-    raw_input('Press return to continue...').strip()
 
 def playerPointsUI():
     playerInfo = []
@@ -270,8 +314,7 @@ def playerPointsUI():
     points = fbPlayerPoints.playerPoints(playerInfo)
     if points == float('inf'):
         print 'Player does not exist'
-    print points
-    raw_input('Press return to continue...').strip()
+    print 'Points computed: %f'% points
     return points
 
 def printLeagues():
@@ -283,10 +326,12 @@ def printLeagues():
             it=it+1
     else:
         print 'No leagues currently registered...'
-    raw_input('Press return to continue...').strip()
+        return 1
+    return 0
 
-def printTeams():
-    leagueName=getLeagueName()
+def printTeams(leagueName):
+    if leagueName is None:
+        leagueName=getLeagueName(0)
     it=1
     for i in fbTool.leagueLists:
         if i.leagueName==leagueName:
@@ -300,11 +345,14 @@ def printTeams():
                 print 'No teams registered in %s'%leagueName
         elif i==fbTool.leagueLists[-1]:
             print 'error: league not registered'
-    raw_input('Press return to continue...')
+            return 1
+    return 0
 
-def printPlayers():
-    leagueName=getLeagueName()
-    teamName=getTeamName()
+def printPlayers(leagueName,teamName):
+    if leagueName is None:
+        leagueName=getLeagueName(0)
+    if teamName is None:
+        teamName=getTeamName(leagueName)
     lfound=False
     tfound=True
     for i in fbTool.leagueLists:
@@ -318,21 +366,22 @@ def printPlayers():
                         print 'PlayerID       First Name       Last Name           NFLTeam    Position'
                     else:
                         print 'Team is empty'
+                        return 1
                     for k in j.players:
                         print '{:14s} {:16s} {:19s} {:10s} {:9s} '.format(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
                     print '%s uses %s\'s defense' %(teamName,j.defense)
 
     if not lfound:
         print 'League %s not found...' %leagueName
+        return 1
     elif not tfound:
         print 'Team %s not found...' %teamName
-
-    raw_input('Press return to continue...').strip()
-
+        return 1
+    return 0
 
 def printPts():
-    leagueName=getLeagueName()
-    teamName=getTeamName()
+    leagueName=getLeagueName(1)
+    teamName=getTeamName(leagueName)
     weekNum=int(raw_input('Please enter a week number: '))
     points=[]
     it=0
@@ -373,31 +422,30 @@ def printPts():
                     print 'Team %s not found'%teamName
         elif i==fbTool.leagueLists[-1] and not lfound:
             print 'League %s not found' %leagueName
-    raw_input('Press return to continue...').strip()
 
 def saveFileUI():
     fn=getFileName(1)
     if not fbTool.writeClassToFile(fn):
         print 'Successfully output to file %s' % fn
-        raw_input('Press return to continue...').strip()
     else:
         print 'File output failed.'
-        raw_input('Press return to continue...').strip()
 
 def loadFileUI():
     fn=getFileName(0)
     if not fbTool.readClassFromFile(fn):
         print 'Successfully read from file %s' % fn
-        raw_input('Press return to continue...').strip()
     else:
         print 'File input failed.'
-        raw_input('Press return to continue...').strip()
 
 def main():
     choice = '0'
     
     while choice != '15':
+        if choice == 'CHOOCHOO':
+            os.system('sl')
         if _platform =="linux" or _platform=="linux2":
+            if choice == 'CHOOCHOO':
+                os.system('sl')
             os.system('clear')
         elif _platform == "win32":
             os.system('cls')
@@ -405,7 +453,7 @@ def main():
             print 'This program doesn\'t run on mac...'
             sys.exit()
         print '==================================================================='
-        print 'Fantasy Football Team Tool - (UGLY) CLI interface'
+        print 'Fantasy Football Team Tool - (UGLY) Command Line Interface'
         print '==================================================================='
         print 'Please choose one of the following options:'
         print '1 - Add league to be tracked'
@@ -430,35 +478,48 @@ def main():
         if choice in ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','moo']:
             if choice=='1':
                 addLeagueUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='2':
-                ln=getLeagueName()
-                tn=getTeamName()
+                ln=getLeagueName(0)
+                tn=getTeamName(ln)
                 addRosterUI(ln,tn,[])
                 raw_input('Press return to continue...').strip()
             if choice=='3':
                 addPlayerUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='4':
                 remLeagueUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='5':
                 remRosterUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='6':
                 remPlayerUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='7':
                 tradePlayersUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='8':
                 printLeagues()
+                raw_input ('Press return to continue...').strip()
             if choice=='9':
-                printTeams()
+                printTeams(None)
+                raw_input ('Press return to continue...').strip()
             if choice=='10':
-                printPlayers()
+                printPlayers(None,None)
+                raw_input ('Press return to continue...').strip()
             if choice=='11':
                 printPts()
+                raw_input ('Press return to continue...').strip()
             if choice=='12':
                 playerPointsUI();
+                raw_input ('Press return to continue...').strip()
             if choice=='13':
                 saveFileUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='14':
                 loadFileUI()
+                raw_input ('Press return to continue...').strip()
             if choice=='15':
                 print 'exiting...\n'
             if choice.lower()=='moo': 
