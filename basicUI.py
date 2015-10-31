@@ -156,7 +156,7 @@ def addPlayerUI():
 
 def remLeagueUI():
     ln = raw_input('Please enter the name of the league you wish to remove: ').strip()
-    invar = ' '
+    invar=' '
     while invar.lower() not in ['y','yes','n','no']:
         invar=raw_input('Are you sure you want to do this?  \nYou will lose not only the league, but all of it\'s teams and their rosters! (y/n): ').strip()
         if invar.lower() in ['y','yes']:
@@ -180,18 +180,85 @@ def remLeagueUI():
     raw_input ('Press return to continue...').strip()
 
 def remRosterUI():
-#    ln = raw_input('Please enter the name of the league the team is in: ').strip()
-#    rn = raw_input('Please enter the name of the team to remove: ').strip()
-#    while invar.lower() not in ['y','yes','n','no']:
-    
-    i=0
+    ln = raw_input('Please enter the name of the league the team is in: ').strip()
+    rn = raw_input('Please enter the name of the team to remove: ').strip()
+    invar=' '
+    while invar.lower() not in ['y','yes','n','no']:
+        invar=raw_input('Are you sure you want to do this?  \nYou will lose all of teami\'s roster information! (y/n): ').strip()
+        if invar.lower() in ['y','yes']:
+            invar = raw_input('Would you like to save before doing so?(y/n): ')
+            if invar.lower() in ['y','yes']:
+                saveFileUI()
+            if invar.lower() in ['n','no']:
+                print 'IF YOU SAY SO.....'
+                invar = 'y'
+            if invar.lower() not in ['y','yes','n','no']:
+                print 'Invalid input. Please try again...'
+            else:
+                testVar = fbTool.removeRoster(ln,rn)
+                if testVar == 1:
+                    print 'LEAGUE DOESN\'T EXIST!'
+                elif testVar == 2:
+                    print 'ROSTER DOESN\'T EXIST!'
+                elif not testVar:
+                    print 'Team %s was deleted.' %rn
+        if invar.lower() in ['n','no']:
+            print 'I DIDN\'T THINK SO!'
+        if invar.lower() not in ['y','yes','n','no']:
+            print 'Invalid input.  Please try again...'
+    raw_input ('Press return to continue...').strip()
+
+def iSWEARImNotGoingInsane():
+    print '                 (__) '
+    print '                 (oo) '
+    print '           /------\/ '
+    print '          / |    ||   '
+    print '         *  /\---/\ '
+    print '            ~~   ~~   '
+    v = raw_input('...\"Have you mooed today?\"...\n').strip()
+    if v.lower() in ['y','yes']:
+        print 'HOORAY! :D'
+    if v.lower() in ['n','no']:
+        print 'BOOOO!  D:<'
+    if v.lower() == 'moo':
+        print 'THAT\'S THE SPIRIT!!!!'
+    raw_input('Welp!  That was a complete waste of time, wasn\'t it?\nPress return to go back to doing something actually productive...')
 
 def remPlayerUI():
-    i=0
+    ln = raw_input('Please enter the name of the league the team to remove from is in: ').strip()
+    rn = raw_input('Please enter the name of the team to remove from: ').strip()
+    pn = raw_input('Please enter the name of the player to remove: ').strip()
+    invar=' '
+    while invar.lower() not in ['y','yes','n','no']:
+        invar=raw_input('Are you sure you want to do this? (y/n): ').strip()
+        if invar.lower() in ['y','yes']:
+            invar = raw_input('Would you like to save before doing so?(y/n): ')
+            if invar.lower() in ['y','yes']:
+                saveFileUI()
+            if invar.lower() in ['n','no']:
+                print 'IF YOU SAY SO.....'
+                invar = 'y'
+            if invar.lower() not in ['y','yes','n','no']:
+                print 'Invalid input. Please try again...'
+            else:
+                testVar = fbTool.removePlayer(nflgame.find(pn,team=None),ln,rn)
+                if testVar == 1:
+                    print 'LEAGUE DOESN\'T EXIST!'
+                elif testVar == 2:
+                    print 'ROSTER DOESN\'T EXIST!'
+                elif testVar == 3:
+                    print 'PLAYER NOT ROSTERED ON TEAM!'
+                elif not testVar:
+                    print '%s was removed from %s.' %(pn,rn)
+        if invar.lower() in ['n','no']:
+            print 'I DIDN\'T THINK SO!'
+        if invar.lower() not in ['y','yes','n','no']:
+            print 'Invalid input.  Please try again...'
+    raw_input ('Press return to continue...').strip()
 
 def tradePlayersUI():
-    i=0
-
+    print 'THIS WILL DO THINGS (when it\'s not 6:30AM in the morning and I haven\'t been up all night working on random code...) \n:D \n:D \n:D :D\n:D :D :D\n:D :D :D :D :D\n:D :D :D :D :D :D :D :D\n:D :D :D :D :D :D :D :D :D :D :D :D :D\n\n'
+    raw_input('Press return to continue...').strip()
 
 def playerPointsUI():
     playerInfo = []
@@ -214,6 +281,8 @@ def printLeagues():
         for i in fbTool.leagueLists:
             print '%d       %s' %(it,i.leagueName)
             it=it+1
+    else:
+        print 'No leagues currently registered...'
     raw_input('Press return to continue...').strip()
 
 def printTeams():
@@ -221,11 +290,14 @@ def printTeams():
     it=1
     for i in fbTool.leagueLists:
         if i.leagueName==leagueName:
-            print 'Teams in league %s:'%leagueName
-            print '{:4s} {:11s} '.format('Team#','Team Name')
-            for j in i.rosters:
-                print '{:2d}    {:15s}'.format(it,j.rosterName)
-                it=it+1
+            if i.rosters:
+                print 'Teams in league %s:'%leagueName
+                print '{:4s} {:11s} '.format('Team#','Team Name')
+                for j in i.rosters:
+                    print '{:2d}    {:15s}'.format(it,j.rosterName)
+                    it=it+1
+            else:
+                print 'No teams registered in %s'%leagueName
         elif i==fbTool.leagueLists[-1]:
             print 'error: league not registered'
     raw_input('Press return to continue...')
@@ -249,11 +321,12 @@ def printPlayers():
                     for k in j.players:
                         print '{:14s} {:16s} {:19s} {:10s} {:9s} '.format(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
                     print '%s uses %s\'s defense' %(teamName,j.defense)
-                elif j==i.rosters[-1] and not tfound: 
-                    print 'Team %s not found'%teamName
 
-        elif i==fbTool.leagueLists[-1] and not lfound:
-            print 'League %s not found' %leagueName
+    if not lfound:
+        print 'League %s not found...' %leagueName
+    elif not tfound:
+        print 'Team %s not found...' %teamName
+
     raw_input('Press return to continue...').strip()
 
 
@@ -321,39 +394,40 @@ def loadFileUI():
         raw_input('Press return to continue...').strip()
 
 def main():
-    choice = 0
-    if _platform =="linux" or _platform=="linux2":
-        os.system('clear')
-    elif _platform == "win32":
-        os.system('cls')
-    else:
-        print 'This program doesn\'t run on mac...'
-        exit()
-    print '==================================================================='
-    print 'Fantasy Football Team Tool - CLI interface'
-    print '==================================================================='
-    print 'Please choose one of the following options:'
-    print '1 - Add league to be tracked'
-    print '2 - Add team to an existing league'
-    print '3 - Add a player to an existing team\'s roster'
-    print '4 - Delete an existing League'
-    print '5 - Delete an existing Roster'
-    print '6 - Delete an existing Player off of a Roster'
-    print '7 - Trade players between Rosters'
-    print '8 - Print a list of registered leagues'
-    print '9 - Print a list of teams registered to a given league'
-    print '10 - Print a list of a team\'s current roster'
-    print '11 - Print fantasy points for teams in a league for given week'
-    print '12 - Print a specific player\'s points'
-    print '13 - Write current league structures to a file'
-    print '14 - Read league structures from a file'
-    print '15 - Exit the program'
-    choice=raw_input('Please enter an option: ').strip()
-    if choice == '\n':
-        choice = '0'
+    choice = '0'
     
     while choice != '15':
-        if choice in ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']:
+        if _platform =="linux" or _platform=="linux2":
+            os.system('clear')
+        elif _platform == "win32":
+            os.system('cls')
+        else:
+            print 'This program doesn\'t run on mac...'
+            sys.exit()
+        print '==================================================================='
+        print 'Fantasy Football Team Tool - (UGLY) CLI interface'
+        print '==================================================================='
+        print 'Please choose one of the following options:'
+        print '1 - Add league to be tracked'
+        print '2 - Add team to an existing league'
+        print '3 - Add a player to an existing team\'s roster'
+        print '4 - Delete an existing League'
+        print '5 - Delete an existing Roster'
+        print '6 - Delete an existing Player off of a Roster'
+        print '7 - Trade players between Rosters'
+        print '8 - Print a list of registered leagues'
+        print '9 - Print a list of teams registered to a given league'
+        print '10 - Print a list of a team\'s current roster'
+        print '11 - Print fantasy points for teams in a league for given week'
+        print '12 - Print a specific player\'s points'
+        print '13 - Write current league structures to a file'
+        print '14 - Read league structures from a file'
+        print '15 - Exit the program'
+        choice=raw_input('Please enter an option: ').strip()
+        if choice == '\n':
+            choice = '0'
+
+        if choice in ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','moo']:
             if choice=='1':
                 addLeagueUI()
             if choice=='2':
@@ -368,7 +442,7 @@ def main():
             if choice=='5':
                 remRosterUI()
             if choice=='6':
-                remPlayersUI()
+                remPlayerUI()
             if choice=='7':
                 tradePlayersUI()
             if choice=='8':
@@ -387,7 +461,8 @@ def main():
                 loadFileUI()
             if choice=='15':
                 print 'exiting...\n'
- 
+            if choice.lower()=='moo': 
+                iSWEARImNotGoingInsane()
         else:
             print 'ERROR: Invalid input\n'
             raw_input('Press return to continue...').strip()
@@ -397,28 +472,4 @@ def main():
         elif _platform == "win32":
             os.system('cls')
 
-        print '==================================================================='
-        print 'Fantasy Football Team Tool - CLI interface'
-        print '==================================================================='
-        print 'Please choose one of the following options:'
-        print '1 - Add league to be tracked'
-        print '2 - Add team to an existing league'
-        print '3 - Add a player to an existing team\'s roster'
-        print '4 - Delete an existing League'
-        print '5 - Delete an existing Roster'
-        print '6 - Delete an existing Player off of a Roster'
-        print '7 - Trade players between Rosters'
-        print '8 - Print a list of registered leagues'
-        print '9 - Print a list of teams registered to a given league'
-        print '10 - Print a list of a team\'s current roster'
-        print '11 - Print fantasy points for teams in a league for given week'
-        print '12 - Print a specific player\'s points'
-        print '13 - Write current league structures to a file'
-        print '14 - Read league structures from a file'
-        print '15 - Exit the program'
-        choice = raw_input('Please enter an option: ').strip()
-    
-        if choice == '\n':
-            choice = '0'
- 
 main()
