@@ -28,43 +28,49 @@ leagueLists = []
 
 #
 #   addLeague - adds a new league to the leagueList, and checks for dups
-#   returns: 0 = success, 1 = league already exists, 2 = error
+#   returns: 0 = success, 1 = league already exists,
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
-    if leagueLists:
-        for i in leagueLists:
-            if i.leagueName is leagueName:
-                return 1
-            if i.leagueName != leagueName and i is leagueLists[-1]:
-                l = league(leagueName, [])
-                leagueLists.append(l)
-                return 0
-    else:
+    if not leagueLists:
         l=league(leagueName,[])
         leagueLists.append(l)
         return 0
 
-    return 2        #if the if statment doens't trigger, something's wrong.
+    for i in leagueLists:
+        if i.leagueName is leagueName:
+            return 1
+
+    l = league(leagueName, [])
+    leagueLists.append(l)
+    return 0
+
 #
 #   addRoster - adds a new team to an existing league.  If league doesn't
-#               exist, it adds that too.
+#               exist, it adds that too.  Note, defTeam is a list of standard
+#		team names that will be used for defense.
 #   returns: 0 = success, 1 = team already exists, 2 = league doesn't exist
+#   3+n = defense team #{0,1,2,....n} already taken by other team in league
 def addRoster(leagueName, rosterName,defTeam): 
-    if leagueLists:
-        for l in leagueLists:
-            if l.leagueName == leagueName and not l.rosters:
-                r = roster(leagueName, rosterName, [], defTeam)
-                l.rosters.append(r)
-                return 0
-            if l.leagueName == leagueName:
-                for r in l.rosters:
-                    if r.rosterName == rosterName:
-                        return 1
-                    if r.rosterName != rosterName and r == l.rosters[-1]:
-                        r = roster(leagueName, rosterName, [], defTeam)
-                        l.rosters.append(r)
-                        return 0
-                    
-            elif l == leagueLists[-1] and l.leagueName != leagueName:
+    if not leagueLists:
+        return 2
+    for l in leagueLists:
+        if l.leagueName == leagueName and not l.rosters:
+            r = roster(leagueName, rosterName, [], defTeam)
+            l.rosters.append(r)
+            return 0
+        if l.leagueName == leagueName:
+            for r in l.rosters:
+                if r.rosterName == rosterName:
+                    return 1
+                count =0
+                for x in r.defense:
+                    if x in defTeam:
+                        return (3+count)
+                    count = count +1
+            r = roster(leagueName, rosterName, [], defTeam)
+            l.rosters.append(r)
+            return 0
+                
+        elif l == leagueLists[-1] and l.leagueName != leagueName:
                 return 2
     else:
         return 2
