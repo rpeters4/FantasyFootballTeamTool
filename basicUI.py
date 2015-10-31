@@ -4,6 +4,7 @@ import os
 import fpPlayer
 import fpKicker
 import fpDefense
+import fbPlayerPoints
 from sys import platform as _platform
 
 def getLeagueName():
@@ -67,8 +68,6 @@ def addRosterUI():
                         print 'Successfully added roster %s!' % tn
                     else:
                         print 'Failed to add roster...'
-                else:
-                    print 'something is very broken'
     raw_input('Press return to continue...').strip()
                     
 def addPlayerUI():
@@ -130,6 +129,20 @@ def addPlayerUI():
                 print 'something went horribly wrong.'
 
     raw_input('Press return to continue...').strip()
+
+def playerPointsUI():
+    playerInfo = []
+    points = 0
+    playerInfo.append(raw_input("Enter player: ").strip())
+    playerInfo.append(int(raw_input("Enter year: ")))
+    w1 = raw_input("Enter week(s): ").strip()
+    playerInfo.append(map(int, w1.split()))
+    points = fbPlayerPoints.playerPoints(playerInfo)
+    if points == float('inf'):
+        print 'Player does not exist'
+    print points
+    raw_input('Press return to continue...').strip()
+    return points
 
 def printLeagues():
     if fbTool.leagueLists:
@@ -253,7 +266,9 @@ def main():
     else:
         print 'This program doesn\'t run on mac...'
         exit()
+    print '==================================================================='
     print 'Fantasy Football Team Tool - CLI interface'
+    print '==================================================================='
     print 'Please choose one of the following options:'
     print '1 - Add league to be tracked'
     print '2 - Add team to an existing league'
@@ -264,13 +279,14 @@ def main():
     print '7 - Print fantasy points for teams in a league for given week'
     print '8 - Write current league structures to a file'
     print '9 - Read league structures from a file'
-    print '10 - Exit the program'
+    print '10 - Print a specific player\'s points'
+    print '11 - Exit the program'
     choice=raw_input('Please enter an option: ').strip()
     if choice == '\n':
         choice = '0'
     
-    while choice != '10':
-        if choice in ['1','2','3','4','5','6','7','8','9','10']:
+    while choice != '11':
+        if choice in ['1','2','3','4','5','6','7','8','9','10','11']:
             if choice=='1':
                 addLeagueUI()
             if choice=='2':
@@ -290,6 +306,8 @@ def main():
             if choice=='9':
                 loadFileUI()
             if choice=='10':
+                playerPointsUI()
+            if choice=='11':
                 print 'exiting...\n'
  
         else:
@@ -299,7 +317,11 @@ def main():
         if _platform =="linux" or _platform=="linux2":
             os.system('clear')
         elif _platform == "win32":
-            os.system('cls')               
+            os.system('cls')
+
+        print '==================================================================='
+        print 'Fantasy Football Team Tool - CLI interface'
+        print '==================================================================='
         print 'Please choose one of the following options:'
         print '1 - Add league to be tracked'
         print '2 - Add team to an existing league'
@@ -310,7 +332,8 @@ def main():
         print '7 - Print fantasy points for teams in a league for given week'
         print '8 - Write current league structures to a file'
         print '9 - Read league structures from a file'
-        print '10 - Exit the program'
+        print '10 - Print a specific player\'s points'
+        print '11 - Exit the program'
         choice = raw_input('Please enter an option: ').strip()
     
         if choice == '\n':
