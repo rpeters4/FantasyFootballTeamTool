@@ -31,7 +31,7 @@ leagueLists = []
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
     if leagueLists:
         for i in leagueLists:
-            if i.leagueName is leagueName:
+            if i.leagueName == leagueName:
                 return 1
             if i.leagueName != leagueName and i is leagueLists[-1]:
                 l = league(leagueName, [])

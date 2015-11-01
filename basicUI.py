@@ -5,6 +5,7 @@ import fpPlayer
 import fpKicker
 import design
 import createLeague
+import basicUI
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
@@ -245,30 +246,35 @@ class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
     def __init__(self, parent=None):
         super(createLeague, self).__init__(parent)
         self.setupUi(self)
-##        self.initUI()
-##        
-##    def initUI(self):      
-##
-##        #self.btn = QtGui.QPushButton('Create', self)
-##        self.btn.move(20, 20)
-##        self.btn.clicked.connect(self.showDialog)
-##        
-##        #self.le = QtGui.QLineEdit(self)
-##        self.le.move(130, 22)
-##        
-##        self.setGeometry(300, 300, 290, 150)
-##        self.setWindowTitle('Create A League')
-##        self.show()
-##        
-##    def showDialog(self):
-##        
-##        text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
-##            'Enter your league name:')
-##        
-##        if ok:
-##            self.le.setText("League created!")
-##        else:
-##            self.le.setText("League already exists.")
+        self.initUI()
+        
+    def initUI(self):      
+
+        #self.btn = QtGui.QPushButton('Create', self)
+        #self.btn.move(20, 20)
+        self.btn.clicked.connect(self.showDialog)
+        
+        #self.le = QtGui.QLineEdit(self)
+        #self.le.move(130, 22)
+        
+        self.setGeometry(300, 300, 700, 200)
+        self.setWindowTitle('Create A League')
+        self.show()
+        
+    def showDialog(self):
+        
+        text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
+            'Enter your league name:')
+        testVar=basicUI.fbTool.addLeague(text)
+        if testVar == 0:
+            self.le2.setText(text + " has been created!")
+            self.showDialog()
+        else:
+            #self.le2.setText("Failed to add league...")
+            if testVar == 1:
+                self.le2.setText("League " + text + " already exists.")
+            if testVar == 2:
+                self.le2.setText("Something is broken.")
 
 def main():
     choice = 0
