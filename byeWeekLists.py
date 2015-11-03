@@ -1,6 +1,6 @@
 week4 = ['TEN', 'NE', 4]
 week5 = ['CAR', 'MIA', 'MIN', 'NYJ', 5]
-week6 = ['DAL', 'OAK', 'STL', 'TN', 6]
+week6 = ['DAL', 'OAK', 'STL', 'TB', 6]
 week7 = ['CHI', 'CIN', 'DEN', 'GB', 7]
 week8 = ['BUF', 'JAC', 'PHI', 'WAS', 8]
 week9 = ['ARI', 'BAL', 'DET', 'HOU', 'KC', 'SEA', 9]
