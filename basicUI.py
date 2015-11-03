@@ -406,7 +406,7 @@ def printPlayers(leagueName,teamName):
     return 0
 
 def printPts():
-    leagueName=getLeagueName(1)
+    leagueName=getLeagueName(0)
     teamName=getTeamName(leagueName)
     weekNum=int(raw_input('Please enter a week number: '))
     points=[]
