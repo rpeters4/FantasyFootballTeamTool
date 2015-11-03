@@ -3,7 +3,7 @@ import fpDefense
 import fpKicker
 import fbTool
 import nflgame
-import timeit
+import time
 
 def fpTeamPoints(roster):
     return fpDefense.fpDefense(roster.defense[0],2015,1)
@@ -43,10 +43,10 @@ fbTool.addRoster('t','t30',['NYG'])
 fbTool.addRoster('t','t31',['PIT'])
 raw_input ('Press return to continue...')
 
-start = timeit.default_timer()
+start = time.time()
 for i in fbTool.leagueLists[0].rosters:
     print 'defense = %s'% i.defense[0]
     print fpTeamPoints(i)
-stop = timeit.default_timer()
+stop = time.time()
 
-print 'Time to compute the defense scores for 31 teams: %d' %(stop-start)
+print 'Time to compute the defense scores for 31 teams: %s' %(stop-start)
