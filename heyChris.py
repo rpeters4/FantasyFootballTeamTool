@@ -18,7 +18,7 @@ fbTool.addRoster('t','t5',['NYJ'])
 fbTool.addRoster('t','t6',['DAL'])
 fbTool.addRoster('t','t7',['OAK'])
 fbTool.addRoster('t','t8',['STL'])
-#fbTool.addRoster('t','t9',['TN'])  doesn't exist?  it's on the byeweeklist tho...
+fbTool.addRoster('t','t9',['TB'])  #doesn't exist?  it's on the byeweeklist tho...
 fbTool.addRoster('t','t10',['CHI'])
 fbTool.addRoster('t','t11',['CIN'])
 fbTool.addRoster('t','t12',['DEN'])
@@ -49,4 +49,4 @@ for i in fbTool.leagueLists[0].rosters:
     print fpTeamPoints(i)
 stop = time.time()
 
-print 'Time to compute the defense scores for 31 teams: %s' %(stop-start)
+print 'Time to compute the defense scores for 32 teams: %s' %(stop-start)
