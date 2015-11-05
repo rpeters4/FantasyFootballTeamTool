@@ -5,23 +5,49 @@ import fpKicker
 import fpPlayer
 import fpDefense
 import fbPlayerPoints
+import PyQt4.QtCore
 from PyQt4.QtGui import *
 from PyQt4.QtCore import pyqtSlot
 
-
+#global variables (bad practice?  EHHHHHH)
 a=QApplication(sys.argv)        #app window
 w=QMainWindow()                 #base class for all UI objects in pyqt
-leagues=[]
-teams=[]
-players=[]
+w.setFixedSize(800,600)
+w.setWindowTitle("FFB team tool v 0.0.1")   #title for the window
+tree=QTreeWidget()
 
-#def quitiNoSave:
-#    result = QMessageBox.question()
+
+def updateTree():
+    leagueCt = 0
+    leagueItems=[]
+    teamItems=[]
+    playerItems=[]
+    t=QTreeWidget()
+    head = QTreeWidgetItem(t)
+    head.setText(0,'Leagues:')
+    t.setHeaderItem(head)
+    t.setHeaderLabels(['','League Name','Team Name','Player Name'])
+
+    for i in fbTool.leagueLists:
+        ins = QTreeWidgetItem(t)
+        ins.setText(1,i.leagueName)
+        for j in i.rosters:
+            ins1 = QTreeWidgetItem(t)
+            ins1.setText(2,j.rosterName)
+            teamItems.append(ins1)
+            ins.addChild(teamItems[len(teamItems)-1])
+            for k in j.players:
+                ins2 = QTreeWidgetItem(t)
+                ins2.setText(3,(k.firstName + ' ' + k.lastName))
+                playerItems.append(ins2)
+                ins1.addChild(playerItems[len(playerItems)-1])
+        leagueItems.append(ins)
+        head.addChild(leagueItems[len(leagueItems)-1])
+    print 'successfully updated tree..'
+    return t
+
 def bt1():          #add new league
-    basicUI.printLeagues()
-    basicUI.printTeams('nfl')
-    basicUI.printTeams('t')
-    basicUI.printPlayers('nfl','bills')
+    
     i=0
 def bt2():          #Add new roster
 
@@ -97,95 +123,110 @@ def bt11():         #quit without saving
         sys.exit()
 
 def guiMenu():
-    
-#    a=QApplication(sys.argv)        #app window
-#    w=QMainWindow()                 #base class for all UI objects in pyqt
-    w.setFixedSize(800,600)
-    w.setWindowTitle("FFB team tool v 0.0.1")   #title for the window
+###################TEST LINE########################
+    fbTool.readClassFromFile('bills.txt')###########
+####################################################
 
+#declare menubar, doesn't work?
     mBar = w.menuBar()
     fileMenu = mBar.addMenu('&File') 
 
+#Tree view stuff
+    tree = updateTree()
+    dockWidget= PyQt4.QtGui.QDockWidget()
+    dockWidget.setWidget(tree)
+    dockWidget.setMaximumWidth(540)
+    w.addDockWidget(PyQt4.QtCore.Qt.LeftDockWidgetArea,dockWidget)
+
+#menuBar, doesn't work?
     quitButton = QAction(QIcon('exit24.png'),'Quit',w)
     quitButton.setShortcut('Ctrl+Q')
     quitButton.setStatusTip('Exits program without saving')
     quitButton.triggered.connect(w.close)
     fileMenu.addAction(quitButton)
 
-    button7 = QPushButton('Compare Points Between Teams',w) #declared here cos it's long
- 
+#BUTTONS!
     button1 = QPushButton('Add new league',w)
-    button1.setToolTip('')
-    button1.clicked.connect(bt1)
-    button1.resize(button7.sizeHint())
-    button1.move(15,10)
-
     button2 = QPushButton('Add roster to league',w)
-    button2.setToolTip('This\' do stuff later!')
-    button2.clicked.connect(bt2)
-    button2.resize(button7.sizeHint())
-    button2.move(15,60)
-
     button3 = QPushButton('Update roster info',w)
-    button3.setToolTip('')
-    button3.clicked.connect(bt3)
-    button3.resize(button7.sizeHint())
-    button3.move(15,110)
-
     button4 = QPushButton('Remove League',w)
-    button4.setToolTip('')
-    button4.clicked.connect(bt4)
-    button4.resize(button7.sizeHint())
-    button4.move(15,160)
-
     button5 = QPushButton('Remove Team',w)
-    button5.setToolTip('')
-    button5.clicked.connect(bt5)
-    button5.resize(button7.sizeHint())
-    button5.move(15,210)
-
     button6 = QPushButton('Trade Between Teams',w)
-    button6.setToolTip('')
-    button6.clicked.connect(bt6)
-    button6.resize(button7.sizeHint())
-    button6.move(15,260)
-
-    button7.setToolTip('')
-    button7.clicked.connect(bt7)
-    button7.resize(button7.sizeHint())
-    button7.move(15,310)
-
+    button7 = QPushButton('Compare Points Between Teams',w) #declared here cos it's long
     button8 = QPushButton('Save to File',w)
-    button8.setToolTip('')
-    button8.clicked.connect(bt8)
-    button8.resize(button7.sizeHint())
-    button8.move(15,360)
-
     button9 = QPushButton('Load from File(append)',w)
-    button9.setToolTip('')
-    button9.clicked.connect(bt9)
-    button9.resize(button7.sizeHint())
-    button9.move(15,410)
-
     button10 = QPushButton('Load from File(replace)',w)
-    button10.setToolTip('')
-    button10.clicked.connect(bt10)
-    button10.resize(button7.sizeHint())
-    button10.move(15,460)
-
     button11 = QPushButton('Save And Quit',w)
-    button11.setToolTip('')
-    button11.clicked.connect(bt11)
-    button11.resize(button7.sizeHint())
-    button11.move(15,510)
-
     button12 = QPushButton('Quit without saving',w)
+#BUTTON HOVER OVER TEXT
+    button1.setToolTip('')
+    button2.setToolTip('This\' do stuff later!')
+    button3.setToolTip('')
+    button4.setToolTip('')
+    button5.setToolTip('')
+    button6.setToolTip('')
+    button7.setToolTip('')
+    button8.setToolTip('')
+    button9.setToolTip('')
+    button10.setToolTip('')
+    button11.setToolTip('')
     button12.setToolTip('')
-    button12.clicked.connect(bt11)
-    button12.resize(button7.sizeHint())
-    button12.move(15,560)
-
+#BUTTON WAS CLICKED
+    button1.clicked.connect(bt1)
+    button2.clicked.connect(bt2)
+    button3.clicked.connect(bt3)
+    button4.clicked.connect(bt4)
+    button5.clicked.connect(bt5)
+    button6.clicked.connect(bt6)
+    button7.clicked.connect(bt7)
+    button8.clicked.connect(bt8)
+    def bu9():
+        tree.close()
+        print 'closed the tree...'
+        bt9()
+        tree = updateTree()
+        tree.show()
+    button9.clicked.connect(bu9)
+    def bu10():
+        tree.close()
+        print 'closed the tree...'
+        bt10()
+        tree = updateTree()
+        tree.show()
+    button10.clicked.connect(bu10)
+    button11.clicked.connect(bt11)
+    button12.clicked.connect(bt11)    
     
+#BUTTON SIZES
+    button1.resize(button7.sizeHint())
+    button2.resize(button7.sizeHint())
+    button3.resize(button7.sizeHint())
+    button4.resize(button7.sizeHint())
+    button5.resize(button7.sizeHint())
+    button6.resize(button7.sizeHint())
+    button7.resize(button7.sizeHint())
+    button8.resize(button7.sizeHint())
+    button9.resize(button7.sizeHint())
+    button10.resize(button7.sizeHint())
+    button11.resize(button7.sizeHint())
+    button12.resize(button7.sizeHint())
+#BUTTON POSITIONS
+    button1.move(550,10)
+    button2.move(550,60)
+    button3.move(550,110)
+    button4.move(550,160)
+    button5.move(550,210)
+    button6.move(550,260)
+    button7.move(550,310)
+    button8.move(550,360)
+    button9.move(550,410)
+    button10.move(550,460)
+    button11.move(550,510)
+    button12.move(550,560)
+    w.show()
+    #tree=updateTree()
+
+
 
     w.show()    #shows the window
 
