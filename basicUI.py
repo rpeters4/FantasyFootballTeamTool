@@ -8,6 +8,7 @@ import createLeague
 import basicUI
 import listLeague
 import addRoster
+import writeFile
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
@@ -240,9 +241,11 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
         self.addLeague.clicked.connect(self.handleButton)
         self.leagueList.clicked.connect(self.lgButton)
         self.addTeam.clicked.connect(self.teamButton)
+        self.writeFile.clicked.connect(self.writeButton)
         self.window2 = None
         self.window3 = None
         self.window4 = None
+        self.window5 = None
     def handleButton(self):
         if self.window2 is None:
             self.window2 = createLeague(self)
@@ -254,6 +257,65 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
     def teamButton(self):
         if self.window4 is None:
             self.window4 = addRoster(self)
+    def writeButton(self):
+        if self.window5 is None:
+            self.window5 = writeFile(self)
+
+class writeFile(QtGui.QMainWindow, writeFile.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(writeFile, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+        
+    def initUI(self):      
+
+        #self.btn = QtGui.QPushButton('Create', self)
+        #self.btn.move(20, 20)
+        self.btn.clicked.connect(self.showDialog)
+        
+        #self.le = QtGui.QLineEdit(self)
+        #self.le.move(130, 22)
+        
+        self.setGeometry(300, 300, 750, 200)
+        self.setWindowTitle('Write file to disk')
+        self.show()
+        
+    def showDialog(self):
+        
+        fn, ok = QtGui.QInputDialog.getText(self, 'Write file to disk', 
+            'Enter filename:')
+        if not fbTool.writeClassToFile(fn):
+            self.le.setText("Successfully output to file " + fn)
+        else:
+            self.le.setText("File input failed.")
+
+class loadFile(QtGui.QMainWindow, loadFile.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(loadFile, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+        
+    def initUI(self):      
+
+        #self.btn = QtGui.QPushButton('Create', self)
+        #self.btn.move(20, 20)
+        self.btn.clicked.connect(self.showDialog)
+        
+        #self.le = QtGui.QLineEdit(self)
+        #self.le.move(130, 22)
+        
+        self.setGeometry(300, 300, 750, 200)
+        self.setWindowTitle('Load file from disk')
+        self.show()
+        
+    def showDialog(self):
+        
+        fn, ok = QtGui.QInputDialog.getText(self, 'Load file from disk', 
+            'Enter filename to load:')
+        if not fbTool.writeClassToFile(fn):
+            self.le.setText("Successfully loaded file " + fn)
+        else:
+            self.le.setText("File load failed.")
 
 class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -270,7 +332,7 @@ class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
         #self.le = QtGui.QLineEdit(self)
         #self.le.move(130, 22)
         
-        self.setGeometry(300, 300, 700, 200)
+        self.setGeometry(300, 300, 750, 200)
         self.setWindowTitle('Add Team to League')
         self.show()
         
@@ -287,6 +349,9 @@ class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
             self.le.setText("Failed to add team...")
             if testVar == 1:
                 self.le.setText("Team " + text1 + " already exists in league " + text)
+            if testVar == 2:
+                self.le.setText("League " + text + " does not exist. Choose 'Add league to be tracked' button on main menu to add it.")
+            
             
         
 class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
@@ -351,6 +416,7 @@ def main():
     form = ExampleApp()
     form.show()
     app.exec_()
+    sys.exit(app.exec_())
 ##    print 'Fantasy Football Team Tool - CLI interface'
 ##    print 'Please choose one of the following options:'
 ##    print '1 - Add league to be tracked'

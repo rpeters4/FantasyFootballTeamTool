@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'addRoster.ui'
+# Form implementation generated from reading ui file 'writeFile.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -25,21 +25,24 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(800, 600)
+        MainWindow.resize(561, 369)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        self.btn = QtGui.QPushButton(self.centralwidget)
+        self.btn.setGeometry(QtCore.QRect(190, 70, 75, 23))
+        self.btn.setObjectName(_fromUtf8("btn"))
+        self.label = QtGui.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(100, 70, 91, 16))
+        self.label.setObjectName(_fromUtf8("label"))
         self.le = QtGui.QLineEdit(self.centralwidget)
-        self.le.setGeometry(QtCore.QRect(190, 100, 511, 21))
+        self.le.setGeometry(QtCore.QRect(190, 110, 151, 20))
         self.le.setObjectName(_fromUtf8("le"))
         self.label_2 = QtGui.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(140, 100, 51, 20))
+        self.label_2.setGeometry(QtCore.QRect(100, 110, 71, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.btn = QtGui.QPushButton(self.centralwidget)
-        self.btn.setGeometry(QtCore.QRect(140, 70, 121, 23))
-        self.btn.setObjectName(_fromUtf8("btn"))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 561, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -51,6 +54,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
-        self.label_2.setText(_translate("MainWindow", "Status:", None))
-        self.btn.setText(_translate("MainWindow", "Add team to league", None))
+        self.btn.setText(_translate("MainWindow", "Save", None))
+        self.label.setText(_translate("MainWindow", "Click to save file:", None))
+        self.label_2.setText(_translate("MainWindow", "File Status:", None))
 
