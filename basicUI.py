@@ -6,6 +6,8 @@ import fpKicker
 import design
 import createLeague
 import basicUI
+import listLeague
+import addRoster
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
@@ -236,11 +238,56 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
         super(ExampleApp, self).__init__(parent)
         self.setupUi(self)
         self.addLeague.clicked.connect(self.handleButton)
+        self.leagueList.clicked.connect(self.lgButton)
+        self.addTeam.clicked.connect(self.teamButton)
         self.window2 = None
+        self.window3 = None
+        self.window4 = None
     def handleButton(self):
         if self.window2 is None:
             self.window2 = createLeague(self)
         self.window2.show()
+    def lgButton(self):
+        if self.window3 is None:
+            self.window3 = listLeague(self)
+        self.window3.show()
+    def teamButton(self):
+        if self.window4 is None:
+            self.window4 = addRoster(self)
+
+class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(addRoster, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+        
+    def initUI(self):      
+
+        #self.btn = QtGui.QPushButton('Create', self)
+        #self.btn.move(20, 20)
+        self.btn.clicked.connect(self.showDialog)
+        
+        #self.le = QtGui.QLineEdit(self)
+        #self.le.move(130, 22)
+        
+        self.setGeometry(300, 300, 700, 200)
+        self.setWindowTitle('Add Team to League')
+        self.show()
+        
+    def showDialog(self):
+        
+        text, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 
+            'Enter your league name:')
+        text1, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 'Enter your team name:')
+        testVar=basicUI.fbTool.addRoster(text,text1)
+        if not testVar:
+            self.le.setText("Succesfully added roster " + text1 + "!")
+            #self.showDialog()
+        else:
+            self.le.setText("Failed to add team...")
+            if testVar == 1:
+                self.le.setText("Team " + text1 + " already exists in league " + text)
+            
         
 class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -268,13 +315,28 @@ class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
         testVar=basicUI.fbTool.addLeague(text)
         if testVar == 0:
             self.le2.setText(text + " has been created!")
-            self.showDialog()
+            #self.showDialog()
         else:
             #self.le2.setText("Failed to add league...")
             if testVar == 1:
                 self.le2.setText("League " + text + " already exists.")
             if testVar == 2:
                 self.le2.setText("Something is broken.")
+
+class listLeague(QtGui.QMainWindow, listLeague.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(listLeague, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+        
+    def initUI(self):
+        self.bttn.clicked.connect(self.showDialog)
+        self.setGeometry(300, 300, 700, 700)
+        self.setWindowTitle('List of Existing Leagues')
+        self.show()
+
+    def showDialog(self):
+        text, ok = QtGui.QInputDialog.getText(self, 'List of Leagues')
 
 def main():
     choice = 0
