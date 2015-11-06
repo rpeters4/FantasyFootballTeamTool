@@ -15,12 +15,11 @@ def playerPoints(playerInfo):
         for i in playerInfo[2]:
             if str(i).isdigit():
                 weeksPlayed = weeksPlayed + 1
-        for w in byeWeekLists.byeWeeks:
-            for t in w:
-                curWeek = nflgame.live.current_year_and_week()[1]
-                if w[-1] <= curWeek and nflgame.find(playerInfo[0], team=None)[0].team == t and w[-1] in playerInfo[2]:
-                    weeksPlayed1 = weeksPlayed1 - 1
-                    break
+        curWeek = nflgame.live.current_year_and_week()[1]
+        if len(playerInfo[2]) == 1 and playerInfo[2][0] == byeWeekLists.byeCheckPlayer(playerFound[0]):
+            return float(18742)
+        if byeWeekLists.byeCheckPlayer(playerFound[0]) <= curWeek and byeWeekLists.byeCheckPlayer(playerFound[0]) in playerInfo[2]:
+            weeksPlayed = weeksPlayed - 1
         average = points / weeksPlayed
         return average
     elif playerInfo[0] != None:
@@ -29,12 +28,14 @@ def playerPoints(playerInfo):
             return float('inf')
         playerInfo[0] = team
         points = fpDefense.fpDefense(playerInfo[0], playerInfo[1], playerInfo[2])
-        weeksPlayed = nflgame.live.current_year_and_week()[1]
+        for i in playerInfo[2]:
+            if str(i).isdigit():
+                weeksPlayed = weeksPlayed + 1
         curWeek = nflgame.live.current_year_and_week()[1]
-        for w in byeWeekLists.byeWeeks:
-            for t in w:
-                if w[-1] <= curWeek and t == playerInfo[0] and w[-1] in playerInfo[2]:
-                    weeksPlayed = weeksPlayed - 1
+        if len(playerInfo[2]) == 1 and playerInfo[2][0] == byeWeekLists.byeCheckTeam(playerInfo[0]):
+            return float(18742)
+        if byeWeekLists.byeCheckTeam(playerInfo[0]) <= curWeek and byeWeekLists.byeCheckTeam(playerInfo[0]) in playerInfo[2]:
+            weeksPlayed = weeksPlayed - 1
         return points / weeksPlayed
     else:
         return float('inf')

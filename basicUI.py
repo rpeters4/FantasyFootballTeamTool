@@ -340,6 +340,9 @@ def playerPointsUI():
     points = fbPlayerPoints.playerPoints(playerInfo)
     if points == float('inf'):
         print 'Player does not exist'
+    if points == float(18742):
+        print 'Points computed 0'
+        return 0
     print 'Points computed: %f'% points
     return points
 
