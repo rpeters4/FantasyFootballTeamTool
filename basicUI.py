@@ -8,7 +8,9 @@ import createLeague
 import basicUI
 import listLeague
 import addRoster
+import addPlayer
 import writeFile
+import loadFile
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
@@ -238,15 +240,20 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
     def __init__(self, parent=None):
         super(ExampleApp, self).__init__(parent)
         self.setupUi(self)
-        self.addLeague.clicked.connect(self.handleButton)
+        self.addLeague.clicked.connect(self.leagueButton)
         self.leagueList.clicked.connect(self.lgButton)
         self.addTeam.clicked.connect(self.teamButton)
         self.writeFile.clicked.connect(self.writeButton)
+        self.readFile.clicked.connect(self.readButton)
+        self.addPlayer.clicked.connect(self.playerButton)
+        self.exit.clicked.connect(self.exitprog)
         self.window2 = None
         self.window3 = None
         self.window4 = None
         self.window5 = None
-    def handleButton(self):
+        self.window6 = None
+        self.window7 = None
+    def leagueButton(self):
         if self.window2 is None:
             self.window2 = createLeague(self)
         self.window2.show()
@@ -260,6 +267,55 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
     def writeButton(self):
         if self.window5 is None:
             self.window5 = writeFile(self)
+    def readButton(self):
+        if self.window6 is None:
+            self.window6 = loadFile(self)
+    def playerButton(self):
+        if self.window7 is None:
+            self.window7 = addPlayer(self)
+    def exitprog(self):
+        sys.exit()
+
+class addPlayer(QtGui.QMainWindow, addPlayer.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(addPlayer, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+        
+    def initUI(self):      
+
+        #self.btn = QtGui.QPushButton('Create', self)
+        #self.btn.move(20, 20)
+        self.btn.clicked.connect(self.showDialog)
+        
+        #self.le = QtGui.QLineEdit(self)
+        #self.le.move(130, 22)
+        
+        self.setGeometry(300, 300, 750, 200)
+        self.setWindowTitle('Add Player to Team')
+        self.show()
+        
+    def showDialog(self):
+
+        text, ok = QtGui.QInputDialog.getText(self, 'Add Player to League', 'Enter the name of your league:') 
+        text1, ok = QtGui.QInputDialog.getText(self, 'Add Player to League', 'Enter the name of your team:')
+        text2, ok = QtGui.QInputDialog.getText(self, 'Add Player to League', 
+            'Enter name of player you wish to add:')
+        text3, ok = QtGui.QInputDialog.getText(self, 'Add Player to League', 'Enter the team name of that player:')
+        #self.le.setText(text+text1+text2+text3)
+        testVar=fbTool.addPlayer(text,text1,text2,text3)
+        if not testVar:
+            self.le.setText("Succesfully added " + text2 + " to " + text1 + " from league " + text)
+        if testVar == 1:
+            self.le.setText("Player already rostered in league " + text)
+        if testVar == 2:
+            self.le.setText("Player " + text2 + " not found in database")
+        if testVar == 3:
+            self.le.setText("Team does not exist.")
+        if testVar == 4:
+            self.le.setText("League does not exist.")
+        else:
+            self.le.setText("Failed to add player...")
 
 class writeFile(QtGui.QMainWindow, writeFile.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -312,10 +368,11 @@ class loadFile(QtGui.QMainWindow, loadFile.Ui_MainWindow):
         
         fn, ok = QtGui.QInputDialog.getText(self, 'Load file from disk', 
             'Enter filename to load:')
-        if not fbTool.writeClassToFile(fn):
+        if not fbTool.readClassFromFile(fn):
             self.le.setText("Successfully loaded file " + fn)
         else:
             self.le.setText("File load failed.")
+
 
 class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
     def __init__(self, parent=None):
