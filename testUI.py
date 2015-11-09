@@ -69,8 +69,10 @@ def bt5():          #Remove roster
 def bt6():          #Trade between rosters 
     print 'trade UI will go here'
     i=0
-def bt7():          #compare points
-    print 'point comparison menu will go here'  
+def bt7():          #compare two units here.
+    print 'point comparison menu will go here'
+    if fbTool.leagueLists:
+        
     i=0
 def bt8():          #save
     if fbTool.leagueLists:
