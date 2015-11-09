@@ -4,7 +4,6 @@ version history:
     0.0.5   -   save and load functions implemented
     0.1.0   -   added in the tree display functionality.  Looks pretty OK!
 '''
-
 import sys
 import fbTool
 import fpKicker
@@ -131,7 +130,7 @@ def bt12():         #quit without saving
     else:
         sys.exit()
 
-def guiMenu():
+def mainMenu():
 #declare menubar, doesn't work?
     mBar = w.menuBar()
     fileMenu = mBar.addMenu('&File') 
@@ -224,3 +223,4 @@ def guiMenu():
     w.show()    #shows the window
 
     sys.exit(a.exec_())
+
