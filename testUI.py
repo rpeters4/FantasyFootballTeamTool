@@ -51,11 +51,8 @@ def updateTree():
 
     dockWidget.update()
 
-def bt1(self):          #add new league
+def bt1():          #add new league
     print 'add league goes here'
-    if fbTool.leagueLists:
-        leagueName = QInputDialog.getText()
-        testVar=fbTool.addleague(leagueName)
     i=0
 def bt2():          #Add new roster
     print 'add roster goes here'
