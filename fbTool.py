@@ -6,10 +6,12 @@ class league:
         self.leagueName = leagueName
 
 class roster:
-    def __init__(self, leagueName, rosterName, players):
+    def __init__(self, leagueName, rosterName, players, defense):
             self.leagueName = leagueName
             self.rosterName = rosterName
             self.players = players
+            self.defense = defense
+
 
 class player:
     def __init__(self, player_id, firstName, lastName, team, position):
@@ -27,43 +29,53 @@ leagueLists = []
 
 #
 #   addLeague - adds a new league to the leagueList, and checks for dups
-#   returns: 0 = success, 1 = league already exists, 2 = error
+#   returns: 0 = success, 1 = league already exists,
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
-    if leagueLists:
-        for i in leagueLists:
-            if i.leagueName == leagueName:
-                return 1
-            if i.leagueName != leagueName and i is leagueLists[-1]:
-                l = league(leagueName, [])
-                leagueLists.append(l)
-                return 0
-    else:
+    if not leagueLists:
         l=league(leagueName,[])
         leagueLists.append(l)
         return 0
 
-    return 2        #if the if statment doens't trigger, something's wrong.
+    for i in leagueLists:
+        if i.leagueName == leagueName:
+            return 1
+
+    l = league(leagueName, [])
+    leagueLists.append(l)
+    return 0
+
 #
 #   addRoster - adds a new team to an existing league.  If league doesn't
-#               exist, it adds that too.
+#               exist, it adds that too.  Note, defTeam is a list of standard
+#		team names that will be used for defense.
 #   returns: 0 = success, 1 = team already exists, 2 = league doesn't exist
-def addRoster(leagueName, rosterName): 
-    if leagueLists:
-        for l in leagueLists:
-            if l.leagueName == leagueName and not l.rosters:
-                r = roster(leagueName, rosterName, [])
-                l.rosters.append(r)
-                return 0
-            if l.leagueName == leagueName:
-                for r in l.rosters:
-                    if r.rosterName == rosterName:
-                        return 1
-                    if r.rosterName != rosterName and r == l.rosters[-1]:
-                        r = roster(leagueName, rosterName, [])
-                        l.rosters.append(r)
-                        return 0
-                    
-            elif l == leagueLists[-1] and l.leagueName != leagueName:
+#   3+n = defense team #{0,1,2,....n} already taken by other team in league
+def addRoster(leagueName, rosterName, defTeam): 
+    if not leagueLists:
+        return 2
+    for l in leagueLists:
+        if l.leagueName == leagueName and not l.rosters:
+            r = roster(leagueName, rosterName, [], [])
+            for de in defTeam:
+                r.defense.append(de)
+            l.rosters.append(r)
+            return 0
+        if l.leagueName == leagueName:
+            for r in l.rosters:
+                if r.rosterName == rosterName:
+                    return 1
+                count =0
+                for x in defTeam:
+                    if x in r.defense:
+                        return 3+count
+                    count = count + 1
+            r = roster(leagueName, rosterName, [], [])
+            for de in defTeam:
+                r.defense.append(de)
+            l.rosters.append(r)
+            return 0
+                
+        elif l == leagueLists[-1] and l.leagueName != leagueName:
                 return 2
     else:
         return 2
@@ -107,7 +119,8 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
 #
 #   writeClassToFile and readClassToFile should be self explanitory
 #   in their functions...
-#   returns: 0= success, 1=trying to write/read nothing to/from file 2 = failed to open file
+#   returns: 0 = success, 1=trying to write/read nothing to/from file 2 = failed to open file
+#   3 = invalid file format (read)
 
 def writeClassToFile(fileName):
     if not leagueLists:
@@ -123,6 +136,9 @@ def writeClassToFile(fileName):
                 for j in i.rosters:
                     wFile.write('NEWROSTER\n')
                     wFile.write(j.rosterName+'\n')
+                    for l in j.defense:
+                        wFile.write(l+'\n')
+                    wFile.write('ENDDEF\n')
                     for k in j.players:
                         wFile.write('NEWPLAYER\n')
                         wFile.write(k.firstName+' '+k.lastName+' '+k.team+'\n')
@@ -138,6 +154,8 @@ def readClassFromFile(fileName):
     else:
         fileText=rFile.read()
         splitText=fileText.splitlines()
+        if splitText[0] != 'NEWLEAGUE':
+            return 3
         for i in range(0,len(splitText)):
             if splitText[i] == 'NEWLEAGUE':
                 i=i+1
@@ -149,7 +167,14 @@ def readClassFromFile(fileName):
                     if splitText[j] == 'NEWROSTER':
                         j=j+1
                         rosterName=splitText[j]
-                        addRoster(leagueName,rosterName)
+                        defen = []
+                        j=j+1
+                        while splitText[j]!='ENDDEF':
+                            defName = splitText[j]
+                            defen.append(defName)
+                            j=j+1
+                        j=j+1
+                        addRoster(leagueName,rosterName,defen)
                         for k in range(j,len(splitText)):
                             if splitText[k] == 'NEWROSTER' or splitText[k] == 'NEWLEAGUE':
                                 break
