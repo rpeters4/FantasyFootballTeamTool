@@ -7,7 +7,6 @@ version history:
 
 import sys
 import fbTool
-import basicUI
 import fpKicker
 import fpPlayer
 import fpDefense
