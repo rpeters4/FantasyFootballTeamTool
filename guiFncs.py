@@ -128,7 +128,7 @@ class removeLeague(QtGui.QMainWindow, removeLeague.Ui_MainWindow):
     def showDialog(self):
         text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
             'Enter League to be Removed:')
-        testVar=fbTool.addLeague(text)
+        testVar=fbTool.removeLeague(text)
         if testVar == 0:
             self.le2.setText(text + " has been removed!")
             #self.showDialog()
