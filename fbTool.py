@@ -31,19 +31,7 @@ leagueLists = []
 #   addLeague - adds a new league to the leagueList, and checks for dups
 #   returns: 0 = success, 1 = league already exists,
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
-<<<<<<< HEAD
     if not leagueLists:
-=======
-    if leagueLists:
-        for i in leagueLists:
-            if i.leagueName == leagueName:
-                return 1
-            if i.leagueName != leagueName and i is leagueLists[-1]:
-                l = league(leagueName, [])
-                leagueLists.append(l)
-                return 0
-    else:
->>>>>>> refs/remotes/origin/Glenbranch
         l=league(leagueName,[])
         leagueLists.append(l)
         return 0
@@ -131,7 +119,8 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
 #
 #   writeClassToFile and readClassToFile should be self explanitory
 #   in their functions...
-#   returns: 0= success, 1=trying to write/read nothing to/from file 2 = failed to open file
+#   returns: 0 = success, 1=trying to write/read nothing to/from file 2 = failed to open file
+#   3 = invalid file format (read)
 
 def writeClassToFile(fileName):
     if not leagueLists:
@@ -165,6 +154,8 @@ def readClassFromFile(fileName):
     else:
         fileText=rFile.read()
         splitText=fileText.splitlines()
+        if splitText[0] != 'NEWLEAGUE':
+            return 3
         for i in range(0,len(splitText)):
             if splitText[i] == 'NEWLEAGUE':
                 i=i+1
