@@ -114,51 +114,30 @@ def addRosterUI(ln,tn,defense):
 def addPlayerUI():
     ln=getLeagueName(0)
     tn=getTeamName(ln)
-    printPlayers(ln,tn)
-    plName=raw_input('Please input the desired player to add\'s name: ')
-    plTeam=raw_input('Please input the desired player\'s NFL team: ')
-    testVar=fbTool.addPlayer(ln,tn,plName,plTeam)
-    if not testVar:
-        print 'Succesfully added %s to %s from league %s' % (plName,tn,ln)
-    else:
-        print 'Failed to add player...'
-    if testVar == 1:
-        print 'Player already rostered in league %s'%ln
-    if testVar == 2:
-        print 'Player %s not found in database'%plName
-    if testVar == 3:
-        print 'Team does not exist.'
-        userInVar = ' '
-        while userInVar.lower() not in ['y','yes','n','no']:
-            userInVar = raw_input('Would you like to add it? (y/n): ').strip()
-            if userInVar.lower() not in ['y','yes','n','no']:
-                print 'Invalid input.  Please try again.'
-        if userInVar.lower()=='y' or userInVar.lower()=='yes':
-            if not addRosterUI(ln,tn,[]):
-                testVar = fbTool.addPlayer(ln,tn,plName,plTeam)
-                if not testVar:
-                    print 'Successfully added %s to %s from league %s' %(plName,tn,ln)
-                else:
-                    print 'Failed to add player.'
-                if testVar == 1:
-                  print 'Player already rostered in league %s'%ln
-                if testVar == 2:
-                    print 'Player %s not found in database'%plName
-            else:
-                print 'Failed to add roster.'
-                raw_input ('Press return to continue...').strip()
-                return -1
-    if testVar == 4:
-        print 'League does not exist.'
-        userInVar=' '
-        while userInVar.lower() not in ['y','yes','n','no']:
-            userInVar = raw_input('Would you like to add the league and team? (y/n): ').strip()
-            if userInVar.lower() not in ['y','yes','no','n']:
-                print 'Invalid input.  Please try again.'
-        if userInVar.lower()=='y' or userInVar.lower()=='yes':
-            if not fbTool.addLeague(ln):
+    inp = 'y'
+    while inp.lower() in ['y','yes']:
+        printPlayers(ln,tn)
+        plName=raw_input('Please input the desired player to add\'s name: ')
+        plTeam=raw_input('Please input the desired player\'s NFL team: ')
+        testVar=fbTool.addPlayer(ln,tn,plName,plTeam)
+        if not testVar:
+            print 'Succesfully added %s to %s from league %s' % (plName,tn,ln)
+        else:
+            print 'Failed to add player...'
+        if testVar == 1:
+            print 'Player already rostered in league %s'%ln
+        if testVar == 2:
+            print 'Player %s not found in database'%plName
+        if testVar == 3:
+            print 'Team does not exist.'
+            userInVar = ' '
+            while userInVar.lower() not in ['y','yes','n','no']:
+                userInVar = raw_input('Would you like to add it? (y/n): ').strip()
+                if userInVar.lower() not in ['y','yes','n','no']:
+                    print 'Invalid input.  Please try again.'
+            if userInVar.lower()=='y' or userInVar.lower()=='yes':
                 if not addRosterUI(ln,tn,[]):
-                    testVar =fbTool.addPlayer(ln,tn,plName,plTeam)
+                    testVar = fbTool.addPlayer(ln,tn,plName,plTeam)
                     if not testVar:
                         print 'Successfully added %s to %s from league %s' %(plName,tn,ln)
                     else:
@@ -168,10 +147,37 @@ def addPlayerUI():
                     if testVar == 2:
                         print 'Player %s not found in database'%plName
                 else:
-                    print 'failed to add team to league'
-            else:
-                print 'something went horribly wrong.'
-
+                    print 'Failed to add roster.'
+                    raw_input ('Press return to continue...').strip()
+                    return -1
+        if testVar == 4:
+            print 'League does not exist.'
+            userInVar=' '
+            while userInVar.lower() not in ['y','yes','n','no']:
+                userInVar = raw_input('Would you like to add the league and team? (y/n): ').strip()
+                if userInVar.lower() not in ['y','yes','no','n']:
+                    print 'Invalid input.  Please try again.'
+            if userInVar.lower()=='y' or userInVar.lower()=='yes':
+                if not fbTool.addLeague(ln):
+                    if not addRosterUI(ln,tn,[]):
+                        testVar =fbTool.addPlayer(ln,tn,plName,plTeam)
+                        if not testVar:
+                            print 'Successfully added %s to %s from league %s' %(plName,tn,ln)
+                        else:
+                            print 'Failed to add player.'
+                        if testVar == 1:
+                            print 'Player already rostered in league %s'%ln
+                        if testVar == 2:
+                            print 'Player %s not found in database'%plName
+                    else:
+                        print 'failed to add team to league'
+                else:
+                    print 'something went horribly wrong.'
+        inp = raw_input ('Would you like to add another player? (y/n) ')
+        while inp.lower() not in ['y','yes','n','no']:
+            print 'Invalid input. Please try again...'
+            inp = raw_input ('Would you like to add another player? (y/n) ')
+     
 def remLeagueUI():
     if printLeagues():
         return 1
@@ -516,12 +522,25 @@ def main():
 
         if choice in ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','moo']:
             if choice=='1':
-                addLeagueUI()
+                inp = 'y'
+                while inp.lower() in ['y','yes']:
+                    addLeagueUI()
+                    inp = raw_input ('Would you like to add another league? (y/n) ')
+                    while inp.lower() not in ['y','yes','n','no']:
+                        print 'Invalid input. Please try again...'
+                        inp = raw_input ('Would you like to add another league? (y/n) ')
+                
                 raw_input ('Press return to continue...').strip()
             if choice=='2':
                 ln=getLeagueName(0)
-                tn=getTeamName(ln)
-                addRosterUI(ln,tn,[])
+                inp = 'y'
+                while inp.lower() in ['y','yes']:
+                    tn=getTeamName(ln)
+                    addRosterUI(ln,tn,[])
+                    inp = raw_input ('Would you like to add another team? (y/n) ')
+                    while inp.lower() not in ['y','yes','n','no']:
+                        print 'Invalid input. Please try again...'
+                        inp = raw_input ('Would you like to add another team? (y/n) ')
                 raw_input('Press return to continue...').strip()
             if choice=='3':
                 addPlayerUI()
