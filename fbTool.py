@@ -31,19 +31,7 @@ leagueLists = []
 #   addLeague - adds a new league to the leagueList, and checks for dups
 #   returns: 0 = success, 1 = league already exists,
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
-<<<<<<< HEAD
     if not leagueLists:
-=======
-    if leagueLists:
-        for i in leagueLists:
-            if i.leagueName == leagueName:
-                return 1
-            if i.leagueName != leagueName and i is leagueLists[-1]:
-                l = league(leagueName, [])
-                leagueLists.append(l)
-                return 0
-    else:
->>>>>>> refs/remotes/origin/Glenbranch
         l=league(leagueName,[])
         leagueLists.append(l)
         return 0
