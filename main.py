@@ -1,7 +1,7 @@
 from PyQt4 import QtGui
 import sys
 import design
-import basicUI
+#import basicUI
 import os
 import nflgame
 import kicking
