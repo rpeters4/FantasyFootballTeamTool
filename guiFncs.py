@@ -3,13 +3,9 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
-import design
 import createLeague
-import listLeague
 import addRoster
 import addPlayer
-import writeFile
-import loadFile
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
