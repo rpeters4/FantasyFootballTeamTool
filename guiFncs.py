@@ -6,6 +6,8 @@ import fpKicker
 import createLeague
 import addRoster
 import addPlayer
+import basicGUI
+
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
@@ -47,14 +49,7 @@ class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
         self.initUI()
         
     def initUI(self):      
-
-        #self.btn = QtGui.QPushButton('Create', self)
-        #self.btn.move(20, 20)
         self.btn.clicked.connect(self.showDialog)
-        
-        #self.le = QtGui.QLineEdit(self)
-        #self.le.move(130, 22)
-        
         self.setGeometry(300, 300, 750, 200)
         self.setWindowTitle('Add Team to League')
         self.show()
@@ -67,7 +62,6 @@ class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
         testVar=fbTool.addRoster(text,text1)
         if not testVar:
             self.le.setText("Succesfully added roster " + text1 + "!")
-            #self.showDialog()
         else:
             self.le.setText("Failed to add team...")
             if testVar == 1:
@@ -84,14 +78,7 @@ class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
         self.initUI()
         
     def initUI(self):      
-
-        #self.btn = QtGui.QPushButton('Create', self)
-        #self.btn.move(20, 20)
         self.btn.clicked.connect(self.showDialog)
-        
-        #self.le = QtGui.QLineEdit(self)
-        #self.le.move(130, 22)
-        
         self.setGeometry(300, 300, 700, 200)
         self.setWindowTitle('Create A League')
         self.show()
@@ -102,11 +89,10 @@ class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
         testVar=fbTool.addLeague(text)
         if testVar == 0:
             self.le2.setText(text + " has been created!")
-            #self.showDialog()
         else:
-            #self.le2.setText("Failed to add league...")
             if testVar == 1:
                 self.le2.setText("League " + text + " already exists.")
             if testVar == 2:
                 self.le2.setText("Something is broken.")
+        basicGUI.updateTree()
 
