@@ -3,10 +3,8 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
-<<<<<<< HEAD
 import fpDefense
 import fbPlayerPoints
-=======
 import design
 import createLeague
 import basicUI
@@ -15,7 +13,6 @@ import addRoster
 import addPlayer
 import writeFile
 import loadFile
->>>>>>> refs/remotes/origin/Glenbranch
 from sys import platform as _platform
 from PyQt4 import QtGui
 import sys
@@ -810,8 +807,7 @@ def main():
             os.system('clear')
         elif _platform == "win32":
             os.system('cls')
-
-=======
+            
     choice = 0
     if _platform =="linux" or _platform=="linux2":
         os.system('clear')
@@ -887,6 +883,5 @@ def main():
 ##    
 ##        if choice == '\n':
 ##            choice = '0'
- 
->>>>>>> refs/remotes/origin/Glenbranch
+
 main()
