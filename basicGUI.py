@@ -12,6 +12,7 @@ import fpPlayer
 import fpDefense
 import fbPlayerPoints
 import PyQt4.QtCore
+import guiFncs
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -52,10 +53,12 @@ def updateTree():
     dockWidget.update()
 
 def bt1():          #add new league
-    print 'add league goes here'
+    window2 = guiFncs.createLeague(w)
+    updateTree()
     i=0
 def bt2():          #Add new roster
-    print 'add roster goes here'
+    window2 = guiFncs.addRoster(w)
+    updateTree()
     i=0
 def bt3():          #Update roster
     print 'update roster stuff here'
