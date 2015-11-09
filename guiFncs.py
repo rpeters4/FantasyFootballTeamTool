@@ -4,6 +4,7 @@ import os
 import fpPlayer
 import fpKicker
 import createLeague
+import removeLeague
 import addRoster
 import addPlayer
 from sys import platform as _platform
@@ -110,3 +111,30 @@ class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
             if testVar == 2:
                 self.le2.setText("Something is broken.")
 
+class removeLeague(QtGui.QMainWindow, removeLeague.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(removeLeague, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+
+    def initUI(self):
+
+        self.btn.clicked.connect(self.showDialog)
+
+        self.setGeometry(300, 300, 700, 200)
+        self.setWindowTitle('Remove A League')
+        self.show()
+
+    def showDialog(self):
+        text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
+            'Enter League to be Removed:')
+        testVar=fbTool.addLeague(text)
+        if testVar == 0:
+            self.le2.setText(text + " has been removed!")
+            #self.showDialog()
+        else:
+            #self.le2.setText("Failed to add league...")
+            if testVar == 1:
+                self.le2.setText("League " + text + " doesn't exists.")
+            if testVar == 2:
+                self.le2.setText("Something is broken.")

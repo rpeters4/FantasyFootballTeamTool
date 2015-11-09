@@ -65,6 +65,8 @@ def bt3():          #Update roster
     i=0
 def bt4():          #Remove league
     print 'remove league goes here'
+    window2 = guiFncs.removeLeague(w)
+    updateTree()
     i=0
 def bt5():          #Remove roster
     print 'remove roster goes here'
