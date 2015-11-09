@@ -10,19 +10,32 @@ from sys import platform as _platform
 def getLeagueName(b):
     if not b:
         printLeagues()
-    return raw_input('Please enter league name: ').strip()
+    inp='\n'
+    while inp=='\n':
+        inp=raw_input('Please enter league name: ').strip()
+        if inp == '\n':
+            print 'Invalid league name, try again!'
+    return inp
 
 def getTeamName(ln):
     if ln is not None:
         printTeams(ln)
-    return raw_input('Please enter team name: ').strip()
+    inp = '\n'
+    while inp=='\n':
+        inp = raw_input('Please enter team name: ').strip()
+        if inp == '\n':
+            print 'Invalid team name, try again!'
+    return inp
 
 def getFileName(isOut):
-    if isOut:
-        return raw_input('please input output filename: ').strip()
-    else:
-        return raw_input('please input input filename: ').strip()
-
+    inp = '\n'
+    while inp=='\n':
+        if isOut:
+            inp = raw_input('please input output filename: ').strip()
+        else:
+            inp = raw_input('please input input filename: ').strip()
+    return inp
+    
 def addLeagueUI():
     k=1
     if fbTool.leagueLists:
@@ -559,4 +572,4 @@ def main():
         elif _platform == "win32":
             os.system('cls')
 
-#main()
+main()
