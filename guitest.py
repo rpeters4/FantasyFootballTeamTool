@@ -7,7 +7,10 @@ version history:
 
 import sys
 import fbTool
+<<<<<<< HEAD
 #import basicUI
+=======
+>>>>>>> refs/remotes/origin/master
 import fpKicker
 import fpPlayer
 import fpDefense
@@ -166,6 +169,7 @@ def guiMenu():
     button12 = QPushButton('Quit without saving',w)
 
 #BUTTON HOVER OVER TEXT
+<<<<<<< HEAD
     button1.setToolTip('')
     button2.setToolTip('This\' do stuff later!')
     button3.setToolTip('')
@@ -178,6 +182,20 @@ def guiMenu():
     button10.setToolTip('')
     button11.setToolTip('')
     button12.setToolTip('')
+=======
+    button1.setToolTip('Add a new league to be tracked by the program')
+    button2.setToolTip('Add a new team to one of the leagues being tracked')
+    button3.setToolTip('Manage the players on specific team')
+    button4.setToolTip('Removes a league from program\'s memory')
+    button5.setToolTip('Removes a team from a league')
+    button6.setToolTip('Trade players from one team to another')
+    button7.setToolTip('Compare fantasy points of teams')
+    button8.setToolTip('Save the current data to a designated output file')
+    button9.setToolTip('Load data from specified data file and append it\'s contents to the current database')
+    button10.setToolTip('Load data from specified data file and replace the contents to the current database with the contents of the file')
+    button11.setToolTip('Save current database to a file and exit')
+    button12.setToolTip('GET OUT!  WE DON\'T WANT YOU ANYWAY')
+>>>>>>> refs/remotes/origin/master
 
 #BUTTON WAS CLICKED
     button1.clicked.connect(bt1)
