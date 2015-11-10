@@ -57,7 +57,6 @@ def updateTree():
     dockWidget.update()
 
 def bt1():          #add new league
-    #window = guiFncs.createLeague(w)
     ln,test = QInputDialog.getText(w,'New league','Please enter new league\'s name:')
     if test:
         league = str(ln)
