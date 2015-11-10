@@ -71,7 +71,6 @@ def bt4():          #Remove league
         openWins.append(window)
     else:
         QMessageBox.critical(w,'error','No leagues currently registered')
-    print 'remove league goes here'
 def bt5():          #Remove roster
     window = guiFncs.deleteRoster()
     if window!=-1:
@@ -80,7 +79,12 @@ def bt5():          #Remove roster
     else:
         QMessageBox.critical(w,'error','No leagues currently registered')
 def bt6():          #Trade between rosters 
-    print 'trade UI will go here'
+    window = guiFncs.trade()
+    if window!=-1:
+        window.show()
+        openWins.append(window)
+    else:
+        QMessageBox.critical(w,'error','No leagues currently registered')
 def bt7():          #compare points
     print 'point comparison menu will go here'
 def bt8():          #save

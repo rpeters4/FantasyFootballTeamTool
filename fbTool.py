@@ -29,15 +29,10 @@ leagueLists = []
 
 #
 #   addLeague - adds a new league to the leagueList, and checks for dups
-<<<<<<< HEAD
-#   returns: 0 = success, 1 = league already exists,
-def addLeague(leagueName):                  ##adds new fantasyfootbal league
-=======
 #   returns: 0 = success, 1 = league already exists,2=invalid name
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
     if leagueName in ['\n','',' ','  ','   ','    ']:
         return 2
->>>>>>> master
     if not leagueLists:
         l=league(leagueName,[])
         leagueLists.append(l)
