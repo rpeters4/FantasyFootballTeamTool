@@ -63,6 +63,12 @@ def bt3():          #Update roster
     openWins.append(window)
     #print 'update roster stuff here'
 def bt4():          #Remove league
+    window = guiFncs.deleteLeague(w)
+    if window!=-1:
+        window.show()
+        openWins.append(window)
+    else:
+        QMessageBox.critical(w,'error','No leagues currently registered')
     print 'remove league goes here'
 def bt5():          #Remove roster
     window = guiFncs.removeRoster(w)
@@ -169,8 +175,8 @@ def mainMenu():
     button1 = QPushButton('Add new league',w)
     button2 = QPushButton('Add roster to league',w)
     button3 = QPushButton('Update roster info',w)
-    button4 = QPushButton('Remove League',w)
-    button5 = QPushButton('Remove Team',w)
+    button4 = QPushButton('Remove League(s)',w)
+    button5 = QPushButton('Remove Roster(s)',w)
     button6 = QPushButton('Trade Between Rosters',w)
     button7 = QPushButton('Compare Points',w) #declared here cos it's long
     button8 = QPushButton('Save to File',w)

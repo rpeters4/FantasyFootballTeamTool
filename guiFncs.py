@@ -124,6 +124,44 @@ class removeRoster(QtGui.QMainWindow, removeRoster.Ui_MainWindow):
             self.le2.setText("Unknown Error")
         mainMenu.updateTree()
 
+#########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
+def deleteLeague(w):
+    print 'awwwwwwwwwwshitson'
+    window = QWidget()
+    window.setFixedSize(225,500)
+    grid = QGridLayout()
+    grid.setSpacing(10)
+    grid.heightForWidth(425)
+    if not fbTool.leagueLists:
+        return -1
+    else:
+        li = QListWidget()
+        li.setMaximumSize(200,425)
+        for i in fbTool.leagueLists:
+            li.addItem(i.leagueName)
+        grid.addWidget(li,0,0)
+        button = QPushButton('Remove League',window)
+        button.setToolTip('Deletes selected league from Database')
+        def but1():
+            if li.currentItem():
+                ln = li.currentItem().text()
+                te = QMessageBox.question(window,'???','Are you sure you want to delete this league? (it will remove the league and all of the teams on the league)',QMessageBox.Yes|QMessageBox.No,QMessageBox.No)
+                if te == QMessageBox.Yes:
+                    fbTool.removeLeague(str(ln))
+                    li.clear()
+                    for i in fbTool.leagueLists:
+                        li.addItem(i.leagueName)
+                    mainMenu.updateTree()
+            else:
+                QMessageBox.critical(window,'error','No league selected')
+        button.clicked.connect(but1)
+        button.resize(button.sizeHint())
+        button.move(60,470)       
+        window.setLayout(grid)
+        return window
+def deleteRoster():
+    print 'AWWWWWWWWWWWWWWWWWWWWWWWSHITGETTINREAL'
+
 def updateRoster():
     window=QWidget()
     window.setFixedSize(650,500)
