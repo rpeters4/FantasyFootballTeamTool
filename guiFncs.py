@@ -174,11 +174,46 @@ def updateRoster():
         if not list2.currentItem():
             QMessageBox.critical(window,'error','No roster selected')
         else:
+            ln = list1.currentItem().text()
+            rn = list2.currentItem().text()
+            pn,test = QInputDialog.getText(window,'Input dialog','Enter Player to Add\'s Name:')
+            if test:
+                tn,test = QInputDialog.getText(window,'Input dialog','Enter name of NFL team player plays on:')
+                ret=fbTool.addPlayer(str(ln),str(rn),str(pn),str(tn))
+                if ret == 1:
+                    QMessageBox.critical(window,'error','Could not add player: Player already rostered')
+                if ret == 2:
+                    QMessageBox.critical(window,'error','Could not add player: Player does not exist')
+                if not ret:
+                    mainMenu.updateTree()
+                    for i in fbTool.leagueLists:
+                        if i.leagueName == str(ln):
+                            for j in i.rosters:
+                                if j.rosterName == str(rn):
+                                    list3.clear()
+                                    for k in j.players:
+                                        list3.addItem((k.firstName+' '+k.lastName))
             mainMenu.updateTree()
     def but2():
         if not list3.currentItem():
             QMessageBox.critical(window,'error','No player selected')
         else:
+            ln = list1.currentItem().text()
+            rn = list2.currentItem().text()
+            pn = str(list3.currentItem().text())
+            te = QMessageBox.question(window,'???','Are you sure you want to delete this player?',QMessageBox.Yes|QMessageBox.No,QMessageBox.No)
+            if te == QMessageBox.Yes:
+                ret = fbTool.removePlayer(nflgame.find(pn,team=None),str(ln),str(rn))
+                if ret:
+                    QMessageBox.critical(window,'error','SOMETHING BROKE!')
+                else:
+                    list3.clear()
+                    for i in fbTool.leagueLists:
+                        if i.leagueName == str(ln):
+                            for j in i.rosters:
+                                if j.rosterName == str(rn):
+                                    for k in j.players:
+                                        list3.addItem((k.firstName+' '+k.lastName))
             mainMenu.updateTree()
     button1.clicked.connect(but1)
     button2.clicked.connect(but2)
