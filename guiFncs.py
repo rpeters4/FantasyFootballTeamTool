@@ -5,6 +5,7 @@ import fpPlayer
 import fpKicker
 import createLeague
 import addRoster
+import removeRoster
 import addPlayer
 import mainMenu
 
@@ -94,5 +95,31 @@ class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
                 self.le2.setText("League " + text + " already exists.")
             if testVar == 2:
                 self.le2.setText("Something is broken.")
+        mainMenu.updateTree()
+
+class removeRoster(QtGui.QMainWindow, removeRoster.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(removeRoster, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+
+    def initUI(self):
+        self.btn.clicked.connect(self.showDialog)
+        self.setGeometry(300, 300, 700, 200)
+        self.setWindowTitle('Remove A Roster')
+        self.show()
+
+    def showDialog(self):
+        leagueName, ok = QtGui.QInputDialog.getText(self, 'Remove Roster', 'Enter the league you would like to remove a roster from:')
+        rosterName, ok = QtGui.QInputDialog.getText(self, 'Remove Roster', 'Enter the roster you would like to remove:')
+        returnValue = fbTool.removeRoster(leagueName, rosterName)
+        if returnValue == 0:
+            self.le2.setText(rosterName + " has been removed")
+        elif returnValue == 1:
+            self.le2.setText("League " + leagueName + " does not exist.")
+        elif returnValue == 2:
+            self.le2.setText("Roster " + rosterName + " does not extist.")
+        else:
+            self.le2.setText("Unknown Error")
         mainMenu.updateTree()
 

@@ -3,6 +3,8 @@ version history:
     0.0.1   -   proof of concept.  did nothing useful
     0.0.5   -   save and load functions implemented
     0.1.0   -   added in the tree display functionality.  Looks pretty OK!
+    0.1.1   -   add league button works
+    0.1.2   -   remove roster button works
 '''
 import sys
 import fbTool
@@ -22,14 +24,14 @@ w.setFixedSize(800,600)
 w.setWindowTitle("FFB team tool v 0.1.0")   #title for the window
 tree=QTreeWidget()
 leagueItems=[]
-teamItems=[]
+rosterItems=[]
 playerItems=[]
 dockWidget= PyQt4.QtGui.QDockWidget()
  
 def initializeTree():
     leagueCt = 0
     tree.setHeaderLabels(['','League Name','Team Name','Player Name'])
-    
+    tree.setColumnHidden(0,True)
     
 def updateTree():
     tree.clear()
@@ -39,7 +41,7 @@ def updateTree():
         for j in i.rosters:
             ins1 = QTreeWidgetItem(tree)
             ins1.setText(2,j.rosterName)
-            teamItems.append(ins1)
+            rosterItems.append(ins1)
             ins.addChild(teamItems[len(teamItems)-1])
             for k in j.players:
                 ins2 = QTreeWidgetItem(tree)
@@ -51,33 +53,25 @@ def updateTree():
     dockWidget.update()
 
 def bt1():          #add new league
-    window2 = guiFncs.createLeague(w)
-    updateTree()
+    window = guiFncs.createLeague(w)
 def bt2():          #Add new roster
-    window2 = guiFncs.addRoster(w)
-    updateTree()
+    window = guiFncs.addRoster(w)
 def bt3():          #Update roster
     print 'update roster stuff here'
-    updateTree()
 def bt4():          #Remove league
     print 'remove league goes here'
-    i=0
 def bt5():          #Remove roster
-    print 'remove roster goes here'
-    i=0
+    window = guiFncs.removeRoster(w)
 def bt6():          #Trade between rosters 
     print 'trade UI will go here'
-    i=0
 def bt7():          #compare points
     print 'point comparison menu will go here'
-    i=0
 def bt8():          #save
     if fbTool.leagueLists:
         fileName = QFileDialog.getSaveFileName()
         fbTool.writeClassToFile(fileName)
     else:
         QMessageBox.critical(w,'lolgg','Nothing to save!')
-    i=0
 def bt9():          #loads data in append mode
     fileName = QFileDialog.getOpenFileName()
     fbTool.readClassFromFile(fileName)
@@ -94,7 +88,6 @@ def bt10():         #loads data in destroy mode
             fbTool.leagueLists = []
             fileName = QFileDialog.getOpenFileName()
             fbTool.readClassFromFile(fileName)
-     #       updateTree()
     else:
         fileName = QFileDialog.getOpenFileName()
         fbTool.readClassFromFile(fileName)
@@ -139,7 +132,7 @@ def mainMenu():
     initializeTree()
     updateTree()
     dockWidget.setWidget(tree)
-    dockWidget.setMaximumWidth(540)
+    dockWidget.setMaximumWidth(590)
     w.addDockWidget(PyQt4.QtCore.Qt.LeftDockWidgetArea,dockWidget)
 
 #menuBar, doesn't work?
@@ -155,8 +148,8 @@ def mainMenu():
     button3 = QPushButton('Update roster info',w)
     button4 = QPushButton('Remove League',w)
     button5 = QPushButton('Remove Team',w)
-    button6 = QPushButton('Trade Between Teams',w)
-    button7 = QPushButton('Compare Points Between Teams',w) #declared here cos it's long
+    button6 = QPushButton('Trade Between Rosters',w)
+    button7 = QPushButton('Compare Points',w) #declared here cos it's long
     button8 = QPushButton('Save to File',w)
     button9 = QPushButton('Load from File(append)',w)
     button10 = QPushButton('Load from File (replace)',w)
@@ -165,7 +158,7 @@ def mainMenu():
 
 #BUTTON HOVER OVER TEXT
     button1.setToolTip('Add a new league to be tracked by the program')
-    button2.setToolTip('Add a new team to one of the leagues being tracked')
+    button2.setToolTip('Add a new roster to one of the leagues being tracked')
     button3.setToolTip('Manage the players on specific team')
     button4.setToolTip('Removes a league from program\'s memory')
     button5.setToolTip('Removes a team from a league')
@@ -193,32 +186,32 @@ def mainMenu():
     a.aboutToQuit.connect(bt12) #if the 'x' button is pressed, prompt to save
     
 #BUTTON SIZES
-    button1.resize(button7.sizeHint())
-    button2.resize(button7.sizeHint())
-    button3.resize(button7.sizeHint())
-    button4.resize(button7.sizeHint())
-    button5.resize(button7.sizeHint())
-    button6.resize(button7.sizeHint())
-    button7.resize(button7.sizeHint())
-    button8.resize(button7.sizeHint())
-    button9.resize(button7.sizeHint())
-    button10.resize(button7.sizeHint())
-    button11.resize(button7.sizeHint())
-    button12.resize(button7.sizeHint())
+    button1.resize(button10.sizeHint())
+    button2.resize(button10.sizeHint())
+    button3.resize(button10.sizeHint())
+    button4.resize(button10.sizeHint())
+    button5.resize(button10.sizeHint())
+    button6.resize(button10.sizeHint())
+    button7.resize(button10.sizeHint())
+    button8.resize(button10.sizeHint())
+    button9.resize(button10.sizeHint())
+    button10.resize(button10.sizeHint())
+    button11.resize(button10.sizeHint())
+    button12.resize(button10.sizeHint())
 
 #BUTTON POSITIONS
-    button1.move(550,10)
-    button2.move(550,60)
-    button3.move(550,110)
-    button4.move(550,160)
-    button5.move(550,210)
-    button6.move(550,260)
-    button7.move(550,310)
-    button8.move(550,360)
-    button9.move(550,410)
-    button10.move(550,460)
-    button11.move(550,510)
-    button12.move(550,560)
+    button1.move(610,10)
+    button2.move(610,60)
+    button3.move(610,110)
+    button4.move(610,160)
+    button5.move(610,210)
+    button6.move(610,260)
+    button7.move(610,310)
+    button8.move(610,360)
+    button9.move(610,410)
+    button10.move(610,460)
+    button11.move(610,510)
+    button12.move(610,560)
 
     w.show()    #shows the window
 
