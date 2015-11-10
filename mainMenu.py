@@ -5,6 +5,8 @@ version history:
     0.1.0   -   added in the tree display functionality.  Looks pretty OK!
     0.1.1   -   add league button works
     0.1.2   -   remove roster button works
+    0.1.4   -   updateRoster crap implemented
+    0.1.5   -   added remove league, revamped remove roster to match styles
 '''
 import sys
 import fbTool
@@ -21,7 +23,7 @@ from PyQt4.QtCore import *
 a=QApplication(sys.argv)        #app window
 w=QMainWindow()                 #base class for all UI objects in pyqt
 w.setFixedSize(800,600)
-w.setWindowTitle("FFB team tool v 0.1.0")   #title for the window
+w.setWindowTitle("FFB team tool v 0.1.5")   #title for the window
 tree=QTreeWidget()
 leagueItems=[]
 rosterItems=[]
@@ -77,7 +79,6 @@ def bt5():          #Remove roster
         openWins.append(window)
     else:
         QMessageBox.critical(w,'error','No leagues currently registered')
-    #window = guiFncs.removeRoster(w)
 def bt6():          #Trade between rosters 
     print 'trade UI will go here'
 def bt7():          #compare points
