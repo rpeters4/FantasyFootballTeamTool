@@ -3,7 +3,6 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
-import addRoster
 import mainMenu
 import sys
 from PyQt4.QtGui import *
@@ -11,34 +10,60 @@ from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from sys import platform as _platform
 
-class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
-    def __init__(self, parent=None):
-        super(addRoster, self).__init__(parent)
-        self.setupUi(self)
-        self.initUI()
-        
-    def initUI(self):      
-        self.btn.clicked.connect(self.showDialog)
-        self.setGeometry(300, 300, 750, 200)
-        self.setWindowTitle('Add Team to League')
-        self.show()
-        
-    def showDialog(self):
-        
-        text, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 
-            'Enter your league name:')
-        text1, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 'Enter your team name:')
-        testVar=fbTool.addRoster(text,text1)
-        if not testVar:
-            self.le.setText("Succesfully added roster " + text1 + "!")
-        else:
-            self.le.setText("Failed to add team...")
-            if testVar == 1:
-                self.le.setText("Team " + text1 + " already exists in league " + text)
-            if testVar == 2:
-                self.le.setText("League " + text + " does not exist. Choose 'Add league to be tracked' button on main menu to add it.")
-            
 #########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
+def addRoster():
+    if not fbTool.leagueLists:
+        return -1
+    window=QWidget()
+    window.setFixedSize(300,600)
+    window.setWindowTitle('Add Roster')
+    list1 = QListWidget()
+    list1.setMaximumSize(250,500)
+    for i in fbTool.leagueLists:
+        list1.addItem(i.leagueName)
+    button = QPushButton('Add roster to selected leauge',window)
+    button.setToolTip('Adds a new roster to the league selected from the league list')
+    button.resize(button.sizeHint())
+    button.move(40,570)
+    def but():
+        if not list1.currentItem():
+            QMessageBox.critical(window,'error','Not league selected')
+        else:
+            defense = []
+            ln=str(list1.currentItem().text())
+            loopvar = QMessageBox.Yes
+            rn,test = QInputDialog.getText(window,'New roster','Please enter the name for the new roster you\'d like to add:')
+            rn = str(rn)
+            while loopvar == QMessageBox.Yes:
+                dn,test = QInputDialog.getText(window,'Defense','Please enter a team to use as defense:')
+                if test:
+                    d = nflgame.standard_team(str(dn))
+                    if d is None:
+                        QMessageBox.critical(window,'error','Invalid team name')
+                    else:
+                        defense.append(d)
+                    if defense:
+                        loopvar = QMessageBox.question(window,'???','Would you like to add another defense team?',QMessageBox.Yes|QMessageBox.No,QMessageBox.Yes)
+                elif not defense:
+                    QMessageBox.critical(window,'error','Cannot have no defense')
+                else:
+                    loopvar = QMessageBox.No
+            status = fbTool.addRoster(ln,rn,defense)
+            if status >=3:
+                errstr = 'defense team ' + defense[status-3] + ' is already used'
+                QMessageBox.critical(window,'error',errstr)
+            elif status ==1:
+                QMessageBox.critical(window,'error','Team already exists.')
+            elif status:
+                QMessageBox.critical(window,'error','Something is horribly wrong')
+        mainMenu.updateTree()     
+    button.clicked.connect(but)
+    grid = QGridLayout()
+    grid.setSpacing(10)
+    grid.addWidget(list1,0,0)
+    window.setLayout(grid)
+    return window
+
 def updateRoster():
     window=QWidget()
     window.setFixedSize(650,500)
@@ -142,6 +167,7 @@ def updateRoster():
 def deleteLeague():
     window = QWidget()
     window.setFixedSize(225,500)
+    window.setWindowTitle('Delete league')
     grid = QGridLayout()
     grid.setSpacing(10)
     grid.heightForWidth(425)
@@ -175,6 +201,7 @@ def deleteLeague():
 def deleteRoster():
     window = QWidget()
     window.setFixedSize(550,500)
+    window.setWindowTitle('Delete roster')
     grid = QGridLayout()
     grid.setSpacing(10)
     grid.heightForWidth(425)
@@ -222,6 +249,7 @@ def deleteRoster():
 def trade():
     window = QWidget()
     window.setFixedSize(800,600)
+    window.setWindowTitle('Trade players')
     grid = QGridLayout()
     grid.setSpacing(10)
     if not fbTool.leagueLists:
