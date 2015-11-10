@@ -8,10 +8,11 @@ import addRoster
 import removeRoster
 import addPlayer
 import mainMenu
-
-from sys import platform as _platform
-from PyQt4 import QtGui
 import sys
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+from PyQt4 import QtGui
+from sys import platform as _platform
 
 class addPlayer(QtGui.QMainWindow, addPlayer.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -123,3 +124,35 @@ class removeRoster(QtGui.QMainWindow, removeRoster.Ui_MainWindow):
             self.le2.setText("Unknown Error")
         mainMenu.updateTree()
 
+def updateRoster():
+    window=QtGui.QMainWindow()
+    window.resize(500,500)
+    list1 = QListWidget()
+    dock1=QDockWidget()
+    dock1.setWidget(list1)
+    dock1.setMaximumWidth(250)
+    dock1.setMaximumHeight(450)
+
+    list2 = QListWidget()
+    dock2=QDockWidget()
+    dock2.setWidget(list2)
+    list2.setMaximumWidth(250)
+    list2.setMaximumHeight(425)
+    
+    window.addDockWidget(Qt.LeftDockWidgetArea,dock1)
+    window.addDockWidget(Qt.RightDockWidgetArea,dock2)
+    button1 = QPushButton('Add player',window)
+    button2 = QPushButton('Remove player',window)
+    button1.setToolTip('Add player to highlighted roster')
+    button2.setToolTip('Remove highlighted player from roster')
+    def but1():
+        print 'this\'ll do stuff!'
+    def but2():
+        print 'this\'ll do stuff!'
+    button1.clicked.connect(but1)
+    button2.clicked.connect(but2)
+    button1.resize(button2.sizeHint())
+    button2.resize(button2.sizeHint())
+    button1.move(150,470)
+    button2.move(300,470)
+    return window
