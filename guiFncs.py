@@ -60,7 +60,7 @@ class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
         text, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 
             'Enter your league name:')
         text1, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 'Enter your team name:')
-        testVar=fbTool.addRoster(text,text1)
+        testVar=fbTool.addRoster(text,text1)  
         if not testVar:
             self.le.setText("Succesfully added roster " + text1 + "!")
         else:
