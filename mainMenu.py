@@ -8,6 +8,7 @@ version history:
     0.1.4   -   updateRoster crap implemented
     0.1.5   -   added remove league, revamped remove roster to match styles
     0.1.7   -   implemented trades
+    0.2.0   -   all of the team management buttons officially work!
 '''
 import sys
 import fbTool
@@ -69,7 +70,12 @@ def bt1():          #add new league
             updateTree()
 
 def bt2():          #Add new roster
-    window = guiFncs.addRoster(w)
+    window = guiFncs.addRoster()
+    if window == -1:
+        QMessageBox.critical(w,'error','No leagues currently registered')
+    else:
+        window.show()
+        openWins.append(window)
 def bt3():          #Update roster
     window = guiFncs.updateRoster()
     window.show()
