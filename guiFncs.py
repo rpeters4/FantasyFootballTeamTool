@@ -125,8 +125,7 @@ class removeRoster(QtGui.QMainWindow, removeRoster.Ui_MainWindow):
         mainMenu.updateTree()
 
 #########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
-def deleteLeague(w):
-    print 'awwwwwwwwwwshitson'
+def deleteLeague():
     window = QWidget()
     window.setFixedSize(225,500)
     grid = QGridLayout()
@@ -160,7 +159,51 @@ def deleteLeague(w):
         window.setLayout(grid)
         return window
 def deleteRoster():
-    print 'AWWWWWWWWWWWWWWWWWWWWWWWSHITGETTINREAL'
+    window = QWidget()
+    window.setFixedSize(550,500)
+    grid = QGridLayout()
+    grid.setSpacing(10)
+    grid.heightForWidth(425)
+    if not fbTool.leagueLists:
+        return -1
+    else:
+        list1 = QListWidget()
+        list2 = QListWidget()
+        list1.setMaximumSize(200,425)
+        list2.setMaximumSize(200,425)
+        for i in fbTool.leagueLists:
+            list1.addItem(i.leagueName)
+        grid.addWidget(list1,0,0)
+        grid.addWidget(list2,0,5)
+        def poplist2(item):
+            list2.clear()
+            for i in fbTool.leagueLists:
+                if i.leagueName == item.text():
+                    for j in i.rosters:
+                        list2.addItem(j.rosterName)
+        list1.itemClicked.connect(poplist2)
+        button = QPushButton('Remove Roster',window)
+        button.setToolTip('Deletes selected league from Database')
+        def but1():
+            if list2.currentItem():
+                ln = list1.currentItem().text()
+                rn = list2.currentItem().text()
+                te = QMessageBox.question(window,'???','Are you sure you want to delete this roster?',QMessageBox.Yes|QMessageBox.No,QMessageBox.No)
+                if te == QMessageBox.Yes:
+                    fbTool.removeRoster(str(ln),str(rn))
+                    for i in fbTool.leagueLists:
+                        if i.leagueName == str(ln):
+                            list2.clear()
+                            for j in i.rosters:
+                                list2.addItem(j.rosterName)
+                    mainMenu.updateTree()
+            else:
+                QMessageBox.critical(window,'error','No roster selected')
+        button.clicked.connect(but1)
+        button.resize(button.sizeHint())
+        button.move(60,470)       
+        window.setLayout(grid)
+        return window
 
 def updateRoster():
     window=QWidget()
