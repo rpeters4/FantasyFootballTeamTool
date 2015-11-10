@@ -102,8 +102,14 @@ def bt6():          #Trade between rosters
         openWins.append(window)
     else:
         QMessageBox.critical(w,'error','No leagues currently registered')
-def bt7():          #compare points
+def bt7():          #compare players
     print 'point comparison menu will go here'
+    window = guiFncs.comparePlayers() ##can change back to trade for shits and giggles
+    if window!=-1:
+        window.show()
+        openWins.append(window)
+    else:
+        QMessageBox.critical(w,'error','No leagues currently registered')
 def bt8():          #save
     if fbTool.leagueLists:
         fileName = QFileDialog.getSaveFileName()

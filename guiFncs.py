@@ -1,18 +1,10 @@
 import nflgame
 import fbTool
+import fbPlayerPoints
 import os
 import fpPlayer
 import fpKicker
-<<<<<<< HEAD
-import createLeague
-import removeLeague
-import addRoster
-import addPlayer
-from sys import platform as _platform
-from PyQt4 import QtGui
-=======
 import mainMenu
->>>>>>> refs/remotes/origin/master
 import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -361,35 +353,113 @@ def trade():
         window.setLayout(grid)
         return window
 
-<<<<<<< HEAD
-class removeLeague(QtGui.QMainWindow, removeLeague.Ui_MainWindow):
-    def __init__(self, parent=None):
-        super(removeLeague, self).__init__(parent)
-        self.setupUi(self)
-        self.initUI()
-
-    def initUI(self):
-
-        self.btn.clicked.connect(self.showDialog)
-
-        self.setGeometry(300, 300, 700, 200)
-        self.setWindowTitle('Remove A League')
-        self.show()
-
-    def showDialog(self):
-        text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
-            'Enter League to be Removed:')
-        testVar=fbTool.removeLeague(text)
-        if testVar == 0:
-            self.le2.setText(text + " has been removed!")
-            #self.showDialog()
-        else:
-            #self.le2.setText("Failed to add league...")
-            if testVar == 1:
-                self.le2.setText("League " + text + " doesn't exists.")
-            if testVar == 2:
-                self.le2.setText("Something is broken.")
-=======
+def comparePlayers():
+    window = QWidget()
+    window.setFixedSize(800,600)
+    window.setWindowTitle('Compare players')
+    grid = QGridLayout()
+    grid.setSpacing(10)
+    if not fbTool.leagueLists:
+        return -1
+    else:
+        button = QPushButton('Compare Selected Players',window)
+        button.resize(button.sizeHint())
+        button.move(20,570)
+        leagues = QListWidget()
+        rosters1 = QListWidget()
+        rosters2 = QListWidget()
+        roster1 = QListWidget()
+        roster2 = QListWidget()
+        
+        roster1.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        roster2.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        pl1 = []
+        pl2 = []
+        grid.addWidget(leagues,0,0)
+        grid.addWidget(rosters1,0,1)
+        grid.addWidget(rosters2,1,1)
+        grid.addWidget(roster1,0,2)
+        grid.addWidget(roster2,1,2)
+        for i in fbTool.leagueLists:
+            leagues.addItem(i.leagueName)
+        def popRosters():
+            roster1.clear()
+            roster2.clear()
+            rosters1.clear()
+            rosters2.clear()
+            for i in fbTool.leagueLists:
+                if i.leagueName == str(leagues.currentItem().text()):
+                    for j in i.rosters:
+                        rosters1.addItem(j.rosterName)
+                        rosters2.addItem(j.rosterName)
+        def popRoster1():
+            roster1.clear()
+            for i in fbTool.leagueLists:
+                if i.leagueName == str(leagues.currentItem().text()):
+                    for j in i.rosters:
+                        if j.rosterName == str(rosters1.currentItem().text()):
+                            for k in j.players:
+                                points = fbPlayerPoints.playerPoint(k)
+                                roster1.addItem((k.firstName+' '+k.lastName+ ' '+points)
+        def popRoster2():
+            roster2.clear()
+            for i in fbTool.leagueLists:
+                if i.leagueName == str(leagues.currentItem().text()):
+                    for j in i.rosters:
+                        if j.rosterName == str(rosters2.currentItem().text()):
+                            for k in j.players:
+                                points = fbPlayerPoints.playerPoint(k)
+                                roster2.addItem((k.firstName+' '+k.lastName+' '+points)
+        def makePlayerList1():
+            for h in pl1:
+                pl1.pop()
+            itemsList = roster1.selectedItems()
+            for i in itemsList:
+                name = str(i.text())
+                i2push = nflgame.find(name)
+                if i2push:
+                    pl1.append(i2push[0])
+        def makePlayerList2():
+            for h in pl2:
+                pl2.pop()
+            itemsList = roster2.selectedItems()
+            for i in itemsList:
+                name = str(i.text())
+                i2push = nflgame.find(name)
+                if i2push:
+                    pl2.append(i2push[0])
+        def but():
+            if not leagues.currentItem():
+                QMessageBox.critical(window,'error','League not selected from league list')
+            elif not rosters1.currentItem():
+                QMessageBox.critical(window,'error','Roster not selected from top rosters box')
+            elif not rosters2.currentItem():
+                QMessageBox.critical(window,'error','Roster not selected from bottom rosters box')
+            elif not roster1.currentItem():
+                QMessageBox.critical(window,'error','Player not selected from top roster')
+            elif not roster2.currentItem():
+                QMessageBox.critical(window,'error','Player not selected from the bottom roster')
+            elif roster1.currentItem().text()==roster2.currentItem().text():
+                QMessageBox.critical(window,'error','Roster cannot trade to self')
+            else:
+                ln = str(leagues.currentItem().text())
+                r1 = str(rosters1.currentItem().text())
+                r2 = str(rosters2.currentItem().text())
+                ret = fbTool.tradePlayers(pl1,pl2,ln,r1,r2)
+                if ret:
+                    QMessageBox.critical(window,'error','Something is broken.')
+                else:
+                    popRoster1()
+                    popRoster2()
+                    mainMenu.updateTree()
+        leagues.itemClicked.connect(popRosters)
+        rosters1.itemClicked.connect(popRoster1)
+        rosters2.itemClicked.connect(popRoster2)
+        roster1.itemClicked.connect(makePlayerList1)
+        roster2.itemClicked.connect(makePlayerList2)
+        button.clicked.connect(but)
+        window.setLayout(grid)
+        return window
+    
 def pointsStuff():
     i=0
->>>>>>> refs/remotes/origin/master
