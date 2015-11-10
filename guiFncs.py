@@ -10,7 +10,6 @@ from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from sys import platform as _platform
 
-#########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
 def addRoster():
     if not fbTool.leagueLists:
         return -1
