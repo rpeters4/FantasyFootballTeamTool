@@ -125,30 +125,61 @@ class removeRoster(QtGui.QMainWindow, removeRoster.Ui_MainWindow):
         mainMenu.updateTree()
 
 def updateRoster():
-    window=QtGui.QMainWindow()
-    window.resize(500,500)
+    window=QWidget()
+    window.setFixedSize(650,500)
     list1 = QListWidget()
-    dock1=QDockWidget()
-    dock1.setWidget(list1)
-    dock1.setMaximumWidth(250)
-    dock1.setMaximumHeight(450)
+    list2 = QListWidget()   
+    list3 = QListWidget()
+    list1.setMaximumSize(200,425)
+    list2.setMaximumSize(200,425)
+    list3.setMaximumSize(200,425)
+    grid = QGridLayout()
+    grid.setSpacing(10)
+    grid.heightForWidth(425)
+    grid.addWidget(list1,1,0)
+    grid.addWidget(list2,1,5)
+    grid.addWidget(list3,1,10)
 
-    list2 = QListWidget()
-    dock2=QDockWidget()
-    dock2.setWidget(list2)
-    list2.setMaximumWidth(250)
-    list2.setMaximumHeight(425)
-    
-    window.addDockWidget(Qt.LeftDockWidgetArea,dock1)
-    window.addDockWidget(Qt.RightDockWidgetArea,dock2)
+    if fbTool.leagueLists:
+        for i in fbTool.leagueLists:
+            list1.addItem(i.leagueName)
+
+    def poplist2(item):
+        list2.clear()
+        for i in fbTool.leagueLists:
+            if i.leagueName == item.text():
+                for j in i.rosters:
+                    list2.addItem(j.rosterName)
+
+    list1.itemClicked.connect(poplist2)
+ 
+    def poplist3(item):
+        list3.clear()
+        for i in fbTool.leagueLists:
+            if i.leagueName == list1.currentItem().text():
+                for j in i.rosters:
+                    if j.rosterName == item.text():
+                        for k in j.players:
+                            list3.addItem((k.firstName + ' ' + k.lastName))
+
+    list2.itemClicked.connect(poplist3)
+
+    window.setLayout(grid)
+    window.setWindowTitle('Update Rosters')
     button1 = QPushButton('Add player',window)
     button2 = QPushButton('Remove player',window)
     button1.setToolTip('Add player to highlighted roster')
     button2.setToolTip('Remove highlighted player from roster')
     def but1():
-        print 'this\'ll do stuff!'
+        if not list2.currentItem():
+            QMessageBox.critical(window,'error','No roster selected')
+        else:
+            mainMenu.updateTree()
     def but2():
-        print 'this\'ll do stuff!'
+        if not list3.currentItem():
+            QMessageBox.critical(window,'error','No player selected')
+        else:
+            mainMenu.updateTree()
     button1.clicked.connect(but1)
     button2.clicked.connect(but2)
     button1.resize(button2.sizeHint())

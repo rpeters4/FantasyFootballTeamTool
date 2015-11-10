@@ -26,6 +26,7 @@ tree=QTreeWidget()
 leagueItems=[]
 rosterItems=[]
 playerItems=[]
+openWins=[]
 dockWidget= PyQt4.QtGui.QDockWidget()
  
 def initializeTree():
@@ -42,7 +43,7 @@ def updateTree():
             ins1 = QTreeWidgetItem(tree)
             ins1.setText(2,j.rosterName)
             rosterItems.append(ins1)
-            ins.addChild(teamItems[len(teamItems)-1])
+            ins.addChild(rosterItems[len(rosterItems)-1])
             for k in j.players:
                 ins2 = QTreeWidgetItem(tree)
                 ins2.setText(3,(k.firstName + ' ' + k.lastName))
@@ -57,7 +58,10 @@ def bt1():          #add new league
 def bt2():          #Add new roster
     window = guiFncs.addRoster(w)
 def bt3():          #Update roster
-    print 'update roster stuff here'
+    window = guiFncs.updateRoster()
+    window.show()
+    openWins.append(window)
+    #print 'update roster stuff here'
 def bt4():          #Remove league
     print 'remove league goes here'
 def bt5():          #Remove roster
@@ -136,10 +140,29 @@ def mainMenu():
     w.addDockWidget(PyQt4.QtCore.Qt.LeftDockWidgetArea,dockWidget)
 
 #menuBar, doesn't work?
+    aLoadButton = QAction(QIcon('exit24.png'),'Load From file (append)',w)
+    aLoadButton.setShortcut('Ctrl+l')
+    aLoadButton.setStatusTip('Appends from file to current leagues')
+    aLoadButton.triggered.connect(bt9)
+    
+    dLoadButton = QAction(QIcon('exit24.png'),'Load from file (replace)',w)
+    dLoadButton.setShortcut('Ctrl+d')
+    dLoadButton.setStatusTip('Loads from file, replaces current leagues')
+    dLoadButton.triggered.connect(bt10)
+    
+    saveButton = QAction(QIcon('exit24.png'),'Save to file',w)
+    saveButton.setShortcut('Ctrl+S')
+    saveButton.setStatusTip('Saves current leagues to file')
+    saveButton.triggered.connect(bt8)
+    
     quitButton = QAction(QIcon('exit24.png'),'Quit',w)
     quitButton.setShortcut('Ctrl+Q')
     quitButton.setStatusTip('Exits program without saving')
-    quitButton.triggered.connect(w.close)
+    quitButton.triggered.connect(bt12)
+
+    fileMenu.addAction(aLoadButton)
+    fileMenu.addAction(dLoadButton)
+    fileMenu.addAction(saveButton)
     fileMenu.addAction(quitButton)
 
 #BUTTONS!
@@ -214,6 +237,5 @@ def mainMenu():
     button12.move(610,560)
 
     w.show()    #shows the window
-
     sys.exit(a.exec_())
 
