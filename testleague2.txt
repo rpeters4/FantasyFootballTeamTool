@@ -1,0 +1,203 @@
+NEWLEAGUE
+Test
+NEWROSTER
+Team1
+CIN
+SEA
+ENDDEF
+NEWPLAYER
+Eddie Lacy GB
+NEWPLAYER
+James Jones GB
+NEWPLAYER
+Jordan Matthews PHI
+NEWPLAYER
+Antonio Gates SD
+NEWPLAYER
+Jeremy Langford CHI
+NEWPLAYER
+Nick Folk NYJ
+NEWPLAYER
+Ben Roethlisberger PIT
+NEWPLAYER
+Matt Ryan ATL
+NEWROSTER
+Team2
+PHI
+ENDDEF
+NEWPLAYER
+LeSean McCoy BUF
+NEWPLAYER
+Doug Martin TB
+NEWPLAYER
+Antonio Brown PIT
+NEWPLAYER
+Brandin Cooks NO
+NEWPLAYER
+Tyler Eifert CIN
+NEWPLAYER
+Dion Lewis NE
+NEWPLAYER
+Justin Tucker BAL
+NEWPLAYER
+Karlos Williams BUF
+NEWROSTER
+Team3
+ATL
+ENDDEF
+NEWPLAYER
+Frank Gore IND
+NEWPLAYER
+Dez Bryant DAL
+NEWPLAYER
+Allen Robinson JAC
+NEWPLAYER
+Travis Kelce KC
+NEWPLAYER
+Stefon Diggs MIN
+NEWPLAYER
+Josh Brown NYG
+NEWPLAYER
+Russell Wilson SEA
+NEWPLAYER
+Peyton Manning DEN
+NEWROSTER
+Team4
+NYG
+ENDDEF
+NEWPLAYER
+Ryan Tannehill MIA
+NEWPLAYER
+Jonathan Stewart CAR
+NEWPLAYER
+Charles Sims TB
+NEWPLAYER
+Anquan Boldin SF
+NEWPLAYER
+Donte Moncrief IND
+NEWPLAYER
+Rob Gronkowski NE
+NEWPLAYER
+Jeremy Hill CIN
+NEWPLAYER
+Josh Lambo SD
+NEWROSTER
+Team5
+STL
+ENDDEF
+NEWPLAYER
+Justin Forsett BAL
+NEWPLAYER
+C.J. Anderson DEN
+NEWPLAYER
+Julian Edelman NE
+NEWPLAYER
+Torrey Smith SF
+NEWPLAYER
+Delanie Walker TEN
+NEWPLAYER
+Eric Decker NYJ
+NEWPLAYER
+Dan Bailey DAL
+NEWPLAYER
+Tom Brady NE
+NEWROSTER
+Team6
+BAL
+ENDDEF
+NEWPLAYER
+Cam Newton CAR
+NEWPLAYER
+Alfred Morris WAS
+NEWPLAYER
+Todd Gurley STL
+NEWPLAYER
+Alshon Jeffery CHI
+NEWPLAYER
+Sammy Watkins BUF
+NEWPLAYER
+Greg Olsen CAR
+NEWPLAYER
+Matt Jones WAS
+NEWPLAYER
+Matt Bryant ATL
+NEWROSTER
+Team7
+CAR
+ENDDEF
+NEWPLAYER
+Andrew Luck IND
+NEWPLAYER
+Antonio Andrews TEN
+NEWPLAYER
+Austin Seferian-Jenkins TB
+NEWPLAYER
+Phil Dawson SF
+NEWPLAYER
+Michael Crabtree OAK
+NEWPLAYER
+Brandon LaFell NE
+NEWPLAYER
+C.J. Spiller NO
+NEWPLAYER
+Marques Colston NO
+NEWROSTER
+Team8
+NE
+ENDDEF
+NEWPLAYER
+Shane Vereen NYG
+NEWPLAYER
+Malcom Floyd SD
+NEWPLAYER
+Jason Witten DAL
+NEWPLAYER
+Randall Cobb GB
+NEWPLAYER
+Andre Johnson IND
+NEWPLAYER
+Mason Crosby GB
+NEWPLAYER
+Lamar Miller MIA
+NEWPLAYER
+Mark Ingram NO
+NEWROSTER
+Team9
+GB
+ENDDEF
+NEWPLAYER
+Aaron Rodgers GB
+NEWPLAYER
+LeGarrette Blount NE
+NEWPLAYER
+Chris Ivory NYJ
+NEWPLAYER
+Julio Jones ATL
+NEWPLAYER
+Brandon Marshall NYJ
+NEWPLAYER
+Benjamin Watson NO
+NEWPLAYER
+Darren McFadden DAL
+NEWPLAYER
+Blair Walsh MIN
+NEWROSTER
+Team10
+DEN
+ENDDEF
+NEWPLAYER
+Odell Beckham NYG
+NEWPLAYER
+Martellus Bennett CHI
+NEWPLAYER
+Rishard Matthews MIA
+NEWPLAYER
+Andy Dalton CIN
+NEWPLAYER
+James Starks GB
+NEWPLAYER
+Latavius Murray OAK
+NEWPLAYER
+Emmanuel Sanders DEN
+NEWPLAYER
+Stephen Gostkowski NE

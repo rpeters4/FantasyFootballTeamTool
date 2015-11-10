@@ -29,8 +29,10 @@ leagueLists = []
 
 #
 #   addLeague - adds a new league to the leagueList, and checks for dups
-#   returns: 0 = success, 1 = league already exists,
+#   returns: 0 = success, 1 = league already exists,2=invalid name
 def addLeague(leagueName):                  ##adds new fantasyfootbal league
+    if leagueName in ['\n','',' ','  ','   ','    ']:
+        return 2
     if not leagueLists:
         l=league(leagueName,[])
         leagueLists.append(l)
@@ -206,27 +208,27 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
     for p1 in players1:
         playerOnRoster = False
         for pl1 in roster1Trade.players:
-            if pl1.player_id == p1.playerid:
+            if pl1.firstName == p1.first_name and pl1.lastName == pl1.lastName:
                 playerOnRoster = True
                 break
-            if not playerOnRoster:
+            if not playerOnRoster and pl1 == roster1Trade.players[-1]:
                 return 3
     for p2 in players2:
         playerOnRoster = False
         for pl2 in roster2Trade.players:
-            if pl2.player_id == p2.playerid:
+            if pl2.firstName == p2.first_name and pl2.lastName == p2.last_name:
                 playerOnRoster = True
                 break
-            if not playerOnRoster:
+            if not playerOnRoster and pl2 == roster2Trade.players[-1]:
                 return 3
     for p1 in players1:
         for pl1 in roster1Trade.players:
-            if p1.playerid == pl1.player_id:
+            if p1.first_name == pl1.firstName and p1.last_name == pl1.lastName:
                 roster1Trade.players.remove(pl1)
         addPlayer(leagueNameToTrade, roster2, p1.full_name, p1.team)
     for p2 in players2:
         for pl2 in roster2Trade.players:
-            if p2.playerid == pl2.player_id:
+            if p2.first_name == pl2.firstName and p2.last_name == pl2.lastName:
                 roster2Trade.players.remove(pl2)
         addPlayer(leagueNameToTrade, roster1, p2.full_name, p2.team)
     return 0
