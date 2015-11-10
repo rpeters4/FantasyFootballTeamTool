@@ -3,6 +3,14 @@ import fbTool
 import os
 import fpPlayer
 import fpKicker
+<<<<<<< HEAD
+=======
+import addRoster
+<<<<<<< HEAD
+import addPlayer
+=======
+>>>>>>> origin/master
+>>>>>>> ed64051d3b6101ab25252c01e6c6ced4f97c4eb4
 import mainMenu
 import sys
 from PyQt4.QtGui import *
@@ -10,6 +18,67 @@ from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from sys import platform as _platform
 
+<<<<<<< HEAD
+=======
+class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(addRoster, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+        
+    def initUI(self):      
+        self.btn.clicked.connect(self.showDialog)
+        self.setGeometry(300, 300, 750, 200)
+        self.setWindowTitle('Add Team to League')
+        self.show()
+        
+    def showDialog(self):
+        
+        text, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 
+            'Enter your league name:')
+        text1, ok = QtGui.QInputDialog.getText(self, 'Add Team to League', 'Enter your team name:')
+        testVar=fbTool.addRoster(text,text1)  
+        if not testVar:
+            self.le.setText("Succesfully added roster " + text1 + "!")
+        else:
+            self.le.setText("Failed to add team...")
+            if testVar == 1:
+                self.le.setText("Team " + text1 + " already exists in league " + text)
+            if testVar == 2:
+                self.le.setText("League " + text + " does not exist. Choose 'Add league to be tracked' button on main menu to add it.")
+            
+<<<<<<< HEAD
+            
+        
+class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(createLeague, self).__init__(parent)
+        self.setupUi(self)
+        self.initUI()
+        
+    def initUI(self):      
+        self.btn.clicked.connect(self.showDialog)
+        self.setGeometry(300, 300, 700, 200)
+        self.setWindowTitle('Create A League')
+        self.show()
+        
+    def showDialog(self):
+        text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
+            'Enter your league name:')
+        testVar=fbTool.addLeague(text)
+        if testVar == 0:
+            self.le2.setText(text + " has been created!")
+        else:
+            if testVar == 1:
+                self.le2.setText("League " + text + " already exists.")
+            if testVar == 2:
+                self.le2.setText("Something is broken.")
+        mainMenu.updateTree()
+
+
+=======
+>>>>>>> origin/master
+>>>>>>> ed64051d3b6101ab25252c01e6c6ced4f97c4eb4
 #########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
 def addRoster():
     if not fbTool.leagueLists:
