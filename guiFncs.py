@@ -6,7 +6,7 @@ import fpKicker
 import createLeague
 import addRoster
 import addPlayer
-import basicGUI
+import mainMenu
 
 from sys import platform as _platform
 from PyQt4 import QtGui
@@ -94,5 +94,5 @@ class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
                 self.le2.setText("League " + text + " already exists.")
             if testVar == 2:
                 self.le2.setText("Something is broken.")
-        basicGUI.updateTree()
+        mainMenu.updateTree()
 
