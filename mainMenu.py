@@ -7,6 +7,7 @@ version history:
     0.1.2   -   remove roster button works
     0.1.4   -   updateRoster crap implemented
     0.1.5   -   added remove league, revamped remove roster to match styles
+    0.1.7   -   implemented trades
 '''
 import sys
 import fbTool
@@ -23,7 +24,7 @@ from PyQt4.QtCore import *
 a=QApplication(sys.argv)        #app window
 w=QMainWindow()                 #base class for all UI objects in pyqt
 w.setFixedSize(800,600)
-w.setWindowTitle("FFB team tool v 0.1.5")   #title for the window
+w.setWindowTitle("FFB team tool v 0.1.7")   #title for the window
 tree=QTreeWidget()
 leagueItems=[]
 rosterItems=[]
@@ -56,7 +57,17 @@ def updateTree():
     dockWidget.update()
 
 def bt1():          #add new league
-    window = guiFncs.createLeague(w)
+    ln,test = QInputDialog.getText(w,'New league','Please enter new league\'s name:')
+    if test:
+        league = str(ln)
+        test = fbTool.addLeague(league)
+        if test == 1:
+            QMessageBox.critical(w,'error','Cannot add leauge: league already exists')
+        elif test == 2:
+            QMessageBox.critical(w,'error','Cannot add league: invalid name')
+        elif not test:
+            updateTree()
+
 def bt2():          #Add new roster
     window = guiFncs.addRoster(w)
 def bt3():          #Update roster
