@@ -4,10 +4,6 @@ import os
 import fpPlayer
 import fpKicker
 import addRoster
-<<<<<<< HEAD
-import addPlayer
-=======
->>>>>>> origin/master
 import mainMenu
 import sys
 from PyQt4.QtGui import *
@@ -41,38 +37,7 @@ class addRoster(QtGui.QMainWindow, addRoster.Ui_MainWindow):
                 self.le.setText("Team " + text1 + " already exists in league " + text)
             if testVar == 2:
                 self.le.setText("League " + text + " does not exist. Choose 'Add league to be tracked' button on main menu to add it.")
-            
-<<<<<<< HEAD
-            
-        
-class createLeague(QtGui.QMainWindow, createLeague.Ui_MainWindow):
-    def __init__(self, parent=None):
-        super(createLeague, self).__init__(parent)
-        self.setupUi(self)
-        self.initUI()
-        
-    def initUI(self):      
-        self.btn.clicked.connect(self.showDialog)
-        self.setGeometry(300, 300, 700, 200)
-        self.setWindowTitle('Create A League')
-        self.show()
-        
-    def showDialog(self):
-        text, ok = QtGui.QInputDialog.getText(self, 'League Name', 
-            'Enter your league name:')
-        testVar=fbTool.addLeague(text)
-        if testVar == 0:
-            self.le2.setText(text + " has been created!")
-        else:
-            if testVar == 1:
-                self.le2.setText("League " + text + " already exists.")
-            if testVar == 2:
-                self.le2.setText("Something is broken.")
-        mainMenu.updateTree()
 
-
-=======
->>>>>>> origin/master
 #########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
 def updateRoster():
     window=QWidget()
