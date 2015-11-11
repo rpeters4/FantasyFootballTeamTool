@@ -25,7 +25,7 @@ from PyQt4.QtCore import *
 a=QApplication(sys.argv)        #app window
 w=QMainWindow()                 #base class for all UI objects in pyqt
 w.setFixedSize(800,600)
-w.setWindowTitle("FFB team tool v 0.1.7")   #title for the window
+w.setWindowTitle("FFB team tool v 0.2.0")   #title for the window
 tree=QTreeWidget()
 leagueItems=[]
 rosterItems=[]
@@ -35,7 +35,7 @@ dockWidget= PyQt4.QtGui.QDockWidget()
  
 def initializeTree():
     leagueCt = 0
-    tree.setHeaderLabels(['','League Name','Team Name','Player Name'])
+    tree.setHeaderLabels(['','League Name','Team Name','Player Name', 'Defense Name'])
     tree.setColumnHidden(0,True)
     
 def updateTree():
@@ -48,11 +48,14 @@ def updateTree():
             ins1.setText(2,j.rosterName)
             rosterItems.append(ins1)
             ins.addChild(rosterItems[len(rosterItems)-1])
+            dfns = str(j.defense)
+            ins1.setText(4,dfns)
             for k in j.players:
                 ins2 = QTreeWidgetItem(tree)
                 ins2.setText(3,(k.firstName + ' ' + k.lastName))
                 playerItems.append(ins2)
                 ins1.addChild(playerItems[len(playerItems)-1])
+            
         leagueItems.append(ins)
         tree.addTopLevelItem(leagueItems[len(leagueItems)-1])
     dockWidget.update()
