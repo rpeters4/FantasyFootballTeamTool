@@ -211,12 +211,13 @@ def readClassFromFile(fileName):
                             if splitText[k] == 'NEWPLAYER':
                                 k=k+1
                                 p=splitText[k].split()
-                                k=k+1
+                                if k<len(splitText)-1:
+                                    k=k+1
                                 pname=p[0]+' '+p[1]
                                 pteam=p[2]
-                                if splitText=='BENCHED':
-                                    addBenchedPlayer(leagueName,rosterName,pname,pteam)
-                                    k=k+1
+                                if splitText[k]=='BENCHED':
+                                        addBenchedPlayer(leagueName,rosterName,pname,pteam)
+                                        k=k+1
                                 else:
                                     addPlayer(leagueName,rosterName,pname,pteam)
 
