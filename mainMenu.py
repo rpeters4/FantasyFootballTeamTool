@@ -35,7 +35,7 @@ dockWidget= PyQt4.QtGui.QDockWidget()
  
 def initializeTree():
     leagueCt = 0
-    tree.setHeaderLabels(['','League Name','Team Name','Player Name', 'Defense Name'])
+    tree.setHeaderLabels(['','League Name','Team Name','Player Name', 'Defense Name','Benched?'])
     tree.setColumnHidden(0,True)
     
 def updateTree():
@@ -53,6 +53,10 @@ def updateTree():
             for k in j.players:
                 ins2 = QTreeWidgetItem(tree)
                 ins2.setText(3,(k.firstName + ' ' + k.lastName))
+                if k.active:
+                    ins2.setText(5,('No'))
+                if not k.active:
+                    ins2.setText(5,('Yes'))
                 playerItems.append(ins2)
                 ins1.addChild(playerItems[len(playerItems)-1])
             
