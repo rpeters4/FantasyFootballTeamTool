@@ -20,13 +20,13 @@ class player:
         self.lastName = lastName
         self.team = team
         self.position = position
+        self.active = True
 
 def findFL(firstName,lastName,team):        ##finds nflgame.player object
     n=firstName + ' ' + lastName            ##by first/last name and team
     return nflgame.find(n,team)
 
 leagueLists = []
-
 #
 #   addLeague - adds a new league to the leagueList, and checks for dups
 #   returns: 0 = success, 1 = league already exists,2=invalid name
@@ -45,7 +45,6 @@ def addLeague(leagueName):                  ##adds new fantasyfootbal league
     l = league(leagueName, [])
     leagueLists.append(l)
     return 0
-
 #
 #   addRoster - adds a new team to an existing league.  If league doesn't
 #               exist, it adds that too.  Note, defTeam is a list of standard
@@ -115,6 +114,33 @@ def addPlayer(leagueName, rosterName, playerName, playerTeam):
     else:
         return 4
 
+def addBenchedPlayer(leagueName, rosterName, playerName, playerTeam):
+    if leagueLists:
+        for l in leagueLists:
+            if l.leagueName == leagueName:
+                for r in l.rosters:
+                    if r.rosterName == rosterName:
+                        teamName = nflgame.standard_team(playerTeam)
+                        playerFound = nflgame.find(playerName, team=teamName)
+                        if playerFound:
+                            p = playerFound[0]
+                            plr2Ad = player(p.player_id, p.first_name, p.last_name, p.team, p.position)
+                            plr2Ad.active=False
+                            for k in l.rosters:
+                                if k.players:
+                                    for j in k.players:
+                                        if plr2Ad.firstName == j.firstName and plr2Ad.lastName == j.lastName and plr2Ad.team == j.team:
+                                            return 1
+                            r.players.append(plr2Ad)
+                            return 0
+                        else:   
+                            return 2
+                    elif r == l.rosters[-1]:
+                        return 3
+            elif l is leagueLists[-1]:
+                return 4
+    else:
+        return 4
 #   FILE I/O: push in attributes of leagues, rosters, and players
 #             and read them back to save hastle of having to enter
 #             everything in manually all the time...
@@ -144,6 +170,8 @@ def writeClassToFile(fileName):
                     for k in j.players:
                         wFile.write('NEWPLAYER\n')
                         wFile.write(k.firstName+' '+k.lastName+' '+k.team+'\n')
+                        if not k.active:
+                            wFile.write('BENCHED\n')
             wFile.close()
 
 def readClassFromFile(fileName):
@@ -183,9 +211,15 @@ def readClassFromFile(fileName):
                             if splitText[k] == 'NEWPLAYER':
                                 k=k+1
                                 p=splitText[k].split()
+                                if k<len(splitText)-1:
+                                    k=k+1
                                 pname=p[0]+' '+p[1]
                                 pteam=p[2]
-                                addPlayer(leagueName,rosterName,pname,pteam)
+                                if splitText[k]=='BENCHED':
+                                        addBenchedPlayer(leagueName,rosterName,pname,pteam)
+                                        k=k+1
+                                else:
+                                    addPlayer(leagueName,rosterName,pname,pteam)
 
         rFile.close()
         return 0
@@ -206,16 +240,24 @@ def tradePlayers(players1, players2, leagueNameToTrade, roster1, roster2):
     if roster1Trade == None or roster2Trade == None:
         return 1
     for p1 in players1:
+        print p1.player_id
         playerOnRoster = False
         for pl1 in roster1Trade.players:
+            print pl1.player_id
             if pl1.firstName == p1.first_name and pl1.lastName == pl1.lastName:
                 playerOnRoster = True
                 break
             if not playerOnRoster and pl1 == roster1Trade.players[-1]:
                 return 3
     for p2 in players2:
+        print 'p2 is %s %s'%(p2.first_name,p2.last_name)
+        print 'p2.player_id=%s'%p2.player_id
+        print 'p2.team = %s'% p2.team
         playerOnRoster = False
         for pl2 in roster2Trade.players:
+            print 'pl2 is %s %s' %(pl2.firstName,pl2.lastName)
+            print 'pl2.player_id = %s'%pl2.player_id
+            print 'pl2.team = %s' % pl2.team
             if pl2.firstName == p2.first_name and pl2.lastName == p2.last_name:
                 playerOnRoster = True
                 break
@@ -272,3 +314,8 @@ def removeLeague(leagueName):
             return 0
     return 1
 
+def setPlayerActiveFlag(player):
+    if player.active:
+        player.active = False
+    else:
+        player.active = True

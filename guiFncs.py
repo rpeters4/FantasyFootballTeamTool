@@ -10,6 +10,7 @@ from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from sys import platform as _platform
 
+#########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
 def addRoster():
     if not fbTool.leagueLists:
         return -1
@@ -100,16 +101,21 @@ def updateRoster():
                 for j in i.rosters:
                     if j.rosterName == item.text():
                         for k in j.players:
-                            list3.addItem((k.firstName + ' ' + k.lastName))
+                            if k.active:
+                                list3.addItem((k.firstName + ' ' + k.lastName))
+                            else:
+                                list3.addItem((k.firstName + ' ' + k.lastName+'(B)'))
 
     list2.itemClicked.connect(poplist3)
 
     window.setLayout(grid)
     window.setWindowTitle('Update Rosters')
     button1 = QPushButton('Add player',window)
-    button2 = QPushButton('Remove player',window)
+    button2 = QPushButton('Remove selected player',window)
+    button3 = QPushButton('Bench/Unbench player',window)
     button1.setToolTip('Add player to highlighted roster')
     button2.setToolTip('Remove highlighted player from roster')
+    button3.setToolTip('Benches/unbenches a player')
     def but1():
         if not list2.currentItem():
             QMessageBox.critical(window,'error','No roster selected')
@@ -126,13 +132,7 @@ def updateRoster():
                     QMessageBox.critical(window,'error','Could not add player: Player does not exist')
                 if not ret:
                     mainMenu.updateTree()
-                    for i in fbTool.leagueLists:
-                        if i.leagueName == str(ln):
-                            for j in i.rosters:
-                                if j.rosterName == str(rn):
-                                    list3.clear()
-                                    for k in j.players:
-                                        list3.addItem((k.firstName+' '+k.lastName))
+                    poplist3(list2.currentItem())
             mainMenu.updateTree()
     def but2():
         if not list3.currentItem():
@@ -143,24 +143,41 @@ def updateRoster():
             pn = str(list3.currentItem().text())
             te = QMessageBox.question(window,'???','Are you sure you want to delete this player?',QMessageBox.Yes|QMessageBox.No,QMessageBox.No)
             if te == QMessageBox.Yes:
+                if pn[-1]==')':
+                    pn=pn[:-3]
                 ret = fbTool.removePlayer(nflgame.find(pn,team=None),str(ln),str(rn))
                 if ret:
                     QMessageBox.critical(window,'error','SOMETHING BROKE!')
                 else:
-                    list3.clear()
-                    for i in fbTool.leagueLists:
-                        if i.leagueName == str(ln):
-                            for j in i.rosters:
-                                if j.rosterName == str(rn):
-                                    for k in j.players:
-                                        list3.addItem((k.firstName+' '+k.lastName))
+                    poplist3(list2.currentItem())
             mainMenu.updateTree()
+    def but3():
+        if not list3.currentItem():
+            QMessageBox.critical(window,'error','No player selected')
+        else:
+            ln=str(list1.currentItem().text())
+            rn=str(list2.currentItem().text())
+            pn=str(list3.currentItem().text())
+            if pn[-1]==')':
+                pn=pn[:-3]
+            for i in fbTool.leagueLists:
+                if i.leagueName == ln:
+                    for j in i.rosters:
+                        if j.rosterName == rn:
+                            for k in j.players:
+                                if pn==(k.firstName + ' ' + k.lastName):
+                                    fbTool.setPlayerActiveFlag(k)
+        poplist3(list2.currentItem())
+        mainMenu.updateTree()
     button1.clicked.connect(but1)
     button2.clicked.connect(but2)
+    button3.clicked.connect(but3)
     button1.resize(button2.sizeHint())
     button2.resize(button2.sizeHint())
-    button1.move(150,470)
-    button2.move(300,470)
+    button3.resize(button2.sizeHint())
+    button1.move(40,470)
+    button2.move(240,470)
+    button3.move(440,470)
     return window
 
 def deleteLeague():
