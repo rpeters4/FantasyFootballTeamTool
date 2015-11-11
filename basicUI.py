@@ -378,17 +378,20 @@ def printTeams(leagueName):
     if leagueName is None:
         leagueName=getLeagueName(0)
     it=1
+    found = False
     for i in fbTool.leagueLists:
         if i.leagueName==leagueName:
+            found=True
             if i.rosters:
                 print 'Teams in league %s:'%leagueName
                 print '{:4s} {:11s} '.format('Team#','Team Name')
                 for j in i.rosters:
                     print '{:2d}    {:15s}'.format(it,j.rosterName)
                     it=it+1
+                return 0
             else:
                 print 'No teams registered in %s'%leagueName
-        elif i==fbTool.leagueLists[-1]:
+        elif i==fbTool.leagueLists[-1] and not found:
             print 'error: league not registered'
             return 1
     return 0
@@ -408,12 +411,15 @@ def printPlayers(leagueName,teamName):
                     tfound=True
                     print 'Players on team %s:'%teamName
                     if j.players:
-                        print 'PlayerID       First Name       Last Name           NFLTeam    Position'
+                        print 'PlayerID       First Name       Last Name           NFLTeam    Position    Benched?'
                     else:
                         print 'Team is empty'
                         return 1
                     for k in j.players:
-                        print '{:14s} {:16s} {:19s} {:10s} {:9s} '.format(str(k.player_id),k.firstName,k.lastName,k.team,k.position)
+                        bvar = 'No'
+                        if not k.active:
+                            bvar = 'Yes'
+                        print '{:14s} {:16s} {:19s} {:10s} {:9s} {:8s} '.format(str(k.player_id),k.firstName,k.lastName,k.team,k.position,bvar)
                     print '%s uses %s\'s defense' %(teamName,j.defense)
 
     if not lfound:
@@ -468,6 +474,56 @@ def printPts():
         elif i==fbTool.leagueLists[-1] and not lfound:
             print 'League %s not found' %leagueName
 
+def benchPlayers():
+    if not fbTool.leagueLists:
+        print 'Error: no leagues registered.'
+        return -1
+    loop1='y'
+    loop2='y'
+    while loop1.lower() in ['yes','y']:
+        ln = getLeagueName(0)
+        league=fbTool.leagueLists[0]
+        roster=fbTool.leagueLists[0].rosters[0]
+        for i in fbTool.leagueLists:
+            if i.leagueName==ln:
+                league = i
+                break
+            if i.leagueName!=ln and i==fbTool.leagueLists[-1]:
+                print 'league %s does not exist' %ln
+                return -1
+        if not i.rosters:
+            print 'error: no rosters registered in %s' %ln
+            return -2
+        printTeams(ln)
+        rn = getTeamName(0)
+        roster=league.rosters[0]
+        for i in league.rosters:
+            if i.rosterName==rn:
+                roster=i.players
+                break
+            if i.rosterName!=rn and i==league.rosters[-1]:
+                print 'roster %s does not exist in league %s' %(rn,ln)
+                return -2
+        
+        while loop2.lower() in ['yes','y']:
+            printPlayers(ln,rn)
+            player = raw_input('Enter name of player to bench/unbench: ').strip()
+            for i in roster:
+                if player == (i.firstName + ' ' + i.lastName):
+                    fbTool.setPlayerActiveFlag(i)
+                    break
+                elif i == roster[-1]:
+                    print 'Player not found...'
+            loop2 = raw_input('Would you like to bench/unbench another member of the same roster? (y/n) ').strip()
+            while loop2.lower() not in ['y','yes','n','no']:
+                print 'Invalid input, please try again...'
+                loop2 = raw_input('Would you like to bench/unbench another member of the same roster? (y/n) ').strip()
+        loop1 = raw_input('Would you like to bench/unbench members of another team? (y/n) ').strip()
+        while loop1.lower() not in ['y','yes','n','no']:
+            print 'Invalid input, please try again...'
+            loop2 = raw_input('Would you like to bench/unbench members of another team? (y/n) ').strip()
+
+
 def saveFileUI():
     fn=getFileName(1)
     if not fbTool.writeClassToFile(fn):
@@ -485,7 +541,7 @@ def loadFileUI():
 def main():
     choice = '0'
     
-    while choice != '15':
+    while choice != '16':
         if choice == 'CHOOCHOO':
             os.system('sl')
         if _platform =="linux" or _platform=="linux2":
@@ -498,29 +554,30 @@ def main():
             print 'This program doesn\'t run on mac...'
             sys.exit()
         print '==================================================================='
-        print 'Fantasy Football Team Tool - (UGLY) Command Line Interface'
+        print 'Fantasy Football Team Tool - Command Line Interface'
         print '==================================================================='
         print 'Please choose one of the following options:'
         print '1 - Add league to be tracked'
         print '2 - Add team to an existing league'
         print '3 - Add a player to an existing team\'s roster'
-        print '4 - Delete an existing League'
-        print '5 - Delete an existing Roster'
-        print '6 - Delete an existing Player off of a Roster'
-        print '7 - Trade players between Rosters'
-        print '8 - Print a list of registered leagues'
-        print '9 - Print a list of teams registered to a given league'
-        print '10 - Print a list of a team\'s current roster'
-        print '11 - Print fantasy points for teams in a league for given week'
-        print '12 - Print a specific player\'s points'
-        print '13 - Write current league structures to a file'
-        print '14 - Read league structures from a file'
-        print '15 - Exit the program'
+        print '4 - Bench/Unbench a player in an exsting team\'s roster'
+        print '5 - Delete an existing League'
+        print '6 - Delete an existing Roster'
+        print '7 - Delete an existing Player off of a Roster'
+        print '8 - Trade players between Rosters'
+        print '9 - Print a list of registered leagues'
+        print '10 - Print a list of teams registered to a given league'
+        print '11 - Print a list of a team\'s current roster'
+        print '12 - Print fantasy points for teams in a league for given week'
+        print '13 - Print a specific player\'s points'
+        print '14 - Write current league structures to a file'
+        print '15 - Read league structures from a file'
+        print '16 - Exit the program'
         choice=raw_input('Please enter an option: ').strip()
         if choice == '\n':
             choice = '0'
 
-        if choice in ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','moo']:
+        if choice in ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','moo']:
             if choice=='1':
                 inp = 'y'
                 while inp.lower() in ['y','yes']:
@@ -546,39 +603,42 @@ def main():
                 addPlayerUI()
                 raw_input ('Press return to continue...').strip()
             if choice=='4':
+                benchPlayers()
+                raw_input('Press return to continue...').strip()
+            if choice=='5':
                 remLeagueUI()
                 raw_input ('Press return to continue...').strip()
-            if choice=='5':
+            if choice=='6':
                 remRosterUI()
                 raw_input ('Press return to continue...').strip()
-            if choice=='6':
+            if choice=='7':
                 remPlayerUI()
                 raw_input ('Press return to continue...').strip()
-            if choice=='7':
+            if choice=='8':
                 tradePlayersUI()
                 raw_input ('Press return to continue...').strip()
-            if choice=='8':
+            if choice=='9':
                 printLeagues()
                 raw_input ('Press return to continue...').strip()
-            if choice=='9':
+            if choice=='10':
                 printTeams(None)
                 raw_input ('Press return to continue...').strip()
-            if choice=='10':
+            if choice=='11':
                 printPlayers(None,None)
                 raw_input ('Press return to continue...').strip()
-            if choice=='11':
+            if choice=='12':
                 printPts()
                 raw_input ('Press return to continue...').strip()
-            if choice=='12':
+            if choice=='13':
                 playerPointsUI();
                 raw_input ('Press return to continue...').strip()
-            if choice=='13':
+            if choice=='14':
                 saveFileUI()
                 raw_input ('Press return to continue...').strip()
-            if choice=='14':
+            if choice=='15':
                 loadFileUI()
                 raw_input ('Press return to continue...').strip()
-            if choice=='15':
+            if choice=='16':
                 print 'exiting...\n'
             if choice.lower()=='moo': 
                 iSWEARImNotGoingInsane()
