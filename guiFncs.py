@@ -262,6 +262,43 @@ def deleteRoster():
         window.setLayout(grid)
         return window
 
+def compare():
+    window = QWidget()
+    window.setFixedSize(400,150)
+    window.setWindowTitle('Compare menu')
+    button1 = QPushButton('Compare two players',window)
+    button1.move(150,25)
+    button2 = QPushButton('Compare two fantasy teams',window)
+    button2.move(150,75)
+    
+    def plcompare():
+        def twocompare():
+            print str(input1.text()) + ', ' + str(input2.text())
+        window1 = QWidget()
+        window1.setFixedSize(400,150)
+        window1.setWindowTitle('Player Comparison')
+        prompt1 = QLabel('Enter first player to compare',window1)
+        prompt1.move(10,25)
+        input1 = QLineEdit(window1)
+        input1.move(150,25)
+        input1.setFixedWidth(200)
+        player1 = input1.text()
+        prompt2 = QLabel('Enter second player to compare',window1)
+        prompt2.move(10,75)
+        input2 = QLineEdit(window1)
+        input2.move(175,75)
+        input2.setFixedWidth(200)
+        player2 = input2.text()
+        cbut = QPushButton('Compare!',window1)
+        cbut.clicked.connect(twocompare)
+        window1.show()
+        mainMenu.openWins.append(window1)
+        return window1
+        
+    
+    button1.clicked.connect(plcompare)
+    return window
+
 def trade():
     window = QWidget()
     window.setFixedSize(800,600)
