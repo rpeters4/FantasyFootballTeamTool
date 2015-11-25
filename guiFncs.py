@@ -4,6 +4,7 @@ import os
 import fpPlayer
 import fpKicker
 import mainMenu
+import fbPlayerPoints
 import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -261,6 +262,65 @@ def deleteRoster():
         button.move(60,470)       
         window.setLayout(grid)
         return window
+
+def compare():
+    window = QWidget()
+    window.setFixedSize(400,150)
+    window.setWindowTitle('Compare menu')
+    button1 = QPushButton('Compare two players',window)
+    button1.move(150,25)
+    button2 = QPushButton('Compare two fantasy teams',window)
+    button2.move(150,75)
+    
+    def plcompare():
+        def twocompare():
+            print str(input1.text()) + ', ' + str(input2.text())
+        def getPlayerPoints():
+            print player1info
+            points = 0
+            points = fbPlayerPoints.playerPoints(player1info)
+            print points
+            return points
+            
+        window1 = QWidget()
+        window1.setFixedSize(400,150)
+        window1.setWindowTitle('Player Comparison')
+        player1info = []
+        prompt1 = QLabel('Enter first player to compare',window1)
+        prompt1.move(10,25)
+        input1 = QLineEdit(window1)
+        input1.move(150,25)
+        input1.setFixedWidth(200)
+        prompt12 = QLabel('Enter year', window1)
+        prompt12.move(10,75)
+        input12 = QLineEdit(window1)
+        input12.move(150,75)
+        input12.setFixedWidth(200)
+        prompt13 = QLabel('Enter week(s)', window1)
+        prompt13.move(10,100)
+        input13 = QLineEdit(window1)
+        input13.move(150,125)
+        input13.setFixedWidth(200)
+        
+        def confirm():
+            player1 = str(input1.text()).strip()
+            player1info.append(player1)
+            player1year = str(input12.text())
+            player1info.append(player1year)
+            player1week = str(input13.text()).strip()
+            p1w = player1week.split()
+            player1info.append(p1w)
+            getPlayerPoints()
+            
+        cbut = QPushButton('Compare!',window1)
+        cbut.clicked.connect(confirm)
+        window1.show()
+        mainMenu.openWins.append(window1)
+        return window1
+        
+    
+    button1.clicked.connect(plcompare)
+    return window
 
 def trade():
     window = QWidget()
