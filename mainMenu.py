@@ -110,12 +110,6 @@ def bt6():          #Trade between rosters
     else:
         QMessageBox.critical(w,'error','No leagues currently registered')
 def bt7():          #compare points
-    window = guiFncs.compare()
-    if window!=-1:
-        window.show()
-        openWins.append(window)
-    else:
-        QMessageBox.critical(w, 'error', 'Something is wrong :/')
     print 'point comparison menu will go here'
 def bt8():          #save
     if fbTool.leagueLists:
