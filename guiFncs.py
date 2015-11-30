@@ -341,7 +341,11 @@ def compare():
             player1info.append(p1w)
             points1 = fbPlayerPoints.playerPoints(player1info)
             item1 = QListWidgetItem("%f" % float(points1))
-            player1area.addItem(item1)
+            if points1 == float('inf'):
+                onenoexist = QListWidgetItem("Player does not exist")
+                player1area.addItem(onenoexist)
+            else:
+                player1area.addItem(item1)
             #Player Two stuff
             player2info = []
             points2 = 0
@@ -354,7 +358,11 @@ def compare():
             player2info.append(p2w)
             points2 = fbPlayerPoints.playerPoints(player2info)
             item2 = QListWidgetItem("%f" % float(points2))
-            player2area.addItem(item2)
+            if points2 == float('inf'):
+                twonoexist = QListWidgetItem("Player does not exist")
+                player2area.addItem(twonoexist)
+            else:
+                player2area.addItem(item2)
             
         cbut = QPushButton('Compare!',window1)
         cbut.move(500, 375)
