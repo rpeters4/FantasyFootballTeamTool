@@ -116,7 +116,6 @@ def bt7():          #compare points
         openWins.append(window)
     else:
         QMessageBox.critical(w, 'error', 'Something is wrong :/')
-    print 'point comparison menu will go here'
 def bt8():          #save
     if fbTool.leagueLists:
         fileName = QFileDialog.getSaveFileName()
