@@ -12,7 +12,6 @@ from PyQt4.QtCore import *
 from PyQt4 import QtGui
 from sys import platform as _platform
 
-#########AND THEN ROB JUMPS IN AND STARTS DOING THINGS COMPLETELY DIFFERENTLY
 def addRoster():
     if not fbTool.leagueLists:
         return -1
@@ -34,10 +33,10 @@ def addRoster():
             defense = []
             ln=str(list1.currentItem().text())
             loopvar = QMessageBox.Yes
-            rn,test = QInputDialog.getText(window,'New roster','Please enter the name for the new roster you\'d like to add:')
+            rn,test = QInputDialog.getText(window,'New roster','Please enter the name for the new roster you\'d like to add:').strip()
             rn = str(rn)
             while loopvar == QMessageBox.Yes:
-                dn,test = QInputDialog.getText(window,'Defense','Please enter a team to use as defense:')
+                dn,test = QInputDialog.getText(window,'Defense','Please enter a team to use as defense:').strip()
                 if test:
                     d = nflgame.standard_team(str(dn))
                     if d is None:
@@ -124,9 +123,9 @@ def updateRoster():
         else:
             ln = list1.currentItem().text()
             rn = list2.currentItem().text()
-            pn,test = QInputDialog.getText(window,'Input dialog','Enter Player to Add\'s Name:')
+            pn,test = QInputDialog.getText(window,'Input dialog','Enter Player to Add\'s Name:').strip()
             if test:
-                tn,test = QInputDialog.getText(window,'Input dialog','Enter name of NFL team player plays on:')
+                tn,test = QInputDialog.getText(window,'Input dialog','Enter name of NFL team player plays on:').strip()
                 ret=fbTool.addPlayer(str(ln),str(rn),str(pn),str(tn))
                 if ret == 1:
                     QMessageBox.critical(window,'error','Could not add player: Player already rostered')
@@ -216,6 +215,7 @@ def deleteLeague():
         button.move(60,470)       
         window.setLayout(grid)
         return window
+
 def deleteRoster():
     window = QWidget()
     window.setFixedSize(550,500)
@@ -448,7 +448,8 @@ def compare():
                             p2rushtpm = m2.stats['rushing_twoptm']
                             p2rushtpmin = QListWidgetItem("Rushing two-pt conversions made: %d" % int(p2rushtpm))
                             player2area.addItem(p2rushtpmin)
-        cbut = QPushButton('Compare!',window1)
+                           
+        cbut = QPushButton('Compare',window1)
         cbut.move(500, 375)
         cbut.clicked.connect(confirm)
         window1.show()
