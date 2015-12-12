@@ -283,12 +283,21 @@ def compare():
         input1.move(150,25)
         input1.setFixedWidth(200)
         input1.setToolTip('Example: Aaron Rodgers')
-        prompt12 = QLabel('Enter year:', window1)
+        prompt12 = QLabel('Choose year:', window1)
         prompt12.move(10,75)
-        input12 = QLineEdit(window1)
+        input12 = QComboBox(window1)
+        input12.addItem("Choose year")
+        input12.addItem("2009")
+        input12.addItem("2010")
+        input12.addItem("2011")
+        input12.addItem("2012")
+        input12.addItem("2013")
+        input12.addItem("2014")
+        input12.addItem("2015")
         input12.move(150,75)
-        input12.setFixedWidth(200)
-        input12.setToolTip('Example: 2015')
+        def handleActivated(oneyear):
+            print('handleChanged: %s' % oneyear)
+        input12.currentIndexChanged['QString'].connect(handleActivated)
         prompt13 = QLabel('Enter week(s):', window1)
         prompt13.move(10,125)
         input13 = QLineEdit(window1)
@@ -306,12 +315,18 @@ def compare():
         input2.move(640,25)
         input2.setFixedWidth(200)
         input2.setToolTip('Example: Aaron Rodgers')
-        prompt22 = QLabel('Enter year:', window1)
+        prompt22 = QLabel('Choose year:', window1)
         prompt22.move(500,75)
-        input22 = QLineEdit(window1)
+        input22 = QComboBox(window1)
+        input22.addItem("Choose year")
+        input22.addItem("2009")
+        input22.addItem("2010")
+        input22.addItem("2011")
+        input22.addItem("2012")
+        input22.addItem("2013")
+        input22.addItem("2014")
+        input22.addItem("2015")
         input22.move(640,75)
-        input22.setFixedWidth(200)
-        input22.setToolTip('Example: 2015')
         prompt23 = QLabel('Enter week(s):', window1)
         prompt23.move(500,125)
         input23 = QLineEdit(window1)
@@ -335,10 +350,26 @@ def compare():
                 player1area.addItem(onenoexist)
             else:
                 player1info.append(player1)
-                player1year = int(input12.text())
+                def handleActivated():
+                    print('handleChanged: %d' % int(input12.currentText()))
+                    print player1info
+                input12.activated['QString'].connect(handleActivated)
+                player1year = int(input12.currentText())
                 player1info.append(player1year)
                 player1week = str(input13.text()).strip()
                 p1w = map(int, player1week.split())
+                for i in p1w:
+                    if i<1 or i>17:
+                        weeknoexist1 = QListWidgetItem("Week %i does not exist" % i)
+                        player1area.addItem(weeknoexist1)
+                        p1w.remove(i)
+                    if i>(nflgame.live.current_year_and_week()[1]) and (i>0 and i<18):
+                        onenotcurrent = QListWidgetItem("Week %i hasn't occurred yet" % i)
+                        player1area.addItem(onenotcurrent)
+                        p1w.remove(i)
+                    if len(p1w) == 0:
+                            oneonlyweek = QListWidgetItem("You have not entered any more weeks")
+                            player1area.addItem(oneonlyweek)
                 for w in byeWeekLists.byeWeeks:
                     for t in w:
                         if nflgame.find(player1info[0], team=None)[0].team == t and w[-1] in p1w:
@@ -415,10 +446,26 @@ def compare():
                 player2area.addItem(twonoexist)
             else:
                 player2info.append(player2)
-                player2year = int(input22.text())
+                def handleActivated():
+                    print('handleChanged: %d' % int(input22.currentText()))
+                    print player2info
+                input22.activated['QString'].connect(handleActivated)
+                player2year = int(input22.currentText())
                 player2info.append(player2year)
                 player2week = str(input23.text()).strip()
                 p2w = map(int, player2week.split())
+                for i in p2w:
+                    if i<1 or i>17:
+                        weeknoexist2 = QListWidgetItem("Week %i does not exist" % i)
+                        player2area.addItem(weeknoexist2)
+                        p2w.remove(i)
+                    if i>(nflgame.live.current_year_and_week()[1]) and (i>0 and i<18):
+                        twonotcurrent = QListWidgetItem("Week %i hasn't occurred yet" % i)
+                        player2area.addItem(twonotcurrent)
+                        p2w.remove(i)
+                    if len(p2w) == 0:
+                            twoonlyweek = QListWidgetItem("You have not entered any more weeks")
+                            player2area.addItem(twoonlyweek)
                 for w in byeWeekLists.byeWeeks:
                     for t in w:
                         if nflgame.find(player2info[0], team=None)[0].team == t and w[-1] in p2w:
