@@ -286,7 +286,6 @@ def compare():
         prompt12 = QLabel('Choose year:', window1)
         prompt12.move(10,75)
         input12 = QComboBox(window1)
-        input12.addItem("Choose year")
         input12.addItem("2009")
         input12.addItem("2010")
         input12.addItem("2011")
@@ -318,7 +317,6 @@ def compare():
         prompt22 = QLabel('Choose year:', window1)
         prompt22.move(500,75)
         input22 = QComboBox(window1)
-        input22.addItem("Choose year")
         input22.addItem("2009")
         input22.addItem("2010")
         input22.addItem("2011")
@@ -351,92 +349,122 @@ def compare():
             else:
                 player1info.append(player1)
                 def handleActivated():
-                    print('handleChanged: %d' % int(input12.currentText()))
-                    print player1info
+                    int(input12.currentText())
                 input12.activated['QString'].connect(handleActivated)
                 player1year = int(input12.currentText())
                 player1info.append(player1year)
                 player1week = str(input13.text()).strip()
                 p1w = map(int, player1week.split())
-                for i in p1w:
-                    if i<1 or i>17:
-                        weeknoexist1 = QListWidgetItem("Week %i does not exist" % i)
-                        player1area.addItem(weeknoexist1)
-                        p1w.remove(i)
-                    if i>(nflgame.live.current_year_and_week()[1]) and (i>0 and i<18):
-                        onenotcurrent = QListWidgetItem("Week %i hasn't occurred yet" % i)
-                        player1area.addItem(onenotcurrent)
-                        p1w.remove(i)
-                    if len(p1w) == 0:
-                            oneonlyweek = QListWidgetItem("You have not entered any more weeks")
+                oneonlyweek = QListWidgetItem("You have not entered any weeks")
+                if len(p1w)==0:
+                    player1area.addItem(oneonlyweek)
+                else:
+                    def currentweek(i):
+                        onenotcurrent = QListWidgetItem("Week %d hasn't occurred yet" % p1w[i])
+                        if len(p1w) > 0:
+                            if p1w[i]>(nflgame.live.current_year_and_week()[1]) and (p1w[i]>0 and p1w[i]<18):
+                                if i == len(p1w)-1:
+                                    player1area.addItem(onenotcurrent)
+                                    p1w.remove(p1w[i])
+                                else:
+                                    player1area.addItem(onenotcurrent)
+                                    p1w.remove(p1w[i])
+                                    if len(p1w)>0:
+                                        currentweek(i)
+                            else:
+                                if i < len(p1w)-1:
+                                    currentweek(i+1)
+                    def existweek(i):
+                        weeknoexist1 = QListWidgetItem("Week %d does not exist" % p1w[i])
+                        if len(p1w) == 0:
                             player1area.addItem(oneonlyweek)
-                for w in byeWeekLists.byeWeeks:
-                    for t in w:
-                        if nflgame.find(player1info[0], team=None)[0].team == t and w[-1] in p1w:
-                            onebye = QListWidgetItem("%s has a bye in week %d" % (t, w[-1]))
-                            player1area.addItem(onebye)
-                            p1w.remove(w[-1])
-                            print str(p1w)
-                            if len(p1w) == 0:
-                                oneonlybye = QListWidgetItem("You have not entered any more weeks")
-                                player1area.addItem(oneonlybye)
-                if len(p1w) > 0:
-                    player1info.append(p1w)
-                    print player1info
-                    points1 = fbPlayerPoints.playerPoints(player1info)
-                    item1 = QListWidgetItem("%f" % float(points1))
-                    if points1 == float('inf'):
-                        onenoexist = QListWidgetItem("Player does not exist")
-                        player1area.addItem(onenoexist)
-                    else:
-                        player1found = nflgame.find(player1info[0], team = None)
-                        player1area.addItem(item1)
-                        p1 = player1found[0]
-                        m1 = p1.stats(player1info[1],player1info[2])
-                        if 'passing_yds' in m1.stats:
-                            p1passyds = m1.stats['passing_yds']
-                            p1passydsin = QListWidgetItem("Passing yards: %d" % int(p1passyds))
-                            player1area.addItem(p1passydsin)
-                        if 'passing_twoptm' in m1.stats:
-                            p1tpm = m1.stats['passing_twoptm']
-                            p1tpmin = QListWidgetItem("Two-pt conversions made: %d" % int(p1tpm))
-                            player1area.addItem(p1tpmin)
-                        if 'passing_ints' in m1.stats:
-                            p1passints = m1.stats['passing_ints']
-                            p1passintsin = QListWidgetItem("Passing ints: %d" % int(p1passints))
-                            player1area.addItem(p1passintsin)
-                        if 'passing_tds' in m1.stats:
-                            p1passtds = m1.stats['passing_tds']
-                            p1passtdsin = QListWidgetItem("Passing TDs: %d" % int(p1passtds))
-                            player1area.addItem(p1passtdsin)
-                        if 'rushing_tds' in m1.stats:
-                            p1rushtds = m1.stats['rushing_tds']
-                            p1rushtdsin = QListWidgetItem("Rushing TDs: %d" % int(p1rushtds))
-                            player1area.addItem(p1rushtdsin)
-                        if 'rushing_yds' in m1.stats:
-                            p1rushyds = m1.stats['rushing_yds']
-                            p1rushydsin = QListWidgetItem("Rushing yards: %d" % int(p1rushyds))
-                            player1area.addItem(p1rushydsin)
-                        if 'receiving_yds' in m1.stats:
-                            p1recyds = m1.stats['receiving_yds']
-                            p1recydsin = QListWidgetItem("Receiving yards: %d" % int(p1recyds))
-                            player1area.addItem(p1recydsin)
-                        if 'receiving_tds' in m1.stats:
-                            p1rectds = m1.stats['receiving_tds']
-                            p1rectdsin = QListWidgetItem("Receiving TDs: %d" % int(p1rectds))
-                            player1area.addItem(p1rectdsin)
-                        if 'receiving_twoptm' in m1.stats:
-                            p1rectpm = m1.stats['receiving_twoptm']
-                            p1rectpmin = QListWidgetItem("Receiving two-pt conversions made: %d" % int(p1rectpm))
-                            player1area.addItem(p1rectpmin)
-                        if 'fumbles_lost' in m1.stats:
-                            p1fum = m1.stats['fumbles_lost']
-                            p1fumin = QListWidgetItem("Fumbles lost: %d" % int(p1fum))
-                            player1area.addItem(p1fumin)
-                        if 'rushing_twoptm' in m1.stats:
-                            p1rushtpm = m1.stats['rushing_twoptm']
-                            p1rushtpmin = QListWidgetItem("Rushing two-pt conversions made: %d" % int(p1rushtpm))
-                            player1area.addItem(p1rushtpmin)
+                        else:
+                            if p1w[i]<1 or p1w[i]>17:
+                                if i == len(p1w)-1:
+                                    player1area.addItem(weeknoexist1)
+                                    p1w.remove(p1w[i])
+                                else:
+                                    player1area.addItem(weeknoexist1)
+                                    p1w.remove(p1w[i])
+                                    existweek(i)
+                            else:
+                                if i < len(p1w)-1:
+                                    existweek(i+1)
+                    i=0
+                    existweek(i)
+                    if len(p1w)>0:
+                        currentweek(0)
+                    
+                    def byecheck(i):
+                        for w in byeWeekLists.byeWeeks:
+                            for t in w:
+                                if nflgame.find(player1info[0], team=None)[0].team == t:
+                                    if w[-1] in p1w:
+                                        onebye = QListWidgetItem("%s has a bye in week %d" % (t, w[-1]))
+                                        player1area.addItem(onebye)
+                                        p1w.remove(w[-1])
+                    if len(p1w)>0:
+                        byecheck(0)
+                    if len(p1w)==0:
+                        onenomoreweeks = QListWidgetItem("You have not entered any more weeks")
+                        player1area.addItem(onenomoreweeks)
+                    if len(p1w) > 0:
+                        print p1w
+                        player1info.append(p1w)
+                        points1 = fbPlayerPoints.playerPoints(player1info)
+                        item1 = QListWidgetItem("%f" % float(points1))
+                        if points1 == float('inf'):
+                            onenoexist = QListWidgetItem("Player does not exist")
+                            player1area.addItem(onenoexist)
+                        else:
+                            player1found = nflgame.find(player1info[0], team = None)
+                            player1area.addItem(item1)
+                            p1 = player1found[0]
+                            m1 = p1.stats(player1info[1],player1info[2])
+                            if 'passing_yds' in m1.stats:
+                                p1passyds = m1.stats['passing_yds']
+                                p1passydsin = QListWidgetItem("Passing yards: %d" % int(p1passyds))
+                                player1area.addItem(p1passydsin)
+                            if 'passing_twoptm' in m1.stats:
+                                p1tpm = m1.stats['passing_twoptm']
+                                p1tpmin = QListWidgetItem("Two-pt conversions made: %d" % int(p1tpm))
+                                player1area.addItem(p1tpmin)
+                            if 'passing_ints' in m1.stats:
+                                p1passints = m1.stats['passing_ints']
+                                p1passintsin = QListWidgetItem("Passing ints: %d" % int(p1passints))
+                                player1area.addItem(p1passintsin)
+                            if 'passing_tds' in m1.stats:
+                                p1passtds = m1.stats['passing_tds']
+                                p1passtdsin = QListWidgetItem("Passing TDs: %d" % int(p1passtds))
+                                player1area.addItem(p1passtdsin)
+                            if 'rushing_tds' in m1.stats:
+                                p1rushtds = m1.stats['rushing_tds']
+                                p1rushtdsin = QListWidgetItem("Rushing TDs: %d" % int(p1rushtds))
+                                player1area.addItem(p1rushtdsin)
+                            if 'rushing_yds' in m1.stats:
+                                p1rushyds = m1.stats['rushing_yds']
+                                p1rushydsin = QListWidgetItem("Rushing yards: %d" % int(p1rushyds))
+                                player1area.addItem(p1rushydsin)
+                            if 'receiving_yds' in m1.stats:
+                                p1recyds = m1.stats['receiving_yds']
+                                p1recydsin = QListWidgetItem("Receiving yards: %d" % int(p1recyds))
+                                player1area.addItem(p1recydsin)
+                            if 'receiving_tds' in m1.stats:
+                                p1rectds = m1.stats['receiving_tds']
+                                p1rectdsin = QListWidgetItem("Receiving TDs: %d" % int(p1rectds))
+                                player1area.addItem(p1rectdsin)
+                            if 'receiving_twoptm' in m1.stats:
+                                p1rectpm = m1.stats['receiving_twoptm']
+                                p1rectpmin = QListWidgetItem("Receiving two-pt conversions made: %d" % int(p1rectpm))
+                                player1area.addItem(p1rectpmin)
+                            if 'fumbles_lost' in m1.stats:
+                                p1fum = m1.stats['fumbles_lost']
+                                p1fumin = QListWidgetItem("Fumbles lost: %d" % int(p1fum))
+                                player1area.addItem(p1fumin)
+                            if 'rushing_twoptm' in m1.stats:
+                                p1rushtpm = m1.stats['rushing_twoptm']
+                                p1rushtpmin = QListWidgetItem("Rushing two-pt conversions made: %d" % int(p1rushtpm))
+                                player1area.addItem(p1rushtpmin)
                     #Player Two stuff
             player2info = []
             points2 = 0
@@ -447,91 +475,121 @@ def compare():
             else:
                 player2info.append(player2)
                 def handleActivated():
-                    print('handleChanged: %d' % int(input22.currentText()))
-                    print player2info
+                    int(input22.currentText())
                 input22.activated['QString'].connect(handleActivated)
                 player2year = int(input22.currentText())
                 player2info.append(player2year)
                 player2week = str(input23.text()).strip()
                 p2w = map(int, player2week.split())
-                for i in p2w:
-                    if i<1 or i>17:
-                        weeknoexist2 = QListWidgetItem("Week %i does not exist" % i)
-                        player2area.addItem(weeknoexist2)
-                        p2w.remove(i)
-                    if i>(nflgame.live.current_year_and_week()[1]) and (i>0 and i<18):
-                        twonotcurrent = QListWidgetItem("Week %i hasn't occurred yet" % i)
-                        player2area.addItem(twonotcurrent)
-                        p2w.remove(i)
-                    if len(p2w) == 0:
-                            twoonlyweek = QListWidgetItem("You have not entered any more weeks")
+                twoonlyweek = QListWidgetItem("You have not entered any weeks")
+                if len(p2w)==0:
+                    player2area.addItem(twoonlyweek)
+                else:
+                    def currentweek(i):
+                        twonotcurrent = QListWidgetItem("Week %d hasn't occurred yet" % p2w[i])
+                        if len(p2w) > 0:
+                            if p2w[i]>(nflgame.live.current_year_and_week()[1]) and (p2w[i]>0 and p2w[i]<18):
+                                if i == len(p2w)-1:
+                                    player2area.addItem(twonotcurrent)
+                                    p2w.remove(p2w[i])
+                                else:
+                                    player2area.addItem(twonotcurrent)
+                                    p2w.remove(p2w[i])
+                                    if len(p2w)>0:
+                                        currentweek(i)
+                            else:
+                                if i < len(p2w)-1:
+                                    currentweek(i+1)
+                    def existweek(i):
+                        weeknoexist2 = QListWidgetItem("Week %d does not exist" % p2w[i])
+                        if len(p2w) == 0:
                             player2area.addItem(twoonlyweek)
-                for w in byeWeekLists.byeWeeks:
-                    for t in w:
-                        if nflgame.find(player2info[0], team=None)[0].team == t and w[-1] in p2w:
-                            twobye = QListWidgetItem("%s has a bye in week %d" % (t, w[-1]))
-                            player2area.addItem(twobye)
-                            p2w.remove(w[-1])
-                            print str(p2w)
-                            if len(p2w) == 0:
-                                twoonlybye = QListWidgetItem("You have not entered any more weeks")
-                                player2area.addItem(twoonlybye)
-                if len(p2w) > 0:
-                    player2info.append(p2w)
-                    points2 = fbPlayerPoints.playerPoints(player2info)
-                    item2 = QListWidgetItem("%f" % float(points2))
-                    if points2 == float('inf'):
-                        twonoexist = QListWidgetItem("Player does not exist")
-                        player2area.addItem(twonoexist)
-                    else:
-                        player2found = nflgame.find(player2info[0], team = None)
-                        player2area.addItem(item2)
-                        p2 = player2found[0]
-                        m2 = p2.stats(player2info[1],player2info[2])
-                        if 'passing_yds' in m2.stats:
-                            p2passyds = m2.stats['passing_yds']
-                            p2passydsin = QListWidgetItem("Passing yards: %d" % int(p2passyds))
-                            player2area.addItem(p2passydsin)
-                        if 'passing_twoptm' in m2.stats:
-                            p2tpm = m2.stats['passing_twoptm']
-                            p2tpmin = QListWidgetItem("Two-pt conversions made: %d" % int(p2tpm))
-                            player2area.addItem(p2tpmin)
-                        if 'passing_ints' in m2.stats:
-                            p2passints = m2.stats['passing_ints']
-                            p2passintsin = QListWidgetItem("Passing ints: %d" % int(p2passints))
-                            player2area.addItem(p2passintsin)
-                        if 'passing_tds' in m2.stats:
-                            p2passtds = m2.stats['passing_tds']
-                            p2passtdsin = QListWidgetItem("Passing TDs: %d" % int(p2passtds))
-                            player2area.addItem(p2passtdsin)
-                        if 'rushing_tds' in m2.stats:
-                            p2rushtds = m2.stats['rushing_tds']
-                            p2rushtdsin = QListWidgetItem("Rushing TDs: %d" % int(p2rushtds))
-                            player2area.addItem(p2rushtdsin)
-                        if 'rushing_yds' in m2.stats:
-                            p2rushyds = m2.stats['rushing_yds']
-                            p2rushydsin = QListWidgetItem("Rushing yards: %d" % int(p2rushyds))
-                            player2area.addItem(p2rushydsin)
-                        if 'receiving_yds' in m2.stats:
-                            p2recyds = m2.stats['receiving_yds']
-                            p2recydsin = QListWidgetItem("Receiving yards: %d" % int(p2recyds))
-                            player2area.addItem(p2recydsin)
-                        if 'receiving_tds' in m2.stats:
-                            p2rectds = m2.stats['receiving_tds']
-                            p2rectdsin = QListWidgetItem("Receiving TDs: %d" % int(p2rectds))
-                            player2area.addItem(p2rectdsin)
-                        if 'receiving_twoptm' in m2.stats:
-                            p2rectpm = m2.stats['receiving_twoptm']
-                            p2rectpmin = QListWidgetItem("Receiving two-pt conversions made: %d" % int(p2rectpm))
-                            player2area.addItem(p2rectpmin)
-                        if 'fumbles_lost' in m2.stats:
-                            p2fum = m2.stats['fumbles_lost']
-                            p2fumin = QListWidgetItem("Fumbles lost: %d" % int(p2fum))
-                            player2area.addItem(p2fumin)
-                        if 'rushing_twoptm' in m2.stats:
-                            p2rushtpm = m2.stats['rushing_twoptm']
-                            p2rushtpmin = QListWidgetItem("Rushing two-pt conversions made: %d" % int(p2rushtpm))
-                            player2area.addItem(p2rushtpmin)
+                        else:
+                            if p2w[i]<1 or p2w[i]>17:
+                                if i == len(p2w)-1:
+                                    player2area.addItem(weeknoexist2)
+                                    p2w.remove(p2w[i])
+                                else:
+                                    player2area.addItem(weeknoexist2)
+                                    p2w.remove(p2w[i])
+                                    existweek(i)
+                            else:
+                                if i < len(p2w)-1:
+                                    existweek(i+1)
+                    i=0
+                    existweek(i)
+                    if len(p2w)>0:
+                        currentweek(0)
+                    
+                    def byecheck(i):
+                        for w in byeWeekLists.byeWeeks:
+                            for t in w:
+                                if nflgame.find(player2info[0], team=None)[0].team == t:
+                                    if w[-1] in p2w:
+                                        twobye = QListWidgetItem("%s has a bye in week %d" % (t, w[-1]))
+                                        player2area.addItem(twobye)
+                                        p2w.remove(w[-1])
+                    if len(p2w)>0:
+                        byecheck(0)
+                    if len(p2w)==0:
+                        twonomoreweeks = QListWidgetItem("You have not entered any more weeks")
+                        player2area.addItem(twonomoreweeks)
+                    if len(p2w) > 0:
+                        player2info.append(p2w)
+                        points2 = fbPlayerPoints.playerPoints(player2info)
+                        item2 = QListWidgetItem("%f" % float(points2))
+                        if points2 == float('inf'):
+                            twonoexist = QListWidgetItem("Player does not exist")
+                            player2area.addItem(twonoexist)
+                        else:
+                            player2found = nflgame.find(player2info[0], team = None)
+                            player2area.addItem(item2)
+                            p2 = player2found[0]
+                            m2 = p2.stats(player2info[1],player2info[2])
+                            if 'passing_yds' in m2.stats:
+                                p2passyds = m2.stats['passing_yds']
+                                p2passydsin = QListWidgetItem("Passing yards: %d" % int(p2passyds))
+                                player2area.addItem(p2passydsin)
+                            if 'passing_twoptm' in m2.stats:
+                                p2tpm = m2.stats['passing_twoptm']
+                                p2tpmin = QListWidgetItem("Two-pt conversions made: %d" % int(p2tpm))
+                                player2area.addItem(p2tpmin)
+                            if 'passing_ints' in m2.stats:
+                                p2passints = m2.stats['passing_ints']
+                                p2passintsin = QListWidgetItem("Passing ints: %d" % int(p2passints))
+                                player2area.addItem(p2passintsin)
+                            if 'passing_tds' in m2.stats:
+                                p2passtds = m2.stats['passing_tds']
+                                p2passtdsin = QListWidgetItem("Passing TDs: %d" % int(p2passtds))
+                                player2area.addItem(p2passtdsin)
+                            if 'rushing_tds' in m2.stats:
+                                p2rushtds = m2.stats['rushing_tds']
+                                p2rushtdsin = QListWidgetItem("Rushing TDs: %d" % int(p2rushtds))
+                                player2area.addItem(p2rushtdsin)
+                            if 'rushing_yds' in m2.stats:
+                                p2rushyds = m2.stats['rushing_yds']
+                                p2rushydsin = QListWidgetItem("Rushing yards: %d" % int(p2rushyds))
+                                player2area.addItem(p2rushydsin)
+                            if 'receiving_yds' in m2.stats:
+                                p2recyds = m2.stats['receiving_yds']
+                                p2recydsin = QListWidgetItem("Receiving yards: %d" % int(p2recyds))
+                                player2area.addItem(p2recydsin)
+                            if 'receiving_tds' in m2.stats:
+                                p2rectds = m2.stats['receiving_tds']
+                                p2rectdsin = QListWidgetItem("Receiving TDs: %d" % int(p2rectds))
+                                player2area.addItem(p2rectdsin)
+                            if 'receiving_twoptm' in m2.stats:
+                                p2rectpm = m2.stats['receiving_twoptm']
+                                p2rectpmin = QListWidgetItem("Receiving two-pt conversions made: %d" % int(p2rectpm))
+                                player2area.addItem(p2rectpmin)
+                            if 'fumbles_lost' in m2.stats:
+                                p2fum = m2.stats['fumbles_lost']
+                                p2fumin = QListWidgetItem("Fumbles lost: %d" % int(p2fum))
+                                player2area.addItem(p2fumin)
+                            if 'rushing_twoptm' in m2.stats:
+                                p2rushtpm = m2.stats['rushing_twoptm']
+                                p2rushtpmin = QListWidgetItem("Rushing two-pt conversions made: %d" % int(p2rushtpm))
+                                player2area.addItem(p2rushtpmin)
                            
         cbut = QPushButton('Compare',window1)
         cbut.move(500, 375)
