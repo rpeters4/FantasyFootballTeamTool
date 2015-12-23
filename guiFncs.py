@@ -410,7 +410,9 @@ def compare():
                         player1area.addItem(onenomoreweeks)
                     if len(p1w) > 0:
                         print p1w
-                        player1info.append(p1w)
+                        p1wset = list(set(p1w))
+                        print p1wset
+                        player1info.append(p1wset)
                         points1 = fbPlayerPoints.playerPoints(player1info)
                         item1 = QListWidgetItem("%f" % float(points1))
                         if points1 == float('inf'):
@@ -421,6 +423,32 @@ def compare():
                             player1area.addItem(item1)
                             p1 = player1found[0]
                             m1 = p1.stats(player1info[1],player1info[2])
+                            if 'kicking_xpmissed' in m1.stats:
+                                p1xpm = m1.stats['kicking_xpmissed']
+                                p1xpmin = QListWidgetItem("Extra points missed: %d" % int(p1xpm))
+                                player1area.addItem(p1xpmin)
+                            if 'kicking_xpmade' in m1.stats:
+                                p1xpmade = m1.stats['kicking_xpmade']
+                                p1xpmadein = QListWidgetItem("Extra points made: %d" % int(p1xpmade))
+                                player1area.addItem(p1xpmadein)
+                            if 'kicking_fgm' in m1.stats:
+                                p1fgmade = m1.stats['kicking_fgm']
+                                p1fgmadein = QListWidgetItem("Field goals made: %d" % int(p1fgmade))
+                                player1area.addItem(p1fgmadein)
+                            if 'kicking_fgm' in m1.stats and 'kicking_fga' in m1.stats:
+                                p1fgmissed = m1.stats['kicking_fga'] - m1.stats['kicking_fgm']
+                                p1fgmissedin = QListWidgetItem("Field goals missed: %d" % int(p1fgmissed))
+                                player1area.addItem(p1fgmissedin)
+                            if p1.position == "K":
+                                for w in player1info[2]:
+                                    games = nflgame.games(player1info[1], w)
+                                    plays = nflgame.combine_plays(games)
+                                    allMadeFGs = plays.filter(kicking_fgm = True)
+                                    player1area.addItem("Field goals made in week " + str(w) + ":")
+                                    for p in allMadeFGs:
+                                        if p.players.playerid(p1.playerid):
+                                            yards = p.kicking_fgm_yds
+                                            player1area.addItem(str(yards) + " ")
                             if 'passing_yds' in m1.stats:
                                 p1passyds = m1.stats['passing_yds']
                                 p1passydsin = QListWidgetItem("Passing yards: %d" % int(p1passyds))
@@ -535,7 +563,8 @@ def compare():
                         twonomoreweeks = QListWidgetItem("You have not entered any more weeks")
                         player2area.addItem(twonomoreweeks)
                     if len(p2w) > 0:
-                        player2info.append(p2w)
+                        p2wset = list(set(p2w))
+                        player2info.append(p2wset)
                         points2 = fbPlayerPoints.playerPoints(player2info)
                         item2 = QListWidgetItem("%f" % float(points2))
                         if points2 == float('inf'):
@@ -546,6 +575,32 @@ def compare():
                             player2area.addItem(item2)
                             p2 = player2found[0]
                             m2 = p2.stats(player2info[1],player2info[2])
+                            if 'kicking_xpmissed' in m2.stats:
+                                p2xpm = m2.stats['kicking_xpmissed']
+                                p2xpmin = QListWidgetItem("Extra points missed: %d" % int(p2xpm))
+                                player2area.addItem(p2xpmin)
+                            if 'kicking_xpmade' in m2.stats:
+                                p2xpmade = m2.stats['kicking_xpmade']
+                                p2xpmadein = QListWidgetItem("Extra points made: %d" % int(p2xpmade))
+                                player2area.addItem(p2xpmadein)
+                            if 'kicking_fgm' in m2.stats:
+                                p2fgmade = m2.stats['kicking_fgm']
+                                p2fgmadein = QListWidgetItem("Field goals made: %d" % int(p2fgmade))
+                                player2area.addItem(p2fgmadein)
+                            if 'kicking_fgm' in m2.stats and 'kicking_fga' in m2.stats:
+                                p2fgmissed = m2.stats['kicking_fga'] - m2.stats['kicking_fgm']
+                                p2fgmissedin = QListWidgetItem("Field goals missed: %d" % int(p2fgmissed))
+                                player2area.addItem(p2fgmissedin)
+                            if p2.position == "K":
+                                for w in player2info[2]:
+                                    games = nflgame.games(player2info[1], w)
+                                    plays = nflgame.combine_plays(games)
+                                    allMadeFGs = plays.filter(kicking_fgm = True)
+                                    player2area.addItem("Field goals made in week " + str(w) + ":")
+                                    for p in allMadeFGs:
+                                        if p.players.playerid(p2.playerid):
+                                            yards = p.kicking_fgm_yds
+                                            player2area.addItem(str(yards) + " ")
                             if 'passing_yds' in m2.stats:
                                 p2passyds = m2.stats['passing_yds']
                                 p2passydsin = QListWidgetItem("Passing yards: %d" % int(p2passyds))
