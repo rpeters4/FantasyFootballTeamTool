@@ -113,11 +113,13 @@ def defenseYA(team, year, week, games):
     return ya
 
 def fpDefense(team, year, week):
-    games = nflgame.games_gen(year, week, team, team)
     points = 0
-    points = points + defensePlays(team, year, week, games)
-    games = nflgame.games_gen(year, week, team, team)
-    points = points + defensePA(team, year, week, games)
-    games = nflgame.games_gen(year, week, team, team)
-    points = points + defenseYA(team, year, week, games)
+    for w in week:
+        games = nflgame.games_gen(year, w, team, team)
+        points = points + defensePlays(team, year, w, games)
+        games = nflgame.games_gen(year, w, team, team)
+        points = points + defensePA(team, year, w, games)
+        games = nflgame.games_gen(year, w, team, team)
+        points = points + defenseYA(team, year, w, games)
+        print points
     return points

@@ -1,6 +1,6 @@
 import nflgame
 
-def fantasyPoints(p1, y1, w1):
+def fantasyPoints(p1, y1, w1, g1):
     ppy=0
     pp2=0
     pint=0
@@ -13,7 +13,7 @@ def fantasyPoints(p1, y1, w1):
     pr2=0
     prec2=0
     lf=p1
-    m=lf.stats(y1,w1)
+    m=lf.stats(y1,w1,g1)
     if 'passing_yds' in m.stats:  
         ppy = .04*m.stats['passing_yds']
     if 'passing_twoptm' in m.stats:

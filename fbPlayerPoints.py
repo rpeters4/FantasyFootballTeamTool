@@ -11,7 +11,7 @@ def playerPoints(playerInfo):
         if playerFound[0].position == "K":
             points = fpKicker.kickerScore(playerFound[0], playerInfo[1], playerInfo[2])
         else:
-            points = fpPlayer.fantasyPoints(playerFound[0], playerInfo[1], playerInfo[2])
+            points = fpPlayer.fantasyPoints(playerFound[0], playerInfo[1], playerInfo[2], playerInfo[3])
         for i in playerInfo[2]:
             if str(i).isdigit():
                 weeksPlayed = weeksPlayed + 1
